@@ -30,41 +30,39 @@ jobs:
           if [ -n "${{ github.event.inputs.app_name || '' }}" ]; then
             APP_NAME="${{ github.event.inputs.app_name }}"
           else
-            # repo name portion of owner/repo
             APP_NAME="${GITHUB_REPOSITORY#*/}"
           fi
           echo "app_name=${APP_NAME}" >> "$GITHUB_OUTPUT"
 
-      - name: Replace placeholders in tracked text files
+      - name: Replace placeholders in tracked text files (excluding workflows)
         shell: bash
         run: |
           set -euo pipefail
           APP_NAME='${{ steps.app.outputs.app_name }}'
-
-          # Find tracked files containing the placeholder, excluding common dirs.
-          # -z emits NUL separators so we handle filenames with spaces/newlines safely.
-          if git grep -z -l "__APP_NAME__" -- . ":(exclude)node_modules/*" ":(exclude).git/*" >/tmp/replace.list 2>/dev/null; then
+          # Find files containing the placeholder, but skip node_modules, .git, build artifacts, and workflow files.
+          if git grep -z -l "__APP_NAME__" -- . \
+              ":(exclude)node_modules/*" \
+              ":(exclude).git/*" \
+              ":(exclude)dist/*" \
+              ":(exclude)build/*" \
+              ":(exclude).github/workflows/*" >/tmp/replace.list 2>/dev/null; then
             if [ -s /tmp/replace.list ]; then
-              # Replace in each file safely
               while IFS= read -r -d '' f; do
                 sed -i "s/__APP_NAME__/${APP_NAME//\//\\/}/g" "$f"
               done </tmp/replace.list
             fi
           fi
 
-      - name: Update package.json "name"
+      - name: Update package.json "name" (if present)
         if: ${{ hashFiles('package.json') != '' }}
         shell: bash
         run: |
           set -euo pipefail
           APP_NAME='${{ steps.app.outputs.app_name }}'
-
-          # Use jq if available; install quickly if not.
           if ! command -v jq >/dev/null 2>&1; then
             sudo apt-get update -y
             sudo apt-get install -y jq
           fi
-
           tmp="$(mktemp)"
           jq --arg name "$APP_NAME" '.name = $name' package.json > "$tmp"
           mv "$tmp" package.json
