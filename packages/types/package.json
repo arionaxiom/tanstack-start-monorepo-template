@@ -1,0 +1,19 @@
+{
+  "name": "@__APP_NAME__/types",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "type": "module",
+  "scripts": {
+    "check-types": "tsc --noEmit true",
+    "lint": "eslint . --max-warnings 0 --cache --cache-location .eslintcache"
+  },
+  "devDependencies": {
+    "@__APP_NAME__/eslint-config": "workspace:*",
+    "@__APP_NAME__/typescript-config": "workspace:*",
+    "eslint": "^9.39.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

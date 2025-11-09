@@ -1,0 +1,30 @@
+{
+  "name": "@__APP_NAME__/node-fn",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "type": "module",
+  "scripts": {
+    "check-types": "tsc --noEmit true",
+    "lint": "eslint . --max-warnings 0 --cache --cache-location .eslintcache",
+    "test": "vitest run --coverage --silent=true"
+  },
+  "devDependencies": {
+    "@__APP_NAME__/eslint-config": "workspace:*",
+    "@__APP_NAME__/typescript-config": "workspace:*",
+    "@vitest/coverage-v8": "^4.0.8",
+    "@vitest/runner": "^4.0.8",
+    "type-fest": "^4.41.0",
+    "vitest": "^4.0.8",
+    "vitest-fetch-mock": "^0.4.5",
+    "eslint": "^9.39.1"
+  },
+  "dependencies": {
+    "@__APP_NAME__/constants": "workspace:*",
+    "@__APP_NAME__/types": "workspace:*",
+    "@__APP_NAME__/utils": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

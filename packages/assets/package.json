@@ -1,0 +1,9 @@
+{
+  "name": "@__APP_NAME__/assets",
+  "files": [
+    "src/"
+  ],
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

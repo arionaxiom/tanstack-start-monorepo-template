@@ -1,0 +1,68 @@
+# .github/workflows/ci.yml
+
+# Name of the workflow, which will be displayed on the GitHub Actions tab.
+name: CI
+
+# This workflow runs on every 'push' event to any branch.
+on: [push, pull_request]
+
+# Defines the jobs that will run as part of this workflow.
+jobs:
+  # A single job named 'ci' (for Continuous Integration).
+  ci:
+    # The type of virtual machine to run the job on. 'ubuntu-latest' is a good default.
+    runs-on: ubuntu-latest
+
+    # A sequence of tasks that will be executed as part of the 'ci' job.
+    steps:
+      # Step 1: Check out the repository's code
+      # This action allows the workflow to access your code.
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up pnpm
+      # This action installs and configures the pnpm package manager.
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          # Specify the version of pnpm to use.
+          version: 10.15.0
+
+      # Step 3: Set up Node.js
+      # This action sets up a Node.js environment. pnpm needs this.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          # Specify the version of Node.js to use.
+          node-version: "22"
+          # Use pnpm's lockfile for caching, which speeds up subsequent runs.
+          cache: "pnpm"
+
+      # Step 4: Install project dependencies
+      # Runs 'pnpm install' to download all the necessary packages.
+      - name: Install dependencies
+        run: pnpm install
+
+      # GitHub Actions built-in caching
+      - name: Cache Turbo
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      # Step 5: Run the linter
+      # Executes your project's linting script.
+      - name: Run Linter
+        run: pnpm run lint
+
+      # Step 6: Run the type checker
+      # Executes your project's type-checking script.
+      - name: Run Type Check
+        run: pnpm run check-types
+
+      # Step 7: Run the tests
+      # Executes your project's test script.
+      - name: Run Tests
+        run: pnpm run test

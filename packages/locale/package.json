@@ -1,0 +1,27 @@
+{
+  "name": "@__APP_NAME__/locale",
+  "scripts": {
+    "build": "lingui extract --clean",
+    "lingui:extract": "lingui extract --clean",
+    "compile": "lingui compile"
+  },
+  "exports": {
+    "./lingui.config": "./lingui.config.ts",
+    "./appRouterI18n": "./appRouterI18n.ts",
+    "./i18n": "./i18n.ts",
+    "./locales/en.po": "./locales/en.po",
+    "./locales/th.po": "./locales/th.po",
+    "./locales/en": "./locales/en.js",
+    "./locales/th": "./locales/th.js"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "devDependencies": {
+    "@lingui/cli": "^5.5.2",
+    "@lingui/loader": "^5.5.2"
+  },
+  "dependencies": {
+    "@lingui/core": "^5.5.2"
+  }
+}

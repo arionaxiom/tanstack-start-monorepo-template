@@ -1,0 +1,71 @@
+name: Initialize from template
+
+on:
+  # Run automatically on first push to default branch after creation,
+  # and allow manual re-run with an input.
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      app_name:
+        description: "Override app name (defaults to repo name)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'workflow_dispatch'
+      || startsWith(github.event.head_commit.message, 'Initial commit')
+      || contains(github.repository, '/')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Determine app name
+        id: n
+        run: |
+          if [ -n "${{ github.event.inputs.app_name }}" ]; then
+            APP_NAME="${{ github.event.inputs.app_name }}"
+          else
+            # repo name portion of owner/repo
+            APP_NAME="${GITHUB_REPOSITORY#*/}"
+          fi
+          echo "app_name=$APP_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Replace placeholders in text files
+        run: |
+          APP_NAME="${{ steps.n.outputs.app_name }}"
+          # find all tracked text-like files that might contain placeholders
+          # (skip node_modules, .git, build artifacts)
+          files=$(git grep -l "__APP_NAME__" -- . ":(exclude)node_modules/*" ":(exclude).git/*" || true)
+          if [ -n "$files" ]; then
+            # macOS sed needs -i '' — but on ubuntu, -i is fine
+            sed -i "s/__APP_NAME__/${APP_NAME//\//\\/}/g" $files
+          fi
+
+      - name: Update package.json "name"
+        if: exists('package.json')
+        run: |
+          APP_NAME='${{ steps.n.outputs.app_name }}'
+          # install jq
+          sudo apt-get update -y
+          sudo apt-get install -y jq
+          tmp=$(mktemp)
+          jq --arg name "$APP_NAME" '.name = $name' package.json > "$tmp" && mv "$tmp" package.json
+
+      - name: Commit changes
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "chore: initialize from template"
+            git push
+          else
+            echo "No changes to commit."
+          fi

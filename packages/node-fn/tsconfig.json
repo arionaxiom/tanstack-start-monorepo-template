@@ -1,0 +1,15 @@
+{
+  "extends": ["@__APP_NAME__/typescript-config/react-library.json"],
+  "include": ["src"],
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "tsBuildInfoFile": "tsconfig.tsbuildinfo",
+    "noEmit": true,
+    "incremental": true,
+    "paths": {
+      "@__APP_NAME__/node-fn/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

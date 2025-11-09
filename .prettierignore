@@ -1,0 +1,3 @@
+_generated/
+*.gen.ts
+worker-configuration.d.ts

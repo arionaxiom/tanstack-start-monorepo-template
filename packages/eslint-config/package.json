@@ -1,5 +1,5 @@
 {
-  "name": "@repo/eslint-config",
+  "name": "@__APP_NAME__/eslint-config",
   "version": "0.0.0",
   "type": "module",
   "private": true,

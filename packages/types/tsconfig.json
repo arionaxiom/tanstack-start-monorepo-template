@@ -1,0 +1,15 @@
+{
+  "extends": "@__APP_NAME__/typescript-config/react-library.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "tsBuildInfoFile": "tsconfig.tsbuildinfo",
+    "noEmit": true,
+    "rootDir": "src", // Add this line
+    "incremental": true,
+    "paths": {
+      "@__APP_NAME__/types/*": ["./src/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

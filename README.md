@@ -1,135 +1,136 @@
-# Turborepo starter
+# TanStack Start + Cloudflare Template
 
-This Turborepo starter is maintained by the Turborepo core team.
+Opinionated GitHub template for building modern logistics or operations dashboards with TanStack Start, Cloudflare Workers, React 19, Tailwind CSS v4, and Lingui-powered internationalization. The workspace is a pnpm + Turborepo monorepo where every package is ready to be published under your own scope (`@__APP_NAME__/*`).
 
-## Using this example
+## Highlights
 
-Run the following command:
+- **TanStack Start SSR app** running on Cloudflare Workers with Smart Placement, assets binding, and Vite 7 dev ergonomics.
+- **React 19, Tailwind v4, Radix primitives, shadcn-style library** shipped from `packages/ui`.
+- **i18n out of the box** via Lingui with English, Thai, and pseudo locales plus router-level locale awareness.
+- **Shared packages** for hooks, utils, constants, assets, ESLint, Tailwind, and TS configs to keep features isolated but consistent.
+- **Strict quality gates** (ESLint, Vitest, TS) enforced through pnpm scripts, lint-staged, and Husky.
 
-```sh
-npx create-turbo@latest
-```
+## Requirements
 
-## What's inside?
+- Node.js **>= 22** (aligns with Cloudflare Workers runtime)
+- pnpm **10.20+** (workspaces + overrides rely on this version)
+- Wrangler CLI (optional until you deploy): `npm i -g wrangler`
+- Cloudflare account with Workers enabled for deployment
 
-This Turborepo includes the following packages/apps:
+## Quick Start
 
-### Apps and Packages
+1. **Use this template**  
+   On GitHub, click “Use this template” → “Create a new repository”, then clone your repo locally.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+2. **Install dependencies**  
+   ```bash
+   pnpm install
+   ```
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+3. **Rename the workspace scope**  
+   The repo ships with `.github/workflows/init.yml` (“Initialize from template”) that replaces every `__APP_NAME__` placeholder with your repo name on the first push to `main` (or whenever you manually run it via **Actions → Initialize from template → Run workflow**, optionally supplying `app_name`). If Actions are disabled, fall back to an editor/CLI multi-file replace to swap `__APP_NAME__` for your slug (e.g., `acme`).
 
-### Utilities
+4. **Start the dev server**  
+   ```bash
+   pnpm dev          # runs turbo dev across the repo
+   pnpm dev --filter=web   # or just the TanStack Start app on :3000
+   ```
+   > **Known quirk:** the TanStack Start dev server occasionally fails the first time because Lingui’s extraction race leaves missing catalog files. Simply stop and rerun `pnpm dev`—subsequent runs work consistently.
 
-This Turborepo has some additional tools already setup for you:
+5. **Commit hooks**  
+   Husky’s pre-commit hook automatically formats staged files via Prettier. Linting, tests, and type checks are manual—see “Quality Checks”.
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## Workspace Layout
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+apps/
+  web/                  # TanStack Start app (Cloudflare Workers entry)
+packages/
+  assets/               # Static assets bundled via Wrangler assets binding
+  constants/            # Shared constants
+  eslint-config/        # Base + React ESLint configs
+  fixtures/             # Sample data (seed/mocks)
+  locale/               # Lingui config + locale catalogs
+  node-fn/              # Worker-side helpers / server-only code
+  react-hooks/          # Cross-app React hooks
+  tailwind-config/      # Tailwind v4 shared config + shared CSS
+  types/                # Shared TypeScript types
+  typescript-config/    # Reusable tsconfig presets
+  ui/                   # Design system components/elements/hooks/utils
+  utils/                # Framework-agnostic utilities
 ```
 
-### Develop
+## Core Scripts
 
-To develop all apps and packages, run the following command:
+| Location          | Script                | Purpose |
+|-------------------|-----------------------|---------|
+| root              | `pnpm dev`            | Run `turbo run dev` (all apps/packages) |
+| root              | `pnpm build`          | Build everything via Turborepo |
+| root              | `pnpm lint`           | Run ESLint with `--max-warnings 0` |
+| root              | `pnpm check-types`    | Type-check every package |
+| root              | `pnpm format`         | Format `ts/tsx/md` files with Prettier |
+| apps/web          | `pnpm dev`            | Start TanStack Start (Vite) on port 3000 |
+| apps/web          | `pnpm test`           | Run Vitest + RTL |
+| apps/web          | `pnpm build`          | Build SSR bundle for Workers |
+| apps/web          | `pnpm deploy`         | Build + deploy via Wrangler |
+| packages/locale   | `pnpm lingui:extract` | Extract strings from app + UI packages |
+| packages/locale   | `pnpm compile`        | Compile `.po` catalogs into runtime JS |
 
-```
-cd my-turborepo
+Run any script from the repo root with `pnpm --filter=<package>` when you need a package-specific command (e.g., `pnpm --filter=@__APP_NAME__/ui build`).
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+## Development Workflow
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+- **Routing**: Add new routes under `apps/web/src/routes`. TanStack Router regenerates `routeTree.gen.ts`; never edit it manually.
+- **UI components**: Build reusable primitives in `packages/ui/src/elements`, composite app components in `packages/ui/src/components`, and share hooks via `packages/ui/src/hooks`.
+- **Shared logic**: Prefer `packages/utils` for framework-agnostic helpers, `packages/react-hooks` for hook-only utilities, and `packages/types` for TypeScript contracts.
+- **Assets & constants**: Keep Worker-served assets inside `packages/assets/src` so Wrangler’s `ASSETS` binding can serve them. Store configuration flags or enumerations in `packages/constants`.
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## Internationalization (Lingui)
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+1. Wrap user-facing strings with the `<Trans>` macro or `t` helper in your UI/app code.  
+2. Extract new keys:
+   ```bash
+   pnpm --filter=@__APP_NAME__/locale lingui:extract
+   ```
+3. Translate the generated `.po` files in `packages/locale/locales/{en|th|pseudo}.po`.  
+4. Compile for runtime usage:
+   ```bash
+   pnpm --filter=@__APP_NAME__/locale compile
+   ```
+Lingui is wired into the router, so locales propagate through TanStack Start loaders and components automatically once catalogs are compiled.
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+## Quality Checks
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```bash
+pnpm lint         # ESLint (fails on warnings)
+pnpm check-types  # Typescript --noEmit across the monorepo
+pnpm --filter=web test   # Vitest suite
+pnpm format       # Prettier + Tailwind plugin formatting
 ```
 
-## Useful Links
+These are the checks you should run before every push. Automation assumes they return clean results.
 
-Learn more about the power of Turborepo:
+## Deployment (Cloudflare Workers)
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+1. Configure Wrangler: update `apps/web/wrangler.jsonc` (name, bindings, env vars).  
+2. Authenticate once: `wrangler login` or `wrangler login --scopes` as needed.  
+3. Build and deploy:
+   ```bash
+   cd apps/web
+   pnpm deploy            # wraps vite build + wrangler deploy
+   ```
+   Use `pnpm cf-typegen` anytime you change bindings so TypeScript has up-to-date Worker environment types.
+
+## Troubleshooting
+
+- **Dev server fails on first run**: The Lingui extraction step competes with TanStack Start boot. Just re-run `pnpm dev`—subsequent runs succeed because catalogs already exist.
+- **Mismatched Node/pnpm versions**: Verify `node -v` ≥ 22 and `pnpm -v` ≥ 10.20. Project tooling relies on these versions (see `package.json` → `engines` & `packageManager`).
+- **Route type errors**: Delete `apps/web/src/routeTree.gen.ts` and rerun `pnpm dev` to regenerate if route definitions drift from generated types.
+
+## Utility Scripts
+
+- `clear-node-modules.sh` removes every nested `node_modules` folder—handy if you switch Node versions or packages become corrupted.
+
+---
+
+You now have everything required to spin up a production-ready TanStack Start + Cloudflare stack. Swap in your own branding, replace the `__APP_NAME__` scope, add routes/components, and ship. Have fun building!

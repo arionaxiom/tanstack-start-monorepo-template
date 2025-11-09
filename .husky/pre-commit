@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# --- Start PATH Fix ---
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+# --- End PATH Fix ---
+
+echo "Formatting staged files..."
+pnpm format:staged
+
+echo "Extracting and compiling translations..."
+pnpm run --filter @__APP_NAME__/locale build
+pnpm run --filter @__APP_NAME__/locale compile
+
+# Selectively stage ONLY the generated artifacts (adjust paths as needed)
+git add -A -- packages/locale/locales
