@@ -1,4 +1,3 @@
-import { Home } from "lucide-react";
 import type { ComponentType } from "react";
 
 import {

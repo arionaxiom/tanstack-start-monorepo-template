@@ -8,7 +8,6 @@
     "serve": "vite preview",
     "check-types": "tsc --noEmit true",
     "lint": "eslint . --max-warnings 0 --cache --cache-location .eslintcache",
-    "test": "vitest run",
     "deploy": "pnpm run build && wrangler deploy",
     "preview": "pnpm run build && vite preview",
     "cf-typegen": "wrangler types"
