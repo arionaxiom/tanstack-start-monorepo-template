@@ -1,8 +1,6 @@
 name: Initialize from template
 
 on:
-  # Run automatically on first push to default branch after creation,
-  # and allow manual re-run with an input.
   push:
     branches: [main]
   workflow_dispatch:
@@ -18,48 +16,63 @@ permissions:
 jobs:
   init:
     runs-on: ubuntu-latest
-    if: >
-      github.event_name == 'workflow_dispatch'
-      || startsWith(github.event.head_commit.message, 'Initial commit')
-      || contains(github.repository, '/')
+    # Run on manual trigger OR the initial push (commit message "Initial commit").
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'Initial commit')) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Determine app name
-        id: n
+        id: app
+        shell: bash
         run: |
-          if [ -n "${{ github.event.inputs.app_name }}" ]; then
+          set -euo pipefail
+          if [ -n "${{ github.event.inputs.app_name || '' }}" ]; then
             APP_NAME="${{ github.event.inputs.app_name }}"
           else
             # repo name portion of owner/repo
             APP_NAME="${GITHUB_REPOSITORY#*/}"
           fi
-          echo "app_name=$APP_NAME" >> "$GITHUB_OUTPUT"
+          echo "app_name=${APP_NAME}" >> "$GITHUB_OUTPUT"
 
-      - name: Replace placeholders in text files
+      - name: Replace placeholders in tracked text files
+        shell: bash
         run: |
-          APP_NAME="${{ steps.n.outputs.app_name }}"
-          # find all tracked text-like files that might contain placeholders
-          # (skip node_modules, .git, build artifacts)
-          files=$(git grep -l "__APP_NAME__" -- . ":(exclude)node_modules/*" ":(exclude).git/*" || true)
-          if [ -n "$files" ]; then
-            # macOS sed needs -i '' — but on ubuntu, -i is fine
-            sed -i "s/__APP_NAME__/${APP_NAME//\//\\/}/g" $files
+          set -euo pipefail
+          APP_NAME='${{ steps.app.outputs.app_name }}'
+
+          # Find tracked files containing the placeholder, excluding common dirs.
+          # -z emits NUL separators so we handle filenames with spaces/newlines safely.
+          if git grep -z -l "__APP_NAME__" -- . ":(exclude)node_modules/*" ":(exclude).git/*" >/tmp/replace.list 2>/dev/null; then
+            if [ -s /tmp/replace.list ]; then
+              # Replace in each file safely
+              while IFS= read -r -d '' f; do
+                sed -i "s/__APP_NAME__/${APP_NAME//\//\\/}/g" "$f"
+              done </tmp/replace.list
+            fi
           fi
 
       - name: Update package.json "name"
-        if: exists('package.json')
+        if: ${{ hashFiles('package.json') != '' }}
+        shell: bash
         run: |
-          APP_NAME='${{ steps.n.outputs.app_name }}'
-          # install jq
-          sudo apt-get update -y
-          sudo apt-get install -y jq
-          tmp=$(mktemp)
-          jq --arg name "$APP_NAME" '.name = $name' package.json > "$tmp" && mv "$tmp" package.json
+          set -euo pipefail
+          APP_NAME='${{ steps.app.outputs.app_name }}'
+
+          # Use jq if available; install quickly if not.
+          if ! command -v jq >/dev/null 2>&1; then
+            sudo apt-get update -y
+            sudo apt-get install -y jq
+          fi
+
+          tmp="$(mktemp)"
+          jq --arg name "$APP_NAME" '.name = $name' package.json > "$tmp"
+          mv "$tmp" package.json
 
       - name: Commit changes
+        shell: bash
         run: |
+          set -euo pipefail
           if ! git diff --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
