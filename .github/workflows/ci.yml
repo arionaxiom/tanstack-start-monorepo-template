@@ -26,7 +26,7 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           # Specify the version of pnpm to use.
-          version: 10.15.0
+          version: 10.20.0
 
       # Step 3: Set up Node.js
       # This action sets up a Node.js environment. pnpm needs this.
