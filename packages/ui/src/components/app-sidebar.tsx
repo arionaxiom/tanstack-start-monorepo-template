@@ -9,6 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@__APP_NAME__/ui/elements/sidebar";
 
 export interface MenuItem {
@@ -18,11 +19,24 @@ export interface MenuItem {
 }
 
 interface AppSidebarProps {
-  LinkComponent?: ComponentType<{ to: string; children: React.ReactNode }>;
+  LinkComponent?: ComponentType<{
+    to: string;
+    children: React.ReactNode;
+    onClick?: () => void;
+    className?: string;
+  }>;
   menuItems: MenuItem[];
 }
 
 export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
+  const { isMobile, openMobile, toggleSidebar } = useSidebar();
+
+  const handleNavigate = () => {
+    if (isMobile && openMobile) {
+      toggleSidebar();
+    }
+  };
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -34,12 +48,12 @@ export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild tooltip={item.title}>
                     {LinkComponent ? (
-                      <LinkComponent to={item.url}>
+                      <LinkComponent to={item.url} onClick={handleNavigate}>
                         <item.icon />
                         <span>{item.title}</span>
                       </LinkComponent>
                     ) : (
-                      <a href={item.url}>
+                      <a href={item.url} onClick={handleNavigate}>
                         <item.icon />
                         <span>{item.title}</span>
                       </a>

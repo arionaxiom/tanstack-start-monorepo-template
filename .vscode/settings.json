@@ -1,9 +1,4 @@
 {
-  "eslint.workingDirectories": [
-    {
-      "mode": "auto"
-    }
-  ],
   "files.watcherExclude": {
     "**/routeTree.gen.ts": true
   },

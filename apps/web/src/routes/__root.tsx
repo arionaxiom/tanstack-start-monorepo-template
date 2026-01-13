@@ -13,7 +13,9 @@ import { DefaultCatchBoundary } from "@__APP_NAME__/ui/components/default-catch-
 import { NotFound } from "@__APP_NAME__/ui/components/not-found";
 import { seo } from "@__APP_NAME__/utils/seo/seo";
 
-import { menuItems, navigationItems } from "@/nav/nav";
+import { LocaleSwitcher } from "@/components/locale-switcher";
+
+import { useMenuItems, useNavigationItems } from "@/nav/use-nav";
 import { AppContext } from "@/router";
 
 export const Route = createRootRouteWithContext<AppContext>()({
@@ -60,8 +62,13 @@ export const Route = createRootRouteWithContext<AppContext>()({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { loaderLocale } = Route.useLoaderData();
+  const navigationItems = useNavigationItems();
+  const menuItems = useMenuItems();
+  const isDev = Boolean(import.meta.hot);
+
   return (
-    <html lang="en">
+    <html lang={loaderLocale ?? "en"}>
       <head>
         <HeadContent />
       </head>
@@ -70,20 +77,23 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           LinkComponent={Link}
           navigationItems={navigationItems}
           menuItems={menuItems}
+          headerActions={<LocaleSwitcher />}
         >
           {children}
         </AppLayout>
-        <TanStackDevtools
-          config={{
-            position: "bottom-right",
-          }}
-          plugins={[
-            {
-              name: "Tanstack Router",
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
+        {isDev ? (
+          <TanStackDevtools
+            config={{
+              position: "bottom-right",
+            }}
+            plugins={[
+              {
+                name: "Tanstack Router",
+                render: <TanStackRouterDevtoolsPanel />,
+              },
+            ]}
+          />
+        ) : null}
         <Scripts />
       </body>
     </html>
