@@ -1,4 +1,9 @@
 import { config } from "@__APP_NAME__/eslint-config/react-internal";
 
-/** @type {import("eslint").Linter.Config} */
-export default config;
+/** @type {import("eslint").Linter.Config[]} */
+export default [
+  ...config,
+  {
+    ignores: ["src/elements/**"],
+  },
+];

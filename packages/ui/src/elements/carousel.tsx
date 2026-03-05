@@ -1,3 +1,5 @@
+"use client";
+
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
@@ -5,7 +7,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import * as React from "react";
 
 import { Button } from "@__APP_NAME__/ui/elements/button";
-import { cn } from "@__APP_NAME__/ui/utils/cn";
+import { cn } from "@__APP_NAME__/ui/utils/index";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -230,10 +232,10 @@ function CarouselNext({
 }
 
 export {
+  type CarouselApi,
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
   CarouselPrevious,
-  type CarouselApi,
+  CarouselNext,
 };

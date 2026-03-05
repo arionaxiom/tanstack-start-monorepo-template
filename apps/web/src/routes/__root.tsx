@@ -11,6 +11,7 @@ import appCss from "@__APP_NAME__/tailwind-config/shared-styles.css?url";
 import { AppLayout } from "@__APP_NAME__/ui/components/app-layout";
 import { DefaultCatchBoundary } from "@__APP_NAME__/ui/components/default-catch-boundary";
 import { NotFound } from "@__APP_NAME__/ui/components/not-found";
+import { TooltipProvider } from "@__APP_NAME__/ui/elements/tooltip";
 import { seo } from "@__APP_NAME__/utils/seo/seo";
 
 import { LocaleSwitcher } from "@/components/locale-switcher";
@@ -79,7 +80,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           menuItems={menuItems}
           headerActions={<LocaleSwitcher />}
         >
-          {children}
+          <TooltipProvider>{children}</TooltipProvider>
         </AppLayout>
         {isDev ? (
           <TanStackDevtools

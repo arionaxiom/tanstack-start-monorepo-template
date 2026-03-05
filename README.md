@@ -22,7 +22,8 @@ Opinionated GitHub template for building modern logistics or operations dashboar
 1. **Use this template**  
    On GitHub, click “Use this template” → “Create a new repository”, then clone your repo locally.
 
-2. **Install dependencies**  
+2. **Install dependencies**
+
    ```bash
    pnpm install
    ```
@@ -30,11 +31,13 @@ Opinionated GitHub template for building modern logistics or operations dashboar
 3. **Rename the workspace scope**  
    The repo ships with `.github/workflows/init.yml` (“Initialize from template”) that replaces every `__APP_NAME__` placeholder with your repo name on the first push to `main` (or whenever you manually run it via **Actions → Initialize from template → Run workflow**, optionally supplying `app_name`). If Actions are disabled, fall back to an editor/CLI multi-file replace to swap `__APP_NAME__` for your slug (e.g., `acme`).
 
-4. **Start the dev server**  
+4. **Start the dev server**
+
    ```bash
    pnpm dev          # runs turbo dev across the repo
    pnpm dev --filter=web   # or just the TanStack Start app on :3000
    ```
+
    > **Known quirk:** the TanStack Start dev server occasionally fails the first time because Lingui’s extraction race leaves missing catalog files. Simply stop and rerun `pnpm dev`—subsequent runs work consistently.
 
 5. **Commit hooks**  
@@ -62,19 +65,19 @@ packages/
 
 ## Core Scripts
 
-| Location          | Script                | Purpose |
-|-------------------|-----------------------|---------|
-| root              | `pnpm dev`            | Run `turbo run dev` (all apps/packages) |
-| root              | `pnpm build`          | Build everything via Turborepo |
-| root              | `pnpm lint`           | Run ESLint with `--max-warnings 0` |
-| root              | `pnpm check-types`    | Type-check every package |
-| root              | `pnpm format`         | Format `ts/tsx/md` files with Prettier |
-| apps/web          | `pnpm dev`            | Start TanStack Start (Vite) on port 3000 |
-| apps/web          | `pnpm test`           | Run Vitest + RTL |
-| apps/web          | `pnpm build`          | Build SSR bundle for Workers |
-| apps/web          | `pnpm deploy`         | Build + deploy via Wrangler |
-| packages/locale   | `pnpm lingui:extract` | Extract strings from app + UI packages |
-| packages/locale   | `pnpm compile`        | Compile `.po` catalogs into runtime JS |
+| Location        | Script                | Purpose                                  |
+| --------------- | --------------------- | ---------------------------------------- |
+| root            | `pnpm dev`            | Run `turbo run dev` (all apps/packages)  |
+| root            | `pnpm build`          | Build everything via Turborepo           |
+| root            | `pnpm lint`           | Run ESLint with `--max-warnings 0`       |
+| root            | `pnpm check-types`    | Type-check every package                 |
+| root            | `pnpm format`         | Format `ts/tsx/md` files with Prettier   |
+| apps/web        | `pnpm dev`            | Start TanStack Start (Vite) on port 3000 |
+| apps/web        | `pnpm test`           | Run Vitest + RTL                         |
+| apps/web        | `pnpm build`          | Build SSR bundle for Workers             |
+| apps/web        | `pnpm deploy`         | Build + deploy via Wrangler              |
+| packages/locale | `pnpm lingui:extract` | Extract strings from app + UI packages   |
+| packages/locale | `pnpm compile`        | Compile `.po` catalogs into runtime JS   |
 
 Run any script from the repo root with `pnpm --filter=<package>` when you need a package-specific command (e.g., `pnpm --filter=@__APP_NAME__/ui build`).
 
@@ -87,17 +90,17 @@ Run any script from the repo root with `pnpm --filter=<package>` when you need a
 
 ## Internationalization (Lingui)
 
-1. Wrap user-facing strings with the `<Trans>` macro or `t` helper in your UI/app code.  
+1. Wrap user-facing strings with the `<Trans>` macro or `t` helper in your UI/app code.
 2. Extract new keys:
    ```bash
    pnpm --filter=@__APP_NAME__/locale lingui:extract
    ```
-3. Translate the generated `.po` files in `packages/locale/locales/{en|th|pseudo}.po`.  
+3. Translate the generated `.po` files in `packages/locale/locales/{en|th|pseudo}.po`.
 4. Compile for runtime usage:
    ```bash
    pnpm --filter=@__APP_NAME__/locale compile
    ```
-Lingui is wired into the router, so locales propagate through TanStack Start loaders and components automatically once catalogs are compiled.
+   Lingui is wired into the router, so locales propagate through TanStack Start loaders and components automatically once catalogs are compiled.
 
 ## Quality Checks
 
@@ -112,8 +115,8 @@ These are the checks you should run before every push. Automation assumes they r
 
 ## Deployment (Cloudflare Workers)
 
-1. Configure Wrangler: update `apps/web/wrangler.jsonc` (name, bindings, env vars).  
-2. Authenticate once: `wrangler login` or `wrangler login --scopes` as needed.  
+1. Configure Wrangler: update `apps/web/wrangler.jsonc` (name, bindings, env vars).
+2. Authenticate once: `wrangler login` or `wrangler login --scopes` as needed.
 3. Build and deploy:
    ```bash
    cd apps/web

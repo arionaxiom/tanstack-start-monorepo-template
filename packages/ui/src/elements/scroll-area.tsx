@@ -1,7 +1,7 @@
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
+import { ScrollArea as ScrollAreaPrimitive } from "radix-ui";
 import * as React from "react";
 
-import { cn } from "@__APP_NAME__/ui/utils/cn";
+import { cn } from "@__APP_NAME__/ui/utils/index";
 
 function ScrollArea({
   className,

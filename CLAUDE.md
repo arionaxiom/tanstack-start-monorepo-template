@@ -11,6 +11,7 @@ This is a **pnpm Turborepo monorepo** with a TanStack Start application deployed
 ## Development Commands
 
 ### Root Commands
+
 ```bash
 # Start development servers for all apps
 pnpm dev
@@ -35,6 +36,7 @@ pnpm format:staged
 ```
 
 ### Web App Commands (apps/web)
+
 ```bash
 # Run development server on port 3000
 pnpm dev
@@ -53,6 +55,7 @@ pnpm cf-typegen
 ```
 
 ### Internationalization (i18n)
+
 ```bash
 # Extract translatable strings from code
 pnpm --filter=@__APP_NAME__/locale lingui:extract
@@ -113,10 +116,12 @@ packages/
 ### Key Patterns
 
 #### Path Aliases
+
 - `@/` - Resolves to `apps/web/src/`
 - `@__APP_NAME__/*` - Workspace packages (e.g., `@__APP_NAME__/ui`)
 
 #### Import Order (enforced by Prettier)
+
 ```typescript
 // 1. Workspace packages
 import { Component } from "@__APP_NAME__/ui/...";
@@ -138,6 +143,7 @@ import { local } from "./...";
 ```
 
 #### Routing Architecture
+
 - **File-based routing**: Routes defined in `apps/web/src/routes/`
 - **Auto-generated route tree**: `routeTree.gen.ts` (don't edit manually)
 - **Type-safe routing**: Router types auto-generated via TanStack Router plugin
@@ -145,12 +151,14 @@ import { local } from "./...";
 - **Root route**: `__root.tsx` provides app layout and global error boundaries
 
 #### i18n Architecture
+
 - **Translation extraction**: Scans `packages/ui/src/` and `apps/web/src/`
 - **Macro-based**: Use `<Trans>` macro for translations
 - **Router integration**: Locale state managed at router level via custom plugin
 - **Server-side**: i18n setup in loader functions with locale context
 
 #### Component Library Pattern (`packages/ui`)
+
 - **Radix UI primitives**: Unstyled accessible components
 - **shadcn/ui pattern**: Customizable components via Tailwind
 - **Barrel exports**: Components exported via package.json `exports` field
@@ -160,6 +168,7 @@ import { local } from "./...";
   - `@__APP_NAME__/ui/hooks/*` - React hooks
 
 #### Cloudflare Workers Integration
+
 - **Configuration**: `apps/web/wrangler.jsonc`
 - **Assets binding**: Static assets from `packages/assets/src/` bound as `ASSETS`
 - **Server entry**: `@tanstack/react-start/server-entry`

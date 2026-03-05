@@ -54,13 +54,16 @@ export function AppLayout({
   menuItems = [],
   headerActions,
 }: AppLayoutProps) {
-  const BrandLink = LinkComponent
-    ? (props: { children: React.ReactNode }) => (
-        <LinkComponent to="/" {...props} />
-      )
-    : ({ children }: { children: React.ReactNode }) => (
-        <a href="/">{children}</a>
-      );
+  const brandContent = (
+    <div className="flex min-w-[44px] shrink-0 items-center justify-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-2 py-1 text-sm font-semibold text-primary sm:gap-3 sm:px-3 sm:text-sm lg:px-4 lg:py-2 lg:text-base">
+      <img
+        src="/logo/logo512.png"
+        alt="__APP_NAME__"
+        className="h-8 w-8 shrink-0 rounded-full border border-primary/40 bg-card/80 object-contain p-0.5 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
+      />
+      <span className="hidden tracking-wide sm:inline">__APP_NAME__</span>
+    </div>
+  );
 
   return (
     <SidebarProvider defaultOpen={false}>
@@ -73,18 +76,11 @@ export function AppLayout({
         <header className="sticky top-0 z-30 flex h-20 shrink-0 items-center gap-2 border-b bg-[color-mix(in_oklab,var(--background)_90%,transparent)]/95 backdrop-blur-xl transition-[width,height] ease-linear supports-[backdrop-filter]:bg-background/75">
           <div className="flex flex-1 items-center gap-3 px-4">
             <SidebarTrigger className="-ml-1" />
-            <BrandLink>
-              <div className="flex min-w-[44px] shrink-0 items-center justify-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-2 py-1 text-sm font-semibold text-primary sm:gap-3 sm:px-3 sm:text-sm lg:px-4 lg:py-2 lg:text-base">
-                <img
-                  src="/logo/logo512.png"
-                  alt="__APP_NAME__"
-                  className="h-8 w-8 shrink-0 rounded-full border border-primary/40 bg-card/80 object-contain p-0.5 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
-                />
-                <span className="hidden tracking-wide sm:inline">
-                  __APP_NAME__
-                </span>
-              </div>
-            </BrandLink>
+            {LinkComponent ? (
+              <LinkComponent to="/">{brandContent}</LinkComponent>
+            ) : (
+              <a href="/">{brandContent}</a>
+            )}
 
             {navigationItems.length > 0 && (
               <NavigationMenu className="z-0 hidden lg:flex">
