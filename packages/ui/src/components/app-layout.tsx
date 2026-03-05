@@ -77,11 +77,11 @@ export function AppLayout({
               <div className="flex min-w-[44px] shrink-0 items-center justify-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-2 py-1 text-sm font-semibold text-primary sm:gap-3 sm:px-3 sm:text-sm lg:px-4 lg:py-2 lg:text-base">
                 <img
                   src="/logo/logo512.png"
-                  alt="TC Logistics"
+                  alt="__APP_NAME__"
                   className="h-8 w-8 shrink-0 rounded-full border border-primary/40 bg-card/80 object-contain p-0.5 sm:h-8 sm:w-8 lg:h-10 lg:w-10"
                 />
                 <span className="hidden tracking-wide sm:inline">
-                  TC Logistics
+                  __APP_NAME__
                 </span>
               </div>
             </BrandLink>

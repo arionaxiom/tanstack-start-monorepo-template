@@ -41,7 +41,7 @@ export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>TC Logistics</SidebarGroupLabel>
+          <SidebarGroupLabel>__APP_NAME__</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (

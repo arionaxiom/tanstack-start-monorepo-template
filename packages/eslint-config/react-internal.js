@@ -17,6 +17,13 @@ export const config = [
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
+   {
+    settings: {
+      react: {
+        version: "19.2.4" // or "19", "detect", etc. Avoids auto-detection crash.
+      }
+    }
+  },
   {
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
@@ -30,7 +37,6 @@ export const config = [
     plugins: {
       "react-hooks": pluginReactHooks,
     },
-    settings: { react: { version: "detect" } },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
