@@ -86,6 +86,7 @@ packages/
       hooks/        # React hooks
       utils/        # UI utilities
 
+  form-options/     # TanStack Form options (Zod schemas + default values)
   locale/           # i18n configuration and translations (Lingui)
   assets/           # Static assets (shared via Cloudflare Workers binding)
   utils/            # Shared utility functions
@@ -107,7 +108,7 @@ packages/
 - **UI Components**: Radix UI primitives
 - **i18n**: Lingui (macro-based, compile-time)
 - **State**: TanStack Query for server state
-- **Forms**: TanStack Form + React Hook Form
+- **Forms**: TanStack Form (type-safe, Zod validation)
 - **Testing**: Vitest + React Testing Library
 - **Monorepo**: Turborepo with pnpm workspaces
 - **Package Manager**: pnpm (v10.32.1+)
@@ -166,6 +167,42 @@ import { local } from "./...";
   - `@__APP_NAME__/ui/elements/*` - UI elements
   - `@__APP_NAME__/ui/utils/*` - Utilities
   - `@__APP_NAME__/ui/hooks/*` - React hooks
+  - `@__APP_NAME__/ui/form/*` - Form hook & field components
+
+#### Form Architecture (TanStack Form)
+
+Forms follow a three-layer pattern:
+
+1. **Zod schemas** (`packages/types/src/forms.ts`): Define validation rules and infer TypeScript types. Single source of truth for form data shapes.
+2. **Form options** (`packages/form-options/src/*.ts`): Pair default values with Zod validators using `formOptions()` from `@tanstack/form-core`. Platform-agnostic — shared between web and potential mobile apps.
+3. **Form hook + field components** (`packages/ui/src/form/`): `useAppForm` (created via `createFormHook`) wires options to the UI. Field components (`FormInput`, etc.) consume field context and render with validation state.
+
+**Usage pattern:**
+
+```typescript
+import { useAppForm } from "@__APP_NAME__/ui/form/form";
+import { signInFormOpts } from "@__APP_NAME__/form-options/sign-in";
+
+function SignInForm() {
+  const form = useAppForm({
+    ...signInFormOpts,
+    onSubmit: async ({ value }) => { /* value is typed */ },
+  });
+
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); form.handleSubmit(); }}>
+      <form.AppField name="email">
+        {(field) => <field.FormInput label="Email" type="email" />}
+      </form.AppField>
+      <form.AppForm>
+        <form.SubmitButton>Sign in</form.SubmitButton>
+      </form.AppForm>
+    </form>
+  );
+}
+```
+
+**Adding a new form field component:** Create in `packages/ui/src/form/elements/`, use `useFieldContext<T>()` for state, and register it in the `createFormHook` call in `packages/ui/src/form/form.ts`.
 
 #### Cloudflare Workers Integration
 
@@ -238,8 +275,9 @@ These checks ensure code quality and prevent broken code from being merged. The 
    - React components → `packages/ui`
    - React hooks → `packages/react-hooks`
    - Pure utilities → `packages/utils`
-   - Types → `packages/types`
+   - Types & Zod schemas → `packages/types`
    - Constants → `packages/constants`
+   - Form options (default values + validators) → `packages/form-options`
 
 5. **Testing**: Tests use Vitest and are colocated with source files (`*.test.ts` or `*.test.tsx`).
 

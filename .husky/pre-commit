@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # --- Start PATH Fix ---
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
