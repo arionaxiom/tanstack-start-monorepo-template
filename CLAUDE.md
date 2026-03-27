@@ -356,6 +356,10 @@ pnpm run test          # Vitest tests - all tests must pass
 
 These checks ensure code quality and prevent broken code from being merged. The lint-staged hook will automatically format code on commit, but you must ensure lint, type checks, and tests pass before committing.
 
+## Running Services
+
+**Always start long-running processes (dev servers, watchers, etc.) in DevMux** so both the user and AI share the same terminal session. Never start `pnpm dev`, `pnpm start`, or similar commands in a background process or detached shell — use DevMux so the user can see the output, interact with the process, and stop it when needed.
+
 ## Development Workflow
 
 1. **Adding a new route**: Create a file in `apps/web/src/routes/`. The route tree regenerates automatically.
