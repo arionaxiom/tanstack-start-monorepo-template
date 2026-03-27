@@ -334,6 +334,17 @@ Some packages are intentionally held at specific versions due to known issues. S
 
 React and React DOM versions are pinned via `pnpm.overrides` in the root `package.json` to ensure compatibility across all packages and potential Expo integration. Do not change these overrides without verifying compatibility.
 
+### pnpm Strict Dependency Isolation
+
+**This project uses pnpm's default strict isolation mode. Do NOT add `nodeLinker: hoisted` to `pnpm-workspace.yaml` or `.npmrc`.** Hoisted mode hides missing dependency declarations and defeats the purpose of using pnpm.
+
+What this means in practice:
+
+- Every package that imports a module **must declare it** in its own `package.json` — you cannot rely on a dependency being hoisted from another package.
+- If TypeScript reports `Cannot find module 'X'` or a non-portable type inference error (`TS2742`), the fix is to **add the missing dependency**, not to switch to hoisted mode.
+- When a function's return type references types from a transitive dependency (e.g., `@testing-library/react` exposing types from `@testing-library/dom`), add that transitive dependency as a direct `devDependency` and/or add explicit return type annotations.
+- After adding new imports to any package, do a clean install (`rm -rf node_modules && pnpm install`) to verify all dependencies are properly declared.
+
 ## Code Quality Requirements
 
 **All code changes must pass the following checks before being committed:**
