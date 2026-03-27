@@ -6,8 +6,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a **pnpm Turborepo monorepo** with a TanStack Start application deployed to Cloudflare Workers. The project uses React 19, TypeScript, and Tailwind CSS v4 with internationalization (i18n) support via Lingui.
 
-**Note**: `__APP_NAME__` is a placeholder that appears throughout the codebase and should be replaced with the actual application name.
-
 ## Development Commands
 
 ### Root Commands
