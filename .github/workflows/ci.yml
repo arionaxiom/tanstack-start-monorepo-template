@@ -24,9 +24,6 @@ jobs:
       # This action installs and configures the pnpm package manager.
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
-        with:
-          # Specify the version of pnpm to use.
-          version: 10.32.1
 
       # Step 3: Set up Node.js
       # This action sets up a Node.js environment. pnpm needs this.
