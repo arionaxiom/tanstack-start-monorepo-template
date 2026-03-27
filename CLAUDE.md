@@ -303,6 +303,25 @@ After creating the package, add it as a dependency in consuming packages using `
 - Test packages that have a `test` script require a `vitest.config.mts` with the appropriate environment (`jsdom` for React, default for pure logic)
 - Coverage runs via `vitest run --coverage --silent=true`
 
+#### Custom render is mandatory for React tests
+
+**Every test that renders React components or hooks must use the custom `render` / `renderHook` from the package's `test-utils.tsx` — never import directly from `@testing-library/react`.** The custom render wraps components with required providers (Lingui `I18nProvider`, etc.) so translations and context work correctly in tests.
+
+```typescript
+// CORRECT — always use test-utils
+import { render, screen } from "../test-utils";
+
+// WRONG — never import render directly from testing-library
+import { render } from "@testing-library/react";
+```
+
+Each package with React tests has its own `test-utils.tsx`:
+
+- `packages/ui/src/test-utils.tsx` — exports `render`, `renderHook`, `screen`, `fireEvent`, `userEvent`
+- `packages/react-hooks/src/test-utils.tsx` — exports `render`, `renderHook`, `screen`, `fireEvent`, `act`
+
+The `test-setup.ts` in each package loads the English locale via `i18n.loadAndActivate()` and extends Vitest's `expect` with jest-dom matchers. The UI package also mocks JSDOM globals that Radix UI depends on (`ResizeObserver`, `IntersectionObserver`, `visualViewport`, etc.).
+
 ### Backend Architecture
 
 **Before doing any backend work, read [`BACKEND_RULES.md`](./BACKEND_RULES.md).** It defines how domain services are structured, data ownership boundaries, and cross-service communication rules. Even though this project is a monolith, backend logic must be organized into domain-owned services where each service is the sole authority over its data — no direct cross-domain database access.
