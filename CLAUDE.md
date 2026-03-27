@@ -242,6 +242,71 @@ These rules apply across the entire codebase to maintain consistency and prevent
 - **No hardcoded business values**: Use constants from `packages/constants` or hooks. Magic numbers and strings in component code are not acceptable.
 - **Shared utility functions over inline patterns**: If you find yourself writing the same logic in multiple places, extract it to `packages/utils`.
 
+### Package Dependency Direction
+
+Packages follow a strict layering. **Never create circular dependencies.** Lower layers must not import from higher layers.
+
+```
+Layer 0 (no internal deps):  types, locale, assets, tailwind-config, eslint-config, typescript-config
+Layer 1 (depends on L0):     utils, constants, form-options
+Layer 2 (depends on L0-L1):  react-hooks, node-fn
+Layer 3 (depends on L0-L2):  ui
+Layer 4 (app — consumes all): apps/web
+```
+
+If you need to add a dependency between packages, verify it respects this direction. If a lower-layer package needs something from a higher layer, the design is wrong — extract the shared piece down.
+
+### Naming Conventions
+
+- **Files**: `kebab-case.ts` / `kebab-case.tsx` — no PascalCase or camelCase filenames
+- **Components**: `PascalCase` for React components (exported, not file names)
+- **Test files**: `*.test.ts` or `*.test.tsx` — colocated with source, never `.spec.ts`
+- **Package names**: `@__APP_NAME__/kebab-case`
+
+### UI Package Structure (`packages/ui/src/`)
+
+- **`elements/`**: Low-level, reusable UI primitives. Wraps Radix UI or native HTML. Stateless, data-agnostic, styling-only. Example: `button.tsx`, `card.tsx`, `dialog.tsx`.
+- **`components/`**: Higher-level, app-aware compositions. Composes elements into layouts or patterns with props for customization. Example: `app-layout.tsx`, `default-catch-boundary.tsx`.
+- **`form/`**: Form-specific abstractions built on TanStack Form. Field components (`elements/`), form-level components (`components/`), and the `useAppForm` hook factory.
+- **`hooks/`**: React hooks scoped to UI concerns (not business logic — those go in `packages/react-hooks`).
+- **`utils/`**: UI utilities like `cn()`.
+
+**Rule of thumb**: If it renders UI and has no business logic, it's an element. If it composes elements into an app-level pattern, it's a component.
+
+### Styling
+
+- **Always use `cn()`** to merge class names — never string concatenation or template literals for Tailwind classes.
+- **Use CVA (class-variance-authority)** for components with variants (size, color, state). Define variants in the same file as the component.
+- **No inline styles**: All styling through Tailwind classes.
+- **Shared design tokens** live in `packages/tailwind-config/shared-styles.css` and `tokens.css`. Never hardcode colors or spacing — use the token system.
+
+### Creating a New Package
+
+Every workspace package needs these files:
+
+```
+packages/my-package/
+  package.json        # name, exports, scripts (check-types, lint), deps
+  tsconfig.json       # extends @__APP_NAME__/typescript-config/react-library.json
+  eslint.config.js    # imports from @__APP_NAME__/eslint-config/base (or react-internal)
+  src/                # source code
+```
+
+**Exports pattern**: Source packages use `"./*": "./src/*.ts"`. Config packages use named exports.
+
+After creating the package, add it as a dependency in consuming packages using `"workspace:*"` protocol, then run `pnpm install`.
+
+### Testing Conventions
+
+- Tests are **colocated** with source files (e.g., `utils.test.ts` next to `utils.ts`)
+- Use **Vitest** as the test runner, `@testing-library/react` for component tests
+- Test packages that have a `test` script require a `vitest.config.mts` with the appropriate environment (`jsdom` for React, default for pure logic)
+- Coverage runs via `vitest run --coverage --silent=true`
+
+### Backend Architecture
+
+**Before doing any backend work, read [`BACKEND_RULES.md`](./BACKEND_RULES.md).** It defines how domain services are structured, data ownership boundaries, and cross-service communication rules. Even though this project is a monolith, backend logic must be organized into domain-owned services where each service is the sole authority over its data — no direct cross-domain database access.
+
 ### Pinned Packages
 
 Some packages are intentionally held at specific versions due to known issues. See `PINNED_PACKAGES.md` for details. **Always check this file before upgrading vitest or related test packages.** Pinned versions are enforced via `pnpm.overrides` in the root `package.json`.
