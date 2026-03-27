@@ -1,7 +1,8 @@
 {
   "name": "@__APP_NAME__/react-hooks",
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": "./src/*.ts",
+    "./test-utils": "./src/test-utils.tsx"
   },
   "type": "module",
   "scripts": {

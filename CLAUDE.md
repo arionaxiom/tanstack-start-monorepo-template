@@ -121,25 +121,22 @@ packages/
 - `@/` - Resolves to `apps/web/src/`
 - `@__APP_NAME__/*` - Workspace packages (e.g., `@__APP_NAME__/ui`)
 
-#### Import Order (enforced by Prettier)
+#### Import Rules
+
+**Absolute imports only.** All imports across the monorepo use the `@__APP_NAME__/*` package scope. Relative imports (`../`) are only allowed for files in the **same directory** (`./sibling`). This applies everywhere — even within a package, use `@__APP_NAME__/ui/elements/button` not `../../elements/button`.
+
+The `@/` alias is reserved for **app code only** (`apps/web/src/`). Packages must never use `@/`.
+
+**Import order** (enforced by Prettier):
 
 ```typescript
 // 1. Workspace packages
 import { Component } from "@__APP_NAME__/ui/...";
 
-// 2. @/lib
-import { lib } from "@/lib/...";
-
-// 3. @/modules
-import { module } from "@/modules/...";
-
-// 4. @/components
-import { Component } from "@/components/...";
-
-// 5. Other @/ imports
+// 2. @/ imports (app code only)
 import { util } from "@/...";
 
-// 6. Relative imports
+// 3. Relative imports (same directory only)
 import { local } from "./...";
 ```
 
@@ -308,11 +305,14 @@ After creating the package, add it as a dependency in consuming packages using `
 **Every test that renders React components or hooks must use the custom `render` / `renderHook` from the package's `test-utils.tsx` — never import directly from `@testing-library/react`.** The custom render wraps components with required providers (Lingui `I18nProvider`, etc.) so translations and context work correctly in tests.
 
 ```typescript
-// CORRECT — always use test-utils
-import { render, screen } from "../test-utils";
+// CORRECT — absolute import from package test-utils
+import { render, screen } from "@__APP_NAME__/ui/test-utils";
 
 // WRONG — never import render directly from testing-library
 import { render } from "@testing-library/react";
+
+// WRONG — no relative imports across directories
+import { render } from "../test-utils";
 ```
 
 Each package with React tests has its own `test-utils.tsx`:

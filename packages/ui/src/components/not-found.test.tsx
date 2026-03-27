@@ -1,7 +1,7 @@
 import { Trans } from "@lingui/react/macro";
 import { describe, expect, it } from "vitest";
 
-import { render, screen } from "../test-utils";
+import { render, screen } from "@__APP_NAME__/ui/test-utils";
 
 function TranslatedMessage() {
   return (

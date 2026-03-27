@@ -2,7 +2,8 @@
   "extends": "@__APP_NAME__/typescript-config/react-library.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src", // Add this line
+    "rootDir": "src",
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
     "paths": {
       "@__APP_NAME__/ui/*": ["./src/*"]
     }

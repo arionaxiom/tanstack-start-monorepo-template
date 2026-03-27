@@ -11,6 +11,10 @@ export default defineConfig({
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
     alias: {
+      "@__APP_NAME__/ui/test-utils": path.resolve(
+        __dirname,
+        "./src/test-utils.tsx"
+      ),
       "@__APP_NAME__/ui/elements": path.resolve(__dirname, "./src/elements"),
       "@__APP_NAME__/ui/components": path.resolve(
         __dirname,
