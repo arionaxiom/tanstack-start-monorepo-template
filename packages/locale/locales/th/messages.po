@@ -50,6 +50,7 @@ msgstr ""
 msgid "Start Over"
 msgstr ""
 
+#: packages/ui/src/components/not-found.test.tsx:9
 #: packages/ui/src/components/not-found.tsx:10
 msgid "The page you are looking for does not exist."
 msgstr ""

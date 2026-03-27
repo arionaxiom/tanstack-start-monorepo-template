@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",
+    "@lingui/swc-plugin": "^5.9.3",
     "@__APP_NAME__/locale": "workspace:*",
     "@__APP_NAME__/tailwind-config": "workspace:*",
     "@__APP_NAME__/types": "workspace:*",

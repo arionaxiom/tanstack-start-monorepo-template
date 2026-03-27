@@ -3,7 +3,11 @@ import viteReact from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [viteReact()],
+  plugins: [
+    viteReact({
+      plugins: [["@lingui/swc-plugin", {}]],
+    }),
+  ],
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
     alias: {

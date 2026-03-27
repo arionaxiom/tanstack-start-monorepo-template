@@ -601,6 +601,9 @@ importers:
       '@__APP_NAME__/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      '@lingui/swc-plugin':
+        specifier: ^5.9.3
+        version: 5.11.0(@lingui/core@5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3)))
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
