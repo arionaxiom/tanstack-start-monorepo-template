@@ -4,7 +4,7 @@ Opinionated GitHub template for building modern logistics or operations dashboar
 
 ## Highlights
 
-- **TanStack Start SSR app** running on Cloudflare Workers with Smart Placement, assets binding, and Vite 7 dev ergonomics.
+- **TanStack Start SSR app** running on Cloudflare Workers with Smart Placement, assets binding, and Vite dev ergonomics.
 - **React 19, Tailwind v4, Radix primitives, shadcn-style library** shipped from `packages/ui`.
 - **i18n out of the box** via Lingui with English, Thai, and pseudo locales plus router-level locale awareness.
 - **Shared packages** for hooks, utils, constants, assets, ESLint, Tailwind, and TS configs to keep features isolated but consistent.
@@ -13,7 +13,7 @@ Opinionated GitHub template for building modern logistics or operations dashboar
 ## Requirements
 
 - Node.js **>= 22** (aligns with Cloudflare Workers runtime)
-- pnpm **10.20+** (workspaces + overrides rely on this version)
+- pnpm **10.32+** (workspaces + overrides rely on this version)
 - Wrangler CLI (optional until you deploy): `npm i -g wrangler`
 - Cloudflare account with Workers enabled for deployment
 
@@ -124,10 +124,16 @@ These are the checks you should run before every push. Automation assumes they r
    ```
    Use `pnpm cf-typegen` anytime you change bindings so TypeScript has up-to-date Worker environment types.
 
+## Pinned Packages
+
+Some dependencies are intentionally held at specific versions due to known compatibility issues. See [`PINNED_PACKAGES.md`](./PINNED_PACKAGES.md) for the full list, reasons, and enforcement method. Always check that file before upgrading vitest, recharts, or any package listed there.
+
+React and React DOM versions are pinned via `pnpm.overrides` to ensure compatibility across all packages and potential Expo integration.
+
 ## Troubleshooting
 
 - **Dev server fails on first run**: The Lingui extraction step competes with TanStack Start boot. Just re-run `pnpm dev`—subsequent runs succeed because catalogs already exist.
-- **Mismatched Node/pnpm versions**: Verify `node -v` ≥ 22 and `pnpm -v` ≥ 10.20. Project tooling relies on these versions (see `package.json` → `engines` & `packageManager`).
+- **Mismatched Node/pnpm versions**: Verify `node -v` ≥ 22 and `pnpm -v` ≥ 10.32. Project tooling relies on these versions (see `package.json` → `engines` & `packageManager`).
 - **Route type errors**: Delete `apps/web/src/routeTree.gen.ts` and rerun `pnpm dev` to regenerate if route definitions drift from generated types.
 
 ## Utility Scripts

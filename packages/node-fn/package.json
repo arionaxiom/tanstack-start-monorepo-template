@@ -14,8 +14,8 @@
     "@__APP_NAME__/typescript-config": "workspace:*",
     "@vitest/coverage-v8": "^4.0.18",
     "@vitest/runner": "^4.0.18",
-    "eslint": "^10.0.2",
-    "type-fest": "^5.4.4",
+    "eslint": "^10.1.0",
+    "type-fest": "^5.5.0",
     "vitest": "^4.0.18",
     "vitest-fetch-mock": "^0.4.5"
   },

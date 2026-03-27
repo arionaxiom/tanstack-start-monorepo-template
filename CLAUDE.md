@@ -110,7 +110,7 @@ packages/
 - **Forms**: TanStack Form + React Hook Form
 - **Testing**: Vitest + React Testing Library
 - **Monorepo**: Turborepo with pnpm workspaces
-- **Package Manager**: pnpm (v10.20.0+)
+- **Package Manager**: pnpm (v10.32.1+)
 - **Node Version**: >=22
 
 ### Key Patterns
@@ -180,15 +180,38 @@ import { local } from "./...";
 - **React config** (`packages/eslint-config/react-internal.js`): Adds React + React Hooks rules
 - **Key rules**:
   - `no-console: error` (use logging utilities instead)
+  - `@typescript-eslint/no-explicit-any: error` (no `any` types)
   - `turbo/no-undeclared-env-vars: warn`
   - Unused vars prefixed with `_` are ignored
 
 ### TypeScript Configuration
 
 - **Target**: ES2022
-- **Module**: ESNext with bundler resolution
-- **Strict mode**: Enabled with additional checks (noUnusedLocals, noUnusedParameters)
+- **Module**: ESNext with bundler module resolution
+- **Strict mode**: Enabled with `noUncheckedIndexedAccess`
 - **Path aliases**: Configured per package via tsconfig.json `paths`
+
+## Architecture Rules
+
+These rules apply across the entire codebase to maintain consistency and prevent common pitfalls.
+
+### Code Organization
+
+- **Route files are composition only**: Route files wire up loaders, components, and error boundaries. No inline UI beyond simple wrappers — extract components to `packages/ui` or app-level component directories.
+- **Types single source of truth**: Define types once, derive everywhere. Use Zod schemas to infer TypeScript types where possible. Never maintain parallel type definitions.
+- **Never re-export**: Import directly from the source package. Re-exports create indirection that breaks tree-shaking and makes dependency graphs harder to trace.
+- **Shared hooks go in `react-hooks`**: If a hook is used by more than one app or package, it belongs in `packages/react-hooks`, not duplicated in app code.
+- **No code duplication between apps**: If two apps need the same logic, extract it to a shared package (`utils`, `react-hooks`, `constants`, `types`).
+- **No hardcoded business values**: Use constants from `packages/constants` or hooks. Magic numbers and strings in component code are not acceptable.
+- **Shared utility functions over inline patterns**: If you find yourself writing the same logic in multiple places, extract it to `packages/utils`.
+
+### Pinned Packages
+
+Some packages are intentionally held at specific versions due to known issues. See `PINNED_PACKAGES.md` for details. **Always check this file before upgrading vitest or related test packages.** Pinned versions are enforced via `pnpm.overrides` in the root `package.json`.
+
+### React & Expo Compatibility
+
+React and React DOM versions are pinned via `pnpm.overrides` in the root `package.json` to ensure compatibility across all packages and potential Expo integration. Do not change these overrides without verifying compatibility.
 
 ## Code Quality Requirements
 

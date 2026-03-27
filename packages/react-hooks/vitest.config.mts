@@ -1,12 +1,10 @@
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [
     react({
-      babel: {
-        plugins: ["@lingui/babel-plugin-lingui-macro"],
-      },
+      plugins: [["@lingui/swc-plugin", {}]],
     }),
   ],
   test: {

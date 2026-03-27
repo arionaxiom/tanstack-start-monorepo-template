@@ -11,14 +11,7 @@
     "@trivago/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss"
   ],
-  "importOrder": [
-    "^@__APP_NAME__/(.*)$",
-    "^@/lib/(.*)$",
-    "^@/modules/(.*)$",
-    "^@/components/(.*)$",
-    "^@/(.*)$",
-    "^[./]"
-  ],
+  "importOrder": ["^@__APP_NAME__/(.*)$", "^@/(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "tailwindStylesheet": "./packages/tailwind-config/shared-styles.css",

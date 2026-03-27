@@ -6,17 +6,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: th\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: apps/web/src/nav/use-nav.ts:11
+#: apps/web/src/nav/use-nav.ts:25
+msgid "About"
+msgstr ""
+
+#: apps/web/src/nav/use-nav.ts:12
+#: apps/web/src/nav/use-nav.ts:30
+msgid "Contact"
+msgstr ""
 
 #: packages/ui/src/components/not-found.tsx:19
 msgid "Go back"
 msgstr ""
 
-#: packages/ui/src/components/default-catch-boundary.tsx:50
+#: packages/ui/src/components/default-catch-boundary.tsx:48
 msgid "Go Back"
 msgstr ""
 
-#: packages/ui/src/components/default-catch-boundary.tsx:39
+#: apps/web/src/nav/use-nav.ts:10
+#: apps/web/src/nav/use-nav.ts:20
+#: packages/ui/src/components/default-catch-boundary.tsx:37
 msgid "Home"
+msgstr ""
+
+#: apps/web/src/components/locale-switcher.tsx:57
+#: apps/web/src/components/locale-switcher.tsx:60
+msgid "Language"
 msgstr ""
 
 #: apps/web/src/routes/index.tsx:38
@@ -31,6 +54,10 @@ msgstr ""
 msgid "The page you are looking for does not exist."
 msgstr ""
 
-#: packages/ui/src/components/default-catch-boundary.tsx:32
+#: packages/ui/src/components/default-catch-boundary.tsx:30
 msgid "Try Again"
+msgstr ""
+
+#: apps/web/src/components/locale-switcher.tsx:45
+msgid "Unable to change language."
 msgstr ""

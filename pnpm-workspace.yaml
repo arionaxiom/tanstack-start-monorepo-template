@@ -1,8 +1,11 @@
 packages:
   - apps/*
   - packages/*
+nodeLinker: hoisted
 
 onlyBuiltDependencies:
+  - "@swc/core"
   - esbuild
   - sharp
+  - unrs-resolver
   - workerd
