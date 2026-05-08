@@ -18,10 +18,10 @@
     "typescript": "^5"
   },
   "devDependencies": {
-    "@lingui/cli": "^5.9.3",
-    "@lingui/loader": "^5.9.3"
+    "@lingui/cli": "^5.9.4",
+    "@lingui/loader": "^5.9.4"
   },
   "dependencies": {
-    "@lingui/core": "^5.9.3"
+    "@lingui/core": "^5.9.4"
   }
 }
