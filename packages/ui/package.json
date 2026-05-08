@@ -17,10 +17,11 @@
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",
     "@__APP_NAME__/locale": "workspace:*",
-    "@__APP_NAME__/test-utils": "workspace:*",
     "@__APP_NAME__/tailwind-config": "workspace:*",
+    "@__APP_NAME__/test-utils": "workspace:*",
     "@__APP_NAME__/types": "workspace:*",
     "@__APP_NAME__/typescript-config": "workspace:*",
+    "@__APP_NAME__/utils": "workspace:*",
     "@lingui/core": "^5.9.4",
     "@lingui/swc-plugin": "^5.11.0",
     "@testing-library/jest-dom": "^6.9.1",
