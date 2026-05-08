@@ -50,6 +50,10 @@ msgstr ""
 msgid "Show toast"
 msgstr ""
 
+#: packages/ui/src/components/app-layout.tsx:95
+msgid "Skip to content"
+msgstr ""
+
 #: packages/ui/src/components/not-found.tsx:29
 msgid "Start Over"
 msgstr ""
