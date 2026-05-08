@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HealthzRouteImport } from './routes/healthz'
 import { Route as Char91__designSystemChar93RouteImport } from './routes/[__design-system]'
 import { Route as IndexRouteImport } from './routes/index'
 
+const HealthzRoute = HealthzRouteImport.update({
+  id: '/healthz',
+  path: '/healthz',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91__designSystemChar93Route =
   Char91__designSystemChar93RouteImport.update({
     id: '/__design-system',
@@ -27,31 +33,42 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/__design-system': typeof Char91__designSystemChar93Route
+  '/healthz': typeof HealthzRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/__design-system': typeof Char91__designSystemChar93Route
+  '/healthz': typeof HealthzRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/__design-system': typeof Char91__designSystemChar93Route
+  '/healthz': typeof HealthzRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/__design-system'
+  fullPaths: '/' | '/__design-system' | '/healthz'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/__design-system'
-  id: '__root__' | '/' | '/__design-system'
+  to: '/' | '/__design-system' | '/healthz'
+  id: '__root__' | '/' | '/__design-system' | '/healthz'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   Char91__designSystemChar93Route: typeof Char91__designSystemChar93Route
+  HealthzRoute: typeof HealthzRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/healthz': {
+      id: '/healthz'
+      path: '/healthz'
+      fullPath: '/healthz'
+      preLoaderRoute: typeof HealthzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/__design-system': {
       id: '/__design-system'
       path: '/__design-system'
@@ -72,6 +89,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   Char91__designSystemChar93Route: Char91__designSystemChar93Route,
+  HealthzRoute: HealthzRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

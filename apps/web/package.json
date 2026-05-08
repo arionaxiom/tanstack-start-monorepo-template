@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite dev --port 3000",
+    "dev": "node scripts/dev-with-warmup.mjs --port 3000",
+    "dev:raw": "vite dev --port 3000",
     "build": "vite build",
     "serve": "vite preview",
     "check-types": "tsc --noEmit true",
@@ -48,6 +49,7 @@
     "@__APP_NAME__/tailwind-config": "workspace:*",
     "@__APP_NAME__/types": "workspace:*",
     "@__APP_NAME__/typescript-config": "workspace:*",
+    "globals": "^17.6.0",
     "@lingui/cli": "^5.9.4",
     "@lingui/swc-plugin": "^5.11.0",
     "@lingui/vite-plugin": "^5.9.4",
