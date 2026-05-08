@@ -15,9 +15,9 @@
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",
     "@__APP_NAME__/typescript-config": "workspace:*",
-    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/coverage-v8": "4.0.18",
     "eslint": "^10.3.0",
-    "vitest": "^4.0.18"
+    "vitest": "4.0.18"
   },
   "peerDependencies": {
     "typescript": "^5"

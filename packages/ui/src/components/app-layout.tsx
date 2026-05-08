@@ -1,4 +1,4 @@
-import type { ComponentType, ReactNode } from "react";
+import { type ComponentType, Fragment, type ReactNode } from "react";
 
 import {
   Breadcrumb,
@@ -109,15 +109,11 @@ export function AppLayout({
               <Breadcrumb>
                 <BreadcrumbList>
                   {breadcrumbs.map((crumb, index) => (
-                    <>
+                    <Fragment key={crumb.href ?? `${index}-${crumb.title}`}>
                       {index > 0 && (
-                        <BreadcrumbSeparator
-                          key={`separator-${index}`}
-                          className="hidden md:block"
-                        />
+                        <BreadcrumbSeparator className="hidden md:block" />
                       )}
                       <BreadcrumbItem
-                        key={crumb.title}
                         className={index === 0 ? "hidden md:block" : ""}
                       >
                         {index === breadcrumbs.length - 1 ? (
@@ -128,7 +124,7 @@ export function AppLayout({
                           </BreadcrumbLink>
                         )}
                       </BreadcrumbItem>
-                    </>
+                    </Fragment>
                   ))}
                 </BreadcrumbList>
               </Breadcrumb>
