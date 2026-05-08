@@ -2,14 +2,17 @@
   "name": "__APP_NAME__",
   "private": true,
   "scripts": {
+    "aoe:cleanup": ".aoe/scripts/cleanup-worktree.sh",
+    "aoe:dispatch": ".aoe/scripts/create-dispatch.sh",
+    "aoe:send": ".aoe/scripts/send-message.sh",
     "build": "turbo run build",
+    "check-types": "turbo run check-types",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "format:staged": "lint-staged",
-    "check-types": "turbo run check-types",
-    "prepare": "husky"
+    "lint": "turbo run lint",
+    "prepare": "husky",
+    "test": "turbo run test"
   },
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
