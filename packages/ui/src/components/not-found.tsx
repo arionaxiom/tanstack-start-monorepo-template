@@ -1,7 +1,8 @@
 import { Trans } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
 
-import { Button } from "@__APP_NAME__/ui/elements/button";
+import { Button, buttonVariants } from "@__APP_NAME__/ui/elements/button";
+import { cn } from "@__APP_NAME__/ui/utils/cn";
 
 export function NotFound({ children }: { children?: React.ReactNode }) {
   return (
@@ -24,7 +25,8 @@ export function NotFound({ children }: { children?: React.ReactNode }) {
         </Button>
         <Link
           to="/"
-          className="inline-flex h-8 items-center justify-center rounded-md border border-border bg-transparent px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+          data-testid="start-over-link"
+          className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
         >
           <Trans>Start Over</Trans>
         </Link>
@@ -32,3 +34,5 @@ export function NotFound({ children }: { children?: React.ReactNode }) {
     </div>
   );
 }
+
+NotFound.displayName = "NotFound";

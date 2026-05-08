@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { type ElementType, type ReactNode } from "react";
 
 import { cn } from "@__APP_NAME__/ui/utils/cn";
 
@@ -8,6 +8,13 @@ export interface SectionHeaderProps {
   description?: ReactNode;
   actions?: ReactNode;
   size?: "page" | "section";
+  /**
+   * HTML heading level for the title element. Defaults to `2` (`<h2>`).
+   * Set to `1` when this is the primary page heading, or a higher number
+   * when nested inside other sections, to maintain a correct heading
+   * hierarchy without forking the component.
+   */
+  level?: 1 | 2 | 3 | 4 | 5 | 6;
   className?: string;
 }
 
@@ -17,10 +24,12 @@ export function SectionHeader({
   description,
   actions,
   size = "section",
+  level = 2,
   className,
 }: SectionHeaderProps) {
   const titleClass = size === "page" ? "text-display" : "text-headline";
   const descClass = "text-body text-muted-foreground";
+  const Heading = `h${level}` as ElementType;
 
   return (
     <header
@@ -36,11 +45,11 @@ export function SectionHeader({
             {kicker}
           </div>
         ) : null}
-        <h2
+        <Heading
           className={cn(titleClass, "font-bold tracking-tight text-foreground")}
         >
           {title}
-        </h2>
+        </Heading>
         {description ? (
           <p className={cn(descClass, "mt-2 max-w-prose")}>{description}</p>
         ) : null}
@@ -51,3 +60,5 @@ export function SectionHeader({
     </header>
   );
 }
+
+SectionHeader.displayName = "SectionHeader";

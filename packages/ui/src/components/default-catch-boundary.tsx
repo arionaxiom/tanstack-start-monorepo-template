@@ -23,6 +23,7 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
       <ErrorComponent error={error} />
       <div className="flex flex-wrap items-center gap-2">
         <Button
+          data-testid="error-retry-button"
           onClick={() => {
             router.invalidate();
           }}
@@ -30,12 +31,17 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
           <Trans>Try Again</Trans>
         </Button>
         {isRoot ? (
-          <Link to="/" className={cn(buttonVariants({ variant: "secondary" }))}>
+          <Link
+            to="/"
+            data-testid="error-home-link"
+            className={cn(buttonVariants({ variant: "secondary" }))}
+          >
             <Trans>Home</Trans>
           </Link>
         ) : (
           <Link
             to="/"
+            data-testid="error-back-link"
             className={cn(buttonVariants({ variant: "secondary" }))}
             onClick={(e) => {
               e.preventDefault();

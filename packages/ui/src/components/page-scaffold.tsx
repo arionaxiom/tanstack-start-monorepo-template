@@ -39,7 +39,9 @@ export function PageScaffold({
         actions={actions}
         size="page"
       />
-      <main>{children}</main>
+      <section>{children}</section>
     </div>
   );
 }
+
+PageScaffold.displayName = "PageScaffold";

@@ -1,9 +1,5 @@
 import { type VariantProps, cva } from "class-variance-authority";
-import {
-  type ComponentPropsWithoutRef,
-  type ReactNode,
-  forwardRef,
-} from "react";
+import { type ComponentPropsWithoutRef, type ReactNode, type Ref } from "react";
 
 import { Badge } from "@__APP_NAME__/ui/elements/badge";
 import { cn } from "@__APP_NAME__/ui/utils/cn";
@@ -29,27 +25,33 @@ export interface StatusBadgeProps
   extends
     Omit<ComponentPropsWithoutRef<typeof Badge>, "variant" | "children">,
     VariantProps<typeof statusBadgeVariants> {
+  ref?: Ref<HTMLSpanElement>;
   icon?: ReactNode;
   children: ReactNode;
 }
 
-export const StatusBadge = forwardRef<HTMLSpanElement, StatusBadgeProps>(
-  function StatusBadge({ variant, icon, children, className, ...rest }, ref) {
-    return (
-      <Badge
-        ref={ref}
-        className={cn(statusBadgeVariants({ variant }), className)}
-        {...rest}
-      >
-        {icon ? (
-          <span className="shrink-0" aria-hidden>
-            {icon}
-          </span>
-        ) : null}
-        {children}
-      </Badge>
-    );
-  }
-);
+export function StatusBadge({
+  variant,
+  icon,
+  children,
+  className,
+  ref,
+  ...rest
+}: StatusBadgeProps) {
+  return (
+    <Badge
+      ref={ref}
+      className={cn(statusBadgeVariants({ variant }), className)}
+      {...rest}
+    >
+      {icon ? (
+        <span className="shrink-0" aria-hidden>
+          {icon}
+        </span>
+      ) : null}
+      {children}
+    </Badge>
+  );
+}
 
 StatusBadge.displayName = "StatusBadge";

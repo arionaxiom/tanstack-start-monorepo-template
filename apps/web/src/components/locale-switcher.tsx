@@ -1,5 +1,3 @@
-"use client";
-
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 
@@ -60,6 +58,7 @@ export function LocaleSwitcher() {
           className="w-[160px]"
           aria-label={t`Language`}
           disabled={isUpdating}
+          data-testid="locale-switcher-trigger"
         >
           <SelectValue placeholder={t`Language`} />
         </SelectTrigger>

@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import type { ComponentType, ReactNode } from "react";
 
 import {
   Sidebar,
@@ -20,6 +20,11 @@ export interface MenuItem {
 }
 
 interface AppSidebarProps {
+  /**
+   * Optional label shown above the navigation group. Defaults to
+   * `__APP_NAME__`. Override to customise without forking the component.
+   */
+  groupLabel?: ReactNode;
   LinkComponent?: ComponentType<{
     to: string;
     children: React.ReactNode;
@@ -30,7 +35,11 @@ interface AppSidebarProps {
   menuItems: MenuItem[];
 }
 
-export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
+export function AppSidebar({
+  groupLabel = "__APP_NAME__",
+  LinkComponent,
+  menuItems,
+}: AppSidebarProps) {
   const { isMobile, openMobile, toggleSidebar } = useSidebar();
 
   const handleNavigate = () => {
@@ -43,7 +52,7 @@ export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>__APP_NAME__</SidebarGroupLabel>
+          <SidebarGroupLabel>{groupLabel}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
@@ -61,6 +70,7 @@ export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
                           <LinkComponent
                             to={item.url}
                             className={className}
+                            data-testid={`sidebar-link-${item.key}`}
                             onClick={(e) => {
                               baseOnClick?.(e);
                               handleNavigate();
@@ -91,3 +101,5 @@ export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
     </Sidebar>
   );
 }
+
+AppSidebar.displayName = "AppSidebar";
