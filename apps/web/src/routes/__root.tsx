@@ -1,11 +1,9 @@
-import { TanStackDevtools } from "@tanstack/react-devtools";
 import {
   HeadContent,
   Link,
   Scripts,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 import appCss from "@__APP_NAME__/tailwind-config/shared-styles.css?url";
 import { AppLayout } from "@__APP_NAME__/ui/components/app-layout";
@@ -15,7 +13,7 @@ import { TooltipProvider } from "@__APP_NAME__/ui/elements/tooltip";
 import { seo } from "@__APP_NAME__/utils/seo/seo";
 
 import { LocaleSwitcher } from "@/components/locale-switcher";
-
+import { DevelopmentTanStackDevtools } from "@/devtools/development-tanstack-devtools";
 import { useMenuItems, useNavigationItems } from "@/nav/use-nav";
 import { AppContext } from "@/router";
 
@@ -82,19 +80,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         >
           <TooltipProvider>{children}</TooltipProvider>
         </AppLayout>
-        {isDev ? (
-          <TanStackDevtools
-            config={{
-              position: "bottom-right",
-            }}
-            plugins={[
-              {
-                name: "Tanstack Router",
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-            ]}
-          />
-        ) : null}
+        {isDev ? <DevelopmentTanStackDevtools /> : null}
         <Scripts />
       </body>
     </html>
