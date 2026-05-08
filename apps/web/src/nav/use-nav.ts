@@ -17,16 +17,19 @@ export const useMenuItems = (): MenuItem[] => {
   const { t } = useLingui();
   return [
     {
+      key: "home",
       title: t`Home`,
       url: "/",
       icon: Home,
     },
     {
+      key: "about",
       title: t`About`,
       url: "/about",
       icon: Building2,
     },
     {
+      key: "contact",
       title: t`Contact`,
       url: "/contact",
       icon: Phone,

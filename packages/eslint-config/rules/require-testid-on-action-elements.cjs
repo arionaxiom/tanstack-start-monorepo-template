@@ -1,5 +1,6 @@
 "use strict";
 
+// Path fragment that triggers this rule. Update if you restructure where shared UI components live.
 const TARGET_PATH_FRAGMENT = "/packages/ui/src/components/";
 const ACTION_TAGS = new Set(["button", "a"]);
 

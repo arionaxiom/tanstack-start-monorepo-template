@@ -14,12 +14,12 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: apps/web/src/nav/use-nav.ts:11
-#: apps/web/src/nav/use-nav.ts:25
+#: apps/web/src/nav/use-nav.ts:27
 msgid "About"
 msgstr "About"
 
 #: apps/web/src/nav/use-nav.ts:12
-#: apps/web/src/nav/use-nav.ts:30
+#: apps/web/src/nav/use-nav.ts:33
 msgid "Contact"
 msgstr "Contact"
 
@@ -32,7 +32,7 @@ msgid "Go Back"
 msgstr "Go Back"
 
 #: apps/web/src/nav/use-nav.ts:10
-#: apps/web/src/nav/use-nav.ts:20
+#: apps/web/src/nav/use-nav.ts:21
 #: packages/ui/src/components/default-catch-boundary.tsx:37
 msgid "Home"
 msgstr "Home"

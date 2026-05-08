@@ -81,13 +81,13 @@ const allPackages = [
   "ui",
 ].map(pkg);
 
-/** Packages above L1 */
+/** Ban list for L1 packages: same-layer peers (other L1: form-options) + higher layers (L2: react-hooks, node-fn; L3: ui). */
 const aboveL1 = ["form-options", "react-hooks", "node-fn", "ui"].map(pkg);
 
-/** Packages above L2 */
+/** Ban list for L2 packages: same-layer peers (other L2: react-hooks, node-fn) + higher layers (L3: ui). */
 const aboveL2 = ["react-hooks", "node-fn", "ui"].map(pkg);
 
-/** Packages above L3 */
+/** Ban list for sub-L3 packages: the ui package (L3 itself — there are no packages above L3; L4 is apps/web). Use this in L0–L2 eslint configs to prevent them from importing the UI layer. */
 const aboveL3 = ["ui"].map(pkg);
 
 export {

@@ -13,6 +13,7 @@ import {
 } from "@__APP_NAME__/ui/elements/sidebar";
 
 export interface MenuItem {
+  key: string; // kebab-case stable identifier (used for data-testid; must not change with locale)
   title: string;
   url: string;
   icon: ComponentType<{ className?: string }>;
@@ -45,7 +46,7 @@ export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.key}>
                   <SidebarMenuButton asChild tooltip={item.title}>
                     {LinkComponent ? (
                       <LinkComponent to={item.url} onClick={handleNavigate}>
@@ -56,7 +57,7 @@ export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
                       <a
                         href={item.url}
                         onClick={handleNavigate}
-                        data-testid={`sidebar-link-${item.title}`}
+                        data-testid={`sidebar-link-${item.key}`}
                       >
                         <item.icon />
                         <span>{item.title}</span>

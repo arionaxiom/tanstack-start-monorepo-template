@@ -10,6 +10,7 @@ export const navigationItems = [
 
 export const menuItems: MenuItem[] = [
   {
+    key: "home",
     title: "Home",
     url: "/",
     icon: Home,
