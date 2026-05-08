@@ -2,15 +2,16 @@
 
 Packages intentionally held at a specific version due to known issues with newer releases. **Check this file before upgrading any package listed here.**
 
-| Package             | Pinned | Latest | Reason                                                                         | Enforcement    |
-| ------------------- | ------ | ------ | ------------------------------------------------------------------------------ | -------------- |
-| vitest              | 4.0.18 | 4.1.0  | 4.1.0 changes import.meta.glob behavior, breaks convex-test                    | pnpm.overrides |
-| @vitest/coverage-v8 | 4.0.18 | 4.1.0  | Must match vitest                                                              | pnpm.overrides |
-| @vitest/runner      | 4.0.18 | 4.1.0  | Must match vitest                                                              | pnpm.overrides |
-| @vitest/spy         | 4.0.18 | 4.1.0  | Must match vitest                                                              | pnpm.overrides |
-| react               | 19.2.0 | 19.2.4 | Pinned for future Expo / React Native compatibility                            | pnpm.overrides |
-| react-dom           | 19.2.0 | 19.2.4 | Must match react                                                               | pnpm.overrides |
-| typescript          | ~5.9.2 | 5.9.3  | Dedupe @lingui/react — split resolution created dual React context (see below) | pnpm.overrides |
+| Package                     | Pinned           | Latest | Reason                                                                                                                                                                                                                                   | Enforcement    |
+| --------------------------- | ---------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| vitest                      | 4.0.18           | 4.1.0  | 4.1.0 changes import.meta.glob behavior, breaks convex-test                                                                                                                                                                              | pnpm.overrides |
+| @vitest/coverage-v8         | 4.0.18           | 4.1.0  | Must match vitest                                                                                                                                                                                                                        | pnpm.overrides |
+| @vitest/runner              | 4.0.18           | 4.1.0  | Must match vitest                                                                                                                                                                                                                        | pnpm.overrides |
+| @vitest/spy                 | 4.0.18           | 4.1.0  | Must match vitest                                                                                                                                                                                                                        | pnpm.overrides |
+| react                       | 19.2.0           | 19.2.4 | Pinned for future Expo / React Native compatibility                                                                                                                                                                                      | pnpm.overrides |
+| react-dom                   | 19.2.0           | 19.2.4 | Must match react                                                                                                                                                                                                                         | pnpm.overrides |
+| typescript                  | ~5.9.2           | 5.9.3  | Dedupe @lingui/react — split resolution created dual React context (see below)                                                                                                                                                           | pnpm.overrides |
+| @lingui/\* (full ecosystem) | ^5.9.4 / ^5.11.0 | 6.0.x  | Prevent partial 6.0 migration — pin the whole ecosystem (`@lingui/core`, `@lingui/react`, `@lingui/cli`, `@lingui/macro`, `@lingui/loader`, `@lingui/vite-plugin`, `@lingui/swc-plugin`) coherently at 5.x until v6 migration is planned | pnpm.overrides |
 
 ### typescript — dedupe rationale
 
@@ -37,4 +38,4 @@ peer-dep chains), which dedupes `@lingui/react` and fixes the wrapper.
 
 ---
 
-**Last reviewed**: 2026-05-08 (added typescript `~5.9.2`, removed recharts pin)
+**Last reviewed**: 2026-05-08 (added typescript `~5.9.2`, removed recharts pin, added @lingui ecosystem pins after P2 dep bump)
