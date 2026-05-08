@@ -27,13 +27,13 @@ msgstr "Contact"
 msgid "Go back"
 msgstr "Go back"
 
-#: packages/ui/src/components/default-catch-boundary.tsx:47
+#: packages/ui/src/components/default-catch-boundary.tsx:45
 msgid "Go Back"
 msgstr "Go Back"
 
 #: apps/web/src/nav/use-nav.ts:10
 #: apps/web/src/nav/use-nav.ts:21
-#: packages/ui/src/components/default-catch-boundary.tsx:36
+#: packages/ui/src/components/default-catch-boundary.tsx:34
 msgid "Home"
 msgstr "Home"
 
@@ -55,7 +55,7 @@ msgstr "Start Over"
 msgid "The page you are looking for does not exist."
 msgstr "The page you are looking for does not exist."
 
-#: packages/ui/src/components/default-catch-boundary.tsx:29
+#: packages/ui/src/components/default-catch-boundary.tsx:30
 msgid "Try Again"
 msgstr "Try Again"
 

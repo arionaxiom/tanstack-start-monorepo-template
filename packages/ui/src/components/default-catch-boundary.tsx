@@ -8,7 +8,8 @@ import {
 } from "@tanstack/react-router";
 import type { ErrorComponentProps } from "@tanstack/react-router";
 
-import { Button } from "@__APP_NAME__/ui/elements/button";
+import { Button, buttonVariants } from "@__APP_NAME__/ui/elements/button";
+import { cn } from "@__APP_NAME__/ui/utils/cn";
 
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
   const router = useRouter();
@@ -29,16 +30,13 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
           <Trans>Try Again</Trans>
         </Button>
         {isRoot ? (
-          <Link
-            to="/"
-            className="inline-flex h-9 items-center justify-center rounded-md border border-border bg-transparent px-3.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-          >
+          <Link to="/" className={cn(buttonVariants({ variant: "secondary" }))}>
             <Trans>Home</Trans>
           </Link>
         ) : (
           <Link
             to="/"
-            className="inline-flex h-9 items-center justify-center rounded-md border border-border bg-transparent px-3.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+            className={cn(buttonVariants({ variant: "secondary" }))}
             onClick={(e) => {
               e.preventDefault();
               window.history.back();

@@ -103,7 +103,7 @@ describe("theme compliance (R7)", () => {
         PALETTE_REGEX.lastIndex = 0;
         while ((match = PALETTE_REGEX.exec(line)) !== null) {
           violations.push(
-            `${relPath}:${i + 1} — found "${match[1]}-${match[2]}" in: ${line.trim().slice(0, 120)}`
+            `${relPath}:${i + 1} — found "${match[1] ? `${match[1]}-${match[2]}` : match[3]}" in: ${line.trim().slice(0, 120)}`
           );
         }
       }
