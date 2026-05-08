@@ -1,0 +1,30 @@
+{
+  "name": "@__APP_NAME__/test-utils",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.tsx"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit true",
+    "lint": "eslint . --max-warnings 0 --cache --cache-location .eslintcache"
+  },
+  "dependencies": {
+    "@lingui/core": "^5.9.4",
+    "@lingui/react": "^5.9.4",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1"
+  },
+  "peerDependencies": {
+    "react": "^19",
+    "typescript": "^5"
+  },
+  "devDependencies": {
+    "@__APP_NAME__/eslint-config": "workspace:*",
+    "@__APP_NAME__/typescript-config": "workspace:*",
+    "@types/react": "~19.2.14",
+    "eslint": "^10.1.0"
+  }
+}
