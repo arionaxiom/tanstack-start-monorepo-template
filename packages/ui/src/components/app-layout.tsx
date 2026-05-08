@@ -79,7 +79,9 @@ export function AppLayout({
             {LinkComponent ? (
               <LinkComponent to="/">{brandContent}</LinkComponent>
             ) : (
-              <a href="/">{brandContent}</a>
+              <a href="/" data-testid="brand-logo-link">
+                {brandContent}
+              </a>
             )}
 
             {navigationItems.length > 0 && (
@@ -146,7 +148,7 @@ export function AppLayout({
               className="pointer-events-none absolute -top-16 right-10 h-64 w-64 rounded-full bg-primary/15 blur-3xl"
               aria-hidden
             />
-            <div className="pointer-events-none absolute bottom-10 left-4 h-52 w-52 rounded-full bg-accent/25 blur-3xl" />
+            <div className="bg-accent/25 pointer-events-none absolute bottom-10 left-4 h-52 w-52 rounded-full blur-3xl" />
             <div className="relative">{children}</div>
           </div>
         </ScrollArea>

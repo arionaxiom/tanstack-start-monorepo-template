@@ -23,7 +23,7 @@ msgstr "About"
 msgid "Contact"
 msgstr "Contact"
 
-#: packages/ui/src/components/not-found.tsx:19
+#: packages/ui/src/components/not-found.tsx:20
 msgid "Go back"
 msgstr "Go back"
 
@@ -46,7 +46,7 @@ msgstr "Language"
 msgid "Refresh"
 msgstr "Refresh"
 
-#: packages/ui/src/components/not-found.tsx:25
+#: packages/ui/src/components/not-found.tsx:26
 msgid "Start Over"
 msgstr "Start Over"
 

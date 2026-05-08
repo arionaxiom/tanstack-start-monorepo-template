@@ -53,7 +53,11 @@ export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
                         <span>{item.title}</span>
                       </LinkComponent>
                     ) : (
-                      <a href={item.url} onClick={handleNavigate}>
+                      <a
+                        href={item.url}
+                        onClick={handleNavigate}
+                        data-testid={`sidebar-link-${item.title}`}
+                      >
                         <item.icon />
                         <span>{item.title}</span>
                       </a>

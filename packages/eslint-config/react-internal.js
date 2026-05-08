@@ -1,3 +1,5 @@
+import { createRequire } from "node:module";
+
 import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import pluginReact from "eslint-plugin-react";
@@ -7,22 +9,32 @@ import tseslint from "typescript-eslint";
 
 import { config as baseConfig } from "./base.js";
 
+const require = createRequire(import.meta.url);
+const requireTestidOnActionElements = require("./rules/require-testid-on-action-elements.cjs");
+
+const templatePlugin = {
+  rules: {
+    "require-testid-on-action-elements": requireTestidOnActionElements,
+  },
+};
+
 /**
  * A custom ESLint configuration for libraries that use React.
  *
- * @type {import("eslint").Linter.Config[]} */
+ * @type {import("eslint").Linter.Config[]}
+ */
 export const config = [
   ...baseConfig,
   js.configs.recommended,
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
-   {
+  {
     settings: {
       react: {
-        version: "19.2.4" // or "19", "detect", etc. Avoids auto-detection crash.
-      }
-    }
+        version: "19.2.4",
+      },
+    },
   },
   {
     languageOptions: {
@@ -39,10 +51,17 @@ export const config = [
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
       "no-console": "error",
       "react/no-unescaped-entities": "off",
+    },
+  },
+  {
+    plugins: {
+      template: templatePlugin,
+    },
+    rules: {
+      "template/require-testid-on-action-elements": "error",
     },
   },
 ];

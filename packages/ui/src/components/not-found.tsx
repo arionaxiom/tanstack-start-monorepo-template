@@ -15,6 +15,7 @@ export function NotFound({ children }: { children?: React.ReactNode }) {
         <button
           onClick={() => window.history.back()}
           className="rounded bg-emerald-500 px-2 py-1 text-sm font-black text-white uppercase"
+          data-testid="go-back-button"
         >
           <Trans>Go back</Trans>
         </button>
