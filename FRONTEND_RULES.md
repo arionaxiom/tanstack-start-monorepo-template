@@ -165,7 +165,7 @@ When using Zustand: one store per domain concern, never a single global app stor
 
 ---
 
-## Quiet Editorial Discipline (R32–R40)
+## Quiet Editorial Discipline (R32–R38)
 
 These rules encode the Quiet Editorial design direction — deep teal primary, vivid orange spotlight, warm-paper neutrals, tabular type. They extend the base token and component rules with visual discipline constraints.
 
@@ -185,8 +185,4 @@ These rules encode the Quiet Editorial design direction — deep teal primary, v
 
 **R37 — Theme toggle in the header.** The app shell should include a way for the user to switch theme. The template's `app-layout.tsx` does not ship a theme toggle by default — bring one when wiring up theme switching. Routes that deliberately omit the platform header (auth, onboarding) must include an alternative theme switcher.
 
-**R38 — Module accents are quiet identity markers, never chrome.** The `--accent-{module}` tokens MAY appear in: module icon color, module/section pill rule, dashboard page kicker, empty-state headline, sidebar section dot. They MUST NOT appear in: button fills, card/surface backgrounds, page backgrounds, action borders, charts, or toast variants. Module accent values must clear AA contrast against `--background` in both modes. Enforced by `packages/ui/src/module-accent-placement.test.ts`.
-
-**R39 — AI presence uses `--agent`, not `--primary`.** Components that visually represent the AI agent (message kickers, thinking pulses, "Ask AI" affordances, agent message kickers) consume the `--agent` semantic token. The `--agent` token currently aliases `--primary` but is allowed to diverge independently.
-
-**R40 — Design-system route is dev-only.** The route at `apps/web/src/routes/[__design-system].tsx` (URL `/__design-system`) renders only when `process.env.NODE_ENV !== "production"`. In production builds it returns the standard not-found component. Not gated by auth, not gated by feature flag — just dev-only. The bracket-escape filename is required so TanStack Router treats `__design-system` as a path segment, not a pathless layout.
+**R38 — Design-system route is dev-only.** The route at `apps/web/src/routes/[__design-system].tsx` (URL `/__design-system`) renders only when `process.env.NODE_ENV !== "production"`. In production builds it returns the standard not-found component. Not gated by auth, not gated by feature flag — just dev-only. The bracket-escape filename is required so TanStack Router treats `__design-system` as a path segment, not a pathless layout.
