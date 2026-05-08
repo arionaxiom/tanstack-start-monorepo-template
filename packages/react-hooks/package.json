@@ -8,7 +8,7 @@
   "scripts": {
     "check-types": "tsc --noEmit true",
     "lint": "eslint . --max-warnings 0 --cache --cache-location .eslintcache",
-    "test": "vitest run --coverage --silent=true"
+    "test": "node ../../scripts/vitest-run.mjs --coverage --silent=true"
   },
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",

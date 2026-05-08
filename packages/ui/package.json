@@ -11,7 +11,7 @@
   "scripts": {
     "check-types": "tsc --noEmit true",
     "lint": "eslint . --max-warnings 0 --cache --cache-location .eslintcache",
-    "test": "vitest run --silent=true",
+    "test": "node ../../scripts/vitest-run.mjs --silent=true",
     "generate:component": "turbo gen react-component"
   },
   "devDependencies": {
