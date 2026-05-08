@@ -90,7 +90,7 @@ This is enforced by the `template/require-testid-on-action-elements` ESLint rule
 
 **R20 — Base UI state transitions.** All Base UI overlay components (Dialog, Sheet, Popover, DropdownMenu, Tooltip) MUST use the standardized enter/exit pattern:
 
-```
+```text
 data-open:animate-in data-closed:animate-out
 fade-in-0 fade-out-0 zoom-in-95 zoom-out-95
 ```

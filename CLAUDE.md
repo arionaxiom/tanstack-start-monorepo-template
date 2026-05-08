@@ -8,12 +8,15 @@ architecture rules, and quality expectations live in `AGENTS.md`.
 ## Claude-Specific Additions
 
 - Use the `superpowers:*` skills when they are available and relevant:
-  - `superpowers:writing-plans`
   - `superpowers:brainstorming`
-  - `superpowers:test-driven-development`
   - `superpowers:executing-plans`
+  - `superpowers:finishing-a-development-branch`
+  - `superpowers:requesting-code-review`
+  - `superpowers:subagent-driven-development`
   - `superpowers:systematic-debugging`
+  - `superpowers:test-driven-development`
   - `superpowers:verification-before-completion`
+  - `superpowers:writing-plans`
 - Native MCP discovery from `.mcp.json` is supported. Use `mcp__*` tool prefixes when relevant.
 - AoE launch examples for Claude use `-c claude`.
 

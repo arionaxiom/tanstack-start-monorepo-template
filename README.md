@@ -17,7 +17,7 @@ Multi-agent orchestration uses [Agent of Empires (AoE)](.aoe/README.md). See `.a
 ## Highlights
 
 - **TanStack Start SSR app** running on Cloudflare Workers with Smart Placement, assets binding, and Vite dev ergonomics.
-- **React 19, Tailwind v4, Radix primitives, shadcn-style library** shipped from `packages/ui`.
+- **React 19, Tailwind v4, Base UI primitives, shadcn-style library** shipped from `packages/ui`.
 - **i18n out of the box** via Lingui with English, Thai, and pseudo locales plus router-level locale awareness.
 - **Shared packages** for hooks, utils, constants, assets, ESLint, Tailwind, and TS configs to keep features isolated but consistent.
 - **Strict quality gates** (ESLint, Vitest, TS) enforced through pnpm scripts, lint-staged, and Husky.

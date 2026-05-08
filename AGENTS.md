@@ -13,7 +13,7 @@ Agent-specific overlays must stay thin. Shared project rules live here.
 
 This is a **pnpm Turborepo monorepo** with a TanStack Start application deployed to Cloudflare Workers. The project uses React 19, TypeScript, and Tailwind CSS v4 with internationalization (i18n) support via Lingui.
 
-```
+```text
 apps/
   web/              # TanStack Start app (Cloudflare Workers)
 
@@ -58,7 +58,7 @@ Useful examples:
 - **Framework**: TanStack Start (SSR React framework)
 - **Routing**: TanStack Router (file-based, type-safe)
 - **Runtime**: Cloudflare Workers (via Wrangler)
-- **Build Tool**: Vite 7 + SWC (`@vitejs/plugin-react-swc` + `@lingui/swc-plugin`)
+- **Build Tool**: Vite 8 + SWC (`@vitejs/plugin-react-swc` + `@lingui/swc-plugin`)
 - **Styling**: Tailwind CSS v4 with OKLCH 3-tier token system (`packages/tailwind-config/shared-styles.css`)
 - **UI Components**: Base UI primitives via shadcn (`base-vega` style)
 - **i18n**: Lingui (macro-based, compile-time)
@@ -95,7 +95,7 @@ import { local } from "./...";
 
 Packages follow a strict layering. **Never create circular or upward dependencies.** Lower layers must not import from higher layers.
 
-```
+```text
 Layer 0 (no internal deps):  types, locale, assets, test-utils, tailwind-config, eslint-config, typescript-config
 Layer 1 (depends on L0):     utils, constants, form-options
 Layer 2 (depends on L0-L1):  react-hooks, node-fn
