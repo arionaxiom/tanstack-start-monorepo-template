@@ -9,6 +9,7 @@ import appCss from "@__APP_NAME__/tailwind-config/shared-styles.css?url";
 import { AppLayout } from "@__APP_NAME__/ui/components/app-layout";
 import { DefaultCatchBoundary } from "@__APP_NAME__/ui/components/default-catch-boundary";
 import { NotFound } from "@__APP_NAME__/ui/components/not-found";
+import { Toaster } from "@__APP_NAME__/ui/elements/sonner";
 import { TooltipProvider } from "@__APP_NAME__/ui/elements/tooltip";
 import { seo } from "@__APP_NAME__/utils/seo/seo";
 
@@ -80,6 +81,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         >
           <TooltipProvider>{children}</TooltipProvider>
         </AppLayout>
+        <Toaster />
         {isDev ? <DevelopmentTanStackDevtools /> : null}
         <Scripts />
       </body>

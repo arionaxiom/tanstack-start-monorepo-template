@@ -20,7 +20,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@__APP_NAME__/ui/elements/sidebar";
-import { Toaster } from "@__APP_NAME__/ui/elements/sonner";
 
 import { AppSidebar, MenuItem } from "./app-sidebar";
 
@@ -150,7 +149,6 @@ export function AppLayout({
           </div>
         </ScrollArea>
       </main>
-      <Toaster />
     </SidebarProvider>
   );
 }

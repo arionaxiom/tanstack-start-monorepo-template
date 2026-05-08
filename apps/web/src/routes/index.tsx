@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { Surface } from "@__APP_NAME__/ui/components/surface";
 import { Button } from "@__APP_NAME__/ui/elements/button";
+import { toast } from "@__APP_NAME__/ui/elements/sonner";
 
 const getCurrentServerTime = createServerFn({
   method: "GET",
@@ -35,9 +36,21 @@ function Home() {
             Starting Time: {originalTime}
           </div>
           <div className="text-xl text-foreground">Current Time: {time}</div>
-          <Button onClick={async () => setTime(await getCurrentServerTime())}>
-            <Trans>Refresh</Trans>
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={async () => setTime(await getCurrentServerTime())}>
+              <Trans>Refresh</Trans>
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                toast.success("Toaster is wired up", {
+                  description: "Sonner from @__APP_NAME__/ui/elements/sonner.",
+                })
+              }
+            >
+              <Trans>Show toast</Trans>
+            </Button>
+          </div>
         </div>
       </Surface>
     </div>

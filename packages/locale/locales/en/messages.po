@@ -42,9 +42,13 @@ msgstr "Home"
 msgid "Language"
 msgstr "Language"
 
-#: apps/web/src/routes/index.tsx:39
+#: apps/web/src/routes/index.tsx:41
 msgid "Refresh"
 msgstr "Refresh"
+
+#: apps/web/src/routes/index.tsx:51
+msgid "Show toast"
+msgstr "Show toast"
 
 #: packages/ui/src/components/not-found.tsx:29
 msgid "Start Over"
