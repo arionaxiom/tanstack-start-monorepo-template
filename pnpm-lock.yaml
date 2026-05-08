@@ -7,12 +7,14 @@ settings:
 overrides:
   react: 19.2.0
   react-dom: 19.2.0
-  '@types/react': ~19.2.2
-  '@types/react-dom': ~19.2.2
-  '@lingui/core': ^5.9.3
+  '@types/react': ~19.2.14
+  '@types/react-dom': ~19.2.3
+  '@lingui/core': ^5.9.4
   vitest: 4.0.18
   '@vitest/coverage-v8': 4.0.18
   '@vitest/runner': 4.0.18
+  '@vitest/spy': 4.0.18
+  typescript: ~5.9.2
 
 importers:
 
@@ -70,8 +72,8 @@ importers:
         specifier: ^1.30.1
         version: 1.30.1(vite@8.0.3(@types/node@25.5.0)(esbuild@0.27.4)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))(workerd@1.20260317.1)(wrangler@4.77.0)
       '@lingui/core':
-        specifier: ^5.9.3
-        version: 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
+        specifier: ^5.9.4
+        version: 5.9.5(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
       '@lingui/macro':
         specifier: ^5.9.3
         version: 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))(react@19.2.0)
@@ -150,7 +152,7 @@ importers:
         version: 5.9.3(typescript@5.9.3)
       '@lingui/swc-plugin':
         specifier: ^5.9.3
-        version: 5.11.0(@lingui/core@5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3)))
+        version: 5.11.0(@lingui/core@5.9.5)
       '@lingui/vite-plugin':
         specifier: ^5.9.3
         version: 5.9.3(typescript@5.9.3)(vite@8.0.3(@types/node@25.5.0)(esbuild@0.27.4)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))
@@ -164,10 +166,10 @@ importers:
         specifier: ^25.5.0
         version: 25.5.0
       '@types/react':
-        specifier: ~19.2.2
+        specifier: ~19.2.14
         version: 19.2.14
       '@types/react-dom':
-        specifier: ~19.2.2
+        specifier: ~19.2.3
         version: 19.2.3(@types/react@19.2.14)
       '@vitejs/plugin-react-swc':
         specifier: ^4.3.0
@@ -197,8 +199,8 @@ importers:
   packages/assets:
     dependencies:
       typescript:
-        specifier: ^5
-        version: 5.9.2
+        specifier: ~5.9.2
+        version: 5.9.3
 
   packages/constants:
     dependencies:
@@ -206,8 +208,8 @@ importers:
         specifier: workspace:*
         version: link:../types
       typescript:
-        specifier: ^5
-        version: 5.9.2
+        specifier: ~5.9.2
+        version: 5.9.3
     devDependencies:
       '@__APP_NAME__/eslint-config':
         specifier: workspace:*
@@ -283,10 +285,10 @@ importers:
   packages/locale:
     dependencies:
       '@lingui/core':
-        specifier: ^5.9.3
-        version: 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
+        specifier: ^5.9.4
+        version: 5.9.5(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
       typescript:
-        specifier: ^5
+        specifier: ~5.9.2
         version: 5.9.3
     devDependencies:
       '@lingui/cli':
@@ -308,8 +310,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       typescript:
-        specifier: ^5
-        version: 5.9.2
+        specifier: ~5.9.2
+        version: 5.9.3
     devDependencies:
       '@__APP_NAME__/eslint-config':
         specifier: workspace:*
@@ -351,8 +353,8 @@ importers:
         specifier: 19.2.0
         version: 19.2.0
       typescript:
-        specifier: ^5
-        version: 5.9.2
+        specifier: ~5.9.2
+        version: 5.9.3
     devDependencies:
       '@__APP_NAME__/eslint-config':
         specifier: workspace:*
@@ -364,14 +366,14 @@ importers:
         specifier: workspace:*
         version: link:../typescript-config
       '@lingui/core':
-        specifier: ^5.9.3
-        version: 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.2))
+        specifier: ^5.9.4
+        version: 5.9.5(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
       '@lingui/react':
         specifier: ^5.9.3
-        version: 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.2))(react@19.2.0)
+        version: 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))(react@19.2.0)
       '@lingui/swc-plugin':
         specifier: ^5.9.3
-        version: 5.11.0(@lingui/core@5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.2)))
+        version: 5.11.0(@lingui/core@5.9.5)
       '@testing-library/dom':
         specifier: ^10.4.1
         version: 10.4.1
@@ -385,7 +387,7 @@ importers:
         specifier: ^14.6.1
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
-        specifier: ~19.2.2
+        specifier: ~19.2.14
         version: 19.2.14
       '@vitejs/plugin-react-swc':
         specifier: ^4.3.0
@@ -404,6 +406,16 @@ importers:
         version: 4.0.18(@types/node@25.5.0)(jiti@2.6.1)(jsdom@29.0.1)(lightningcss@1.32.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3)
 
   packages/tailwind-config:
+    dependencies:
+      '@fontsource-variable/inter':
+        specifier: ^5.2.8
+        version: 5.2.8
+      '@fontsource-variable/jetbrains-mono':
+        specifier: ^5.2.8
+        version: 5.2.8
+      '@fontsource/ibm-plex-sans-thai':
+        specifier: ^5.2.8
+        version: 5.2.8
     devDependencies:
       eslint:
         specifier: ^10.1.0
@@ -421,8 +433,8 @@ importers:
   packages/types:
     dependencies:
       typescript:
-        specifier: ^5
-        version: 5.9.2
+        specifier: ~5.9.2
+        version: 5.9.3
       zod:
         specifier: ^4.3.6
         version: 4.3.6
@@ -608,11 +620,11 @@ importers:
         specifier: workspace:*
         version: link:../typescript-config
       '@lingui/core':
-        specifier: ^5.9.3
-        version: 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
+        specifier: ^5.9.4
+        version: 5.9.5(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
       '@lingui/swc-plugin':
         specifier: ^5.9.3
-        version: 5.11.0(@lingui/core@5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3)))
+        version: 5.11.0(@lingui/core@5.9.5)
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -626,10 +638,10 @@ importers:
         specifier: ^25.5.0
         version: 25.5.0
       '@types/react':
-        specifier: ~19.2.2
+        specifier: ~19.2.14
         version: 19.2.14
       '@types/react-dom':
-        specifier: ~19.2.2
+        specifier: ~19.2.3
         version: 19.2.3(@types/react@19.2.14)
       '@vitejs/plugin-react-swc':
         specifier: ^4.3.0
@@ -656,8 +668,8 @@ importers:
         specifier: workspace:*
         version: link:../types
       typescript:
-        specifier: ^5
-        version: 5.9.2
+        specifier: ~5.9.2
+        version: 5.9.3
     devDependencies:
       '@__APP_NAME__/eslint-config':
         specifier: workspace:*
@@ -780,7 +792,7 @@ packages:
     resolution: {integrity: sha512-FwpKqZbPz14AITp1CVgf4AjhKPe1OeeVKSBMdgD10zbFlj3QSWelmtCMLi2+/PFZZcIm3l87G7rwtCZJwHyXWA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -790,7 +802,7 @@ packages:
   '@base-ui/utils@0.2.6':
     resolution: {integrity: sha512-yQ+qeuqohwhsNpoYDqqXaLllYAkPCP4vYdDrVo8FQXaAPfHWm1pG/Vm+jmGTA5JFS0BAIjookyapuJFY8F9PIw==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1437,6 +1449,15 @@ packages:
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
 
+  '@fontsource-variable/inter@5.2.8':
+    resolution: {integrity: sha512-kOfP2D+ykbcX/P3IFnokOhVRNoTozo5/JxhAIVYLpea/UBmCQ/YWPBfWIDuBImXX/15KH+eKh4xpEUyS2sQQGQ==}
+
+  '@fontsource-variable/jetbrains-mono@5.2.8':
+    resolution: {integrity: sha512-WBA9elru6Jdp5df2mES55wuOO0WIrn3kpXnI4+W2ek5u3ZgLS9XS4gmIlcQhiZOWEKl95meYdvK7xI+ETLCq/Q==}
+
+  '@fontsource/ibm-plex-sans-thai@5.2.8':
+    resolution: {integrity: sha512-pddJU1HCjtqbXRcyCnbEJ8UV8pQQuUo23Hxjvdwr0DBibtUra66MVsFMDP/Et/Su5P2VeQAgalACZOCEkWaReA==}
+
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
     engines: {node: '>=18.18.0'}
@@ -1662,11 +1683,11 @@ packages:
     resolution: {integrity: sha512-hVEoYHmO2A3XmFX4A5RuBgcoVBoM7Xgoqejeq25XELvesJj2s2T15F47TA5n3/S7iTqngd6n/8KxBli9TYwgqQ==}
     engines: {node: '>=20.0.0'}
 
-  '@lingui/core@5.9.3':
-    resolution: {integrity: sha512-3b8LnDjx8POdQ6q6UKBe2DHynyQFCO66vm8/UPQnvlQowUk4Xdu5bK6oet11D9/vrSznrDDS+Qb5JVcNBUImgg==}
+  '@lingui/core@5.9.5':
+    resolution: {integrity: sha512-Y+iZq9NqnqZOqHNgPomUFP21KH/zs4oTTizWoz0AKAkBbq9T9yb1DSz/ugtBRjF1YLtKMF9tq28v3thMHANSiQ==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      '@lingui/babel-plugin-lingui-macro': 5.9.3
+      '@lingui/babel-plugin-lingui-macro': 5.9.5
       babel-plugin-macros: 2 || 3
     peerDependenciesMeta:
       '@lingui/babel-plugin-lingui-macro':
@@ -1700,6 +1721,10 @@ packages:
     resolution: {integrity: sha512-oAK7HA7lcQrzaEaM6G1T5RwwxJxaSKfG/IFIxpZIl49TSFQv+s9YPNgHnVi+d4DmterpXNxy9ZZ+NtckJx6u7g==}
     engines: {node: '>=20.0.0'}
 
+  '@lingui/message-utils@5.9.5':
+    resolution: {integrity: sha512-t3dNbjb1dWkvcpXGMXIEyBDO3l4B8J2ColZXi0NTG1ioAj+sDfFxFB8fepVgd3JAk+AwARlOLvF14oS0mAdgpw==}
+    engines: {node: '>=20.0.0'}
+
   '@lingui/react@5.9.3':
     resolution: {integrity: sha512-aje78l3zGGZ3C75fiGhDVKyVALHfiKlYFjcOlZpgXY/JAVfFuZX+6wUGG9x1A8k7BfxrDy/ofHIBahPvNAqoKw==}
     engines: {node: '>=20.0.0'}
@@ -1716,7 +1741,7 @@ packages:
   '@lingui/swc-plugin@5.11.0':
     resolution: {integrity: sha512-0PBYyozQOiA4WtxKPsnCyrbA9da9zOYehyZjvrv56Kzt9w81xbgnNjuAQZyjIX7UYuqFFE48GvzBqnB5SLLOFA==}
     peerDependencies:
-      '@lingui/core': ^5.9.3
+      '@lingui/core': ^5.9.4
       '@swc/core': '*'
       next: '*'
     peerDependenciesMeta:
@@ -1789,8 +1814,8 @@ packages:
   '@radix-ui/react-accessible-icon@1.1.7':
     resolution: {integrity: sha512-XM+E4WXl0OqUJFovy6GjmxxFyx9opfCAIUku4dlKRd5YEPqt4kALOkQOp0Of6reHuUkJuiPBEc5k0o4z4lTC8A==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1802,8 +1827,8 @@ packages:
   '@radix-ui/react-accordion@1.2.12':
     resolution: {integrity: sha512-T4nygeh9YE9dLRPhAHSeOZi7HBXo+0kYIPJXayZfvWOWA0+n3dESrZbjfDPUABkUNym6Hd+f2IR113To8D2GPA==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1815,8 +1840,8 @@ packages:
   '@radix-ui/react-alert-dialog@1.1.15':
     resolution: {integrity: sha512-oTVLkEw5GpdRe29BqJ0LSDFWI3qu0vR1M0mUkOQWDIUnY/QIkLpgDMWuKxP94c2NAC2LGcgVhG1ImF3jkZ5wXw==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1828,8 +1853,8 @@ packages:
   '@radix-ui/react-arrow@1.1.7':
     resolution: {integrity: sha512-F+M1tLhO+mlQaOWspE8Wstg+z6PwxwRd8oQ8IXceWz92kfAmalTRf0EjrouQeo7QssEPfCn05B4Ihs1K9WQ/7w==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1841,8 +1866,8 @@ packages:
   '@radix-ui/react-aspect-ratio@1.1.7':
     resolution: {integrity: sha512-Yq6lvO9HQyPwev1onK1daHCHqXVLzPhSVjmsNjCa2Zcxy2f7uJD2itDtxknv6FzAKCwD1qQkeVDmX/cev13n/g==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1854,8 +1879,8 @@ packages:
   '@radix-ui/react-aspect-ratio@1.1.8':
     resolution: {integrity: sha512-5nZrJTF7gH+e0nZS7/QxFz6tJV4VimhQb1avEgtsJxvvIp5JilL+c58HICsKzPxghdwaDt48hEfPM1au4zGy+w==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1867,8 +1892,8 @@ packages:
   '@radix-ui/react-avatar@1.1.10':
     resolution: {integrity: sha512-V8piFfWapM5OmNCXTzVQY+E1rDa53zY+MQ4Y7356v4fFz6vqCyUtIz2rUD44ZEdwg78/jKmMJHj07+C/Z/rcog==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1880,8 +1905,8 @@ packages:
   '@radix-ui/react-avatar@1.1.11':
     resolution: {integrity: sha512-0Qk603AHGV28BOBO34p7IgD5m+V5Sg/YovfayABkoDDBM5d3NCx0Mp4gGrjzLGes1jV5eNOE1r3itqOR33VC6Q==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1893,8 +1918,8 @@ packages:
   '@radix-ui/react-checkbox@1.3.3':
     resolution: {integrity: sha512-wBbpv+NQftHDdG86Qc0pIyXk5IR3tM8Vd0nWLKDcX8nNn4nXFOFwsKuqw2okA/1D/mpaAkmuyndrPJTYDNZtFw==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1906,8 +1931,8 @@ packages:
   '@radix-ui/react-collapsible@1.1.12':
     resolution: {integrity: sha512-Uu+mSh4agx2ib1uIGPP4/CKNULyajb3p92LsVXmH2EHVMTfZWpll88XJ0j4W0z3f8NK1eYl1+Mf/szHPmcHzyA==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1919,8 +1944,8 @@ packages:
   '@radix-ui/react-collection@1.1.7':
     resolution: {integrity: sha512-Fh9rGN0MoI4ZFUNyfFVNU4y9LUz93u9/0K+yLgA2bwRojxM8JU1DyvvMBabnZPBgMWREAJvU2jjVzq+LrFUglw==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1932,7 +1957,7 @@ packages:
   '@radix-ui/react-compose-refs@1.1.2':
     resolution: {integrity: sha512-z4eqJvfiNnFMHIIvXP3CY57y2WJs5g2v3X0zm9mEJkrkNv4rDxu+sg9Jh8EkXyeqBkB7SOcboo9dMVqhyrACIg==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -1941,8 +1966,8 @@ packages:
   '@radix-ui/react-context-menu@2.2.16':
     resolution: {integrity: sha512-O8morBEW+HsVG28gYDZPTrT9UUovQUlJue5YO836tiTJhuIWBm/zQHc7j388sHWtdH/xUZurK9olD2+pcqx5ww==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1954,7 +1979,7 @@ packages:
   '@radix-ui/react-context@1.1.2':
     resolution: {integrity: sha512-jCi/QKUM2r1Ju5a3J64TH2A5SpKAgh0LpknyqdQ4m6DCV0xJ2HG1xARRwNGPQfi1SLdLWZ1OJz6F4OMBBNiGJA==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -1963,7 +1988,7 @@ packages:
   '@radix-ui/react-context@1.1.3':
     resolution: {integrity: sha512-ieIFACdMpYfMEjF0rEf5KLvfVyIkOz6PDGyNnP+u+4xQ6jny3VCgA4OgXOwNx2aUkxn8zx9fiVcM8CfFYv9Lxw==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -1972,8 +1997,8 @@ packages:
   '@radix-ui/react-dialog@1.1.15':
     resolution: {integrity: sha512-TCglVRtzlffRNxRMEyR36DGBLJpeusFcgMVD9PZEzAKnUs1lKCgX5u9BmC2Yg+LL9MgZDugFFs1Vl+Jp4t/PGw==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -1985,7 +2010,7 @@ packages:
   '@radix-ui/react-direction@1.1.1':
     resolution: {integrity: sha512-1UEWRX6jnOA2y4H5WczZ44gOOjTEmlqv1uNW4GAJEO5+bauCBhv8snY65Iw5/VOS/ghKN9gr2KjnLKxrsvoMVw==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -1994,8 +2019,8 @@ packages:
   '@radix-ui/react-dismissable-layer@1.1.11':
     resolution: {integrity: sha512-Nqcp+t5cTB8BinFkZgXiMJniQH0PsUt2k51FUhbdfeKvc4ACcG2uQniY/8+h1Yv6Kza4Q7lD7PQV0z0oicE0Mg==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2007,8 +2032,8 @@ packages:
   '@radix-ui/react-dropdown-menu@2.1.16':
     resolution: {integrity: sha512-1PLGQEynI/3OX/ftV54COn+3Sud/Mn8vALg2rWnBLnRaGtJDduNW/22XjlGgPdpcIbiQxjKtb7BkcjP00nqfJw==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2020,7 +2045,7 @@ packages:
   '@radix-ui/react-focus-guards@1.1.3':
     resolution: {integrity: sha512-0rFg/Rj2Q62NCm62jZw0QX7a3sz6QCQU0LpZdNrJX8byRGaGVTqbrW9jAoIAHyMQqsNpeZ81YgSizOt5WXq0Pw==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2029,8 +2054,8 @@ packages:
   '@radix-ui/react-focus-scope@1.1.7':
     resolution: {integrity: sha512-t2ODlkXBQyn7jkl6TNaw/MtVEVvIGelJDCG41Okq/KwUsJBwQ4XVZsHAVUkK4mBv3ewiAS3PGuUWuY2BoK4ZUw==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2042,8 +2067,8 @@ packages:
   '@radix-ui/react-form@0.1.8':
     resolution: {integrity: sha512-QM70k4Zwjttifr5a4sZFts9fn8FzHYvQ5PiB19O2HsYibaHSVt9fH9rzB0XZo/YcM+b7t/p7lYCT/F5eOeF5yQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2055,8 +2080,8 @@ packages:
   '@radix-ui/react-hover-card@1.1.15':
     resolution: {integrity: sha512-qgTkjNT1CfKMoP0rcasmlH2r1DAiYicWsDsufxl940sT2wHNEWWv6FMWIQXWhVdmC1d/HYfbhQx60KYyAtKxjg==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2068,7 +2093,7 @@ packages:
   '@radix-ui/react-id@1.1.1':
     resolution: {integrity: sha512-kGkGegYIdQsOb4XjsfM97rXsiHaBwco+hFI66oO4s9LU+PLAC5oJ7khdOVFxkhsmlbpUqDAvXw11CluXP+jkHg==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2077,8 +2102,8 @@ packages:
   '@radix-ui/react-label@2.1.7':
     resolution: {integrity: sha512-YT1GqPSL8kJn20djelMX7/cTRp/Y9w5IZHvfxQTVHrOqa2yMl7i/UfMqKRU5V7mEyKTrUVgJXhNQPVCG8PBLoQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2090,8 +2115,8 @@ packages:
   '@radix-ui/react-label@2.1.8':
     resolution: {integrity: sha512-FmXs37I6hSBVDlO4y764TNz1rLgKwjJMQ0EGte6F3Cb3f4bIuHB/iLa/8I9VKkmOy+gNHq8rql3j686ACVV21A==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2103,8 +2128,8 @@ packages:
   '@radix-ui/react-menu@2.1.16':
     resolution: {integrity: sha512-72F2T+PLlphrqLcAotYPp0uJMr5SjP5SL01wfEspJbru5Zs5vQaSHb4VB3ZMJPimgHHCHG7gMOeOB9H3Hdmtxg==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2116,8 +2141,8 @@ packages:
   '@radix-ui/react-menubar@1.1.16':
     resolution: {integrity: sha512-EB1FktTz5xRRi2Er974AUQZWg2yVBb1yjip38/lgwtCVRd3a+maUoGHN/xs9Yv8SY8QwbSEb+YrxGadVWbEutA==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2129,8 +2154,8 @@ packages:
   '@radix-ui/react-navigation-menu@1.2.14':
     resolution: {integrity: sha512-YB9mTFQvCOAQMHU+C/jVl96WmuWeltyUEpRJJky51huhds5W2FQr1J8D/16sQlf0ozxkPK8uF3niQMdUwZPv5w==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2142,8 +2167,8 @@ packages:
   '@radix-ui/react-one-time-password-field@0.1.8':
     resolution: {integrity: sha512-ycS4rbwURavDPVjCb5iS3aG4lURFDILi6sKI/WITUMZ13gMmn/xGjpLoqBAalhJaDk8I3UbCM5GzKHrnzwHbvg==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2155,8 +2180,8 @@ packages:
   '@radix-ui/react-password-toggle-field@0.1.3':
     resolution: {integrity: sha512-/UuCrDBWravcaMix4TdT+qlNdVwOM1Nck9kWx/vafXsdfj1ChfhOdfi3cy9SGBpWgTXwYCuboT/oYpJy3clqfw==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2168,8 +2193,8 @@ packages:
   '@radix-ui/react-popover@1.1.15':
     resolution: {integrity: sha512-kr0X2+6Yy/vJzLYJUPCZEc8SfQcf+1COFoAqauJm74umQhta9M7lNJHP7QQS3vkvcGLQUbWpMzwrXYwrYztHKA==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2181,8 +2206,8 @@ packages:
   '@radix-ui/react-popper@1.2.8':
     resolution: {integrity: sha512-0NJQ4LFFUuWkE7Oxf0htBKS6zLkkjBH+hM1uk7Ng705ReR8m/uelduy1DBo0PyBXPKVnBA6YBlU94MBGXrSBCw==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2194,8 +2219,8 @@ packages:
   '@radix-ui/react-portal@1.1.9':
     resolution: {integrity: sha512-bpIxvq03if6UNwXZ+HTK71JLh4APvnXntDc6XOX8UVq4XQOVl7lwok0AvIl+b8zgCw3fSaVTZMpAPPagXbKmHQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2207,8 +2232,8 @@ packages:
   '@radix-ui/react-presence@1.1.5':
     resolution: {integrity: sha512-/jfEwNDdQVBCNvjkGit4h6pMOzq8bHkopq458dPt2lMjx+eBQUohZNG9A7DtO/O5ukSbxuaNGXMjHicgwy6rQQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2220,8 +2245,8 @@ packages:
   '@radix-ui/react-primitive@2.1.3':
     resolution: {integrity: sha512-m9gTwRkhy2lvCPe6QJp4d3G1TYEUHn/FzJUtq9MjH46an1wJU+GdoGC5VLof8RX8Ft/DlpshApkhswDLZzHIcQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2233,8 +2258,8 @@ packages:
   '@radix-ui/react-primitive@2.1.4':
     resolution: {integrity: sha512-9hQc4+GNVtJAIEPEqlYqW5RiYdrr8ea5XQ0ZOnD6fgru+83kqT15mq2OCcbe8KnjRZl5vF3ks69AKz3kh1jrhg==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2246,8 +2271,8 @@ packages:
   '@radix-ui/react-progress@1.1.7':
     resolution: {integrity: sha512-vPdg/tF6YC/ynuBIJlk1mm7Le0VgW6ub6J2UWnTQ7/D23KXcPI1qy+0vBkgKgd38RCMJavBXpB83HPNFMTb0Fg==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2259,8 +2284,8 @@ packages:
   '@radix-ui/react-progress@1.1.8':
     resolution: {integrity: sha512-+gISHcSPUJ7ktBy9RnTqbdKW78bcGke3t6taawyZ71pio1JewwGSJizycs7rLhGTvMJYCQB1DBK4KQsxs7U8dA==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2272,8 +2297,8 @@ packages:
   '@radix-ui/react-radio-group@1.3.8':
     resolution: {integrity: sha512-VBKYIYImA5zsxACdisNQ3BjCBfmbGH3kQlnFVqlWU4tXwjy7cGX8ta80BcrO+WJXIn5iBylEH3K6ZTlee//lgQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2285,8 +2310,8 @@ packages:
   '@radix-ui/react-roving-focus@1.1.11':
     resolution: {integrity: sha512-7A6S9jSgm/S+7MdtNDSb+IU859vQqJ/QAtcYQcfFC6W8RS4IxIZDldLR0xqCFZ6DCyrQLjLPsxtTNch5jVA4lA==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2298,8 +2323,8 @@ packages:
   '@radix-ui/react-scroll-area@1.2.10':
     resolution: {integrity: sha512-tAXIa1g3sM5CGpVT0uIbUx/U3Gs5N8T52IICuCtObaos1S8fzsrPXG5WObkQN3S6NVl6wKgPhAIiBGbWnvc97A==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2311,8 +2336,8 @@ packages:
   '@radix-ui/react-select@2.2.6':
     resolution: {integrity: sha512-I30RydO+bnn2PQztvo25tswPH+wFBjehVGtmagkU78yMdwTwVf12wnAOF+AeP8S2N8xD+5UPbGhkUfPyvT+mwQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2324,8 +2349,8 @@ packages:
   '@radix-ui/react-separator@1.1.7':
     resolution: {integrity: sha512-0HEb8R9E8A+jZjvmFCy/J4xhbXy3TV+9XSnGJ3KvTtjlIUy/YQ/p6UYZvi7YbeoeXdyU9+Y3scizK6hkY37baA==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2337,8 +2362,8 @@ packages:
   '@radix-ui/react-separator@1.1.8':
     resolution: {integrity: sha512-sDvqVY4itsKwwSMEe0jtKgfTh+72Sy3gPmQpjqcQneqQ4PFmr/1I0YA+2/puilhggCe2gJcx5EBAYFkWkdpa5g==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2350,8 +2375,8 @@ packages:
   '@radix-ui/react-slider@1.3.6':
     resolution: {integrity: sha512-JPYb1GuM1bxfjMRlNLE+BcmBC8onfCi60Blk7OBqi2MLTFdS+8401U4uFjnwkOr49BLmXxLC6JHkvAsx5OJvHw==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2363,7 +2388,7 @@ packages:
   '@radix-ui/react-slot@1.2.3':
     resolution: {integrity: sha512-aeNmHnBxbi2St0au6VBVC7JXFlhLlOnvIIlePNniyUNAClzmtAUEY8/pBiK3iHjufOlwA+c20/8jngo7xcrg8A==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2372,7 +2397,7 @@ packages:
   '@radix-ui/react-slot@1.2.4':
     resolution: {integrity: sha512-Jl+bCv8HxKnlTLVrcDE8zTMJ09R9/ukw4qBs/oZClOfoQk/cOTbDn+NceXfV7j09YPVQUryJPHurafcSg6EVKA==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2381,8 +2406,8 @@ packages:
   '@radix-ui/react-switch@1.2.6':
     resolution: {integrity: sha512-bByzr1+ep1zk4VubeEVViV592vu2lHE2BZY5OnzehZqOOgogN80+mNtCqPkhn2gklJqOpxWgPoYTSnhBCqpOXQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2394,8 +2419,8 @@ packages:
   '@radix-ui/react-tabs@1.1.13':
     resolution: {integrity: sha512-7xdcatg7/U+7+Udyoj2zodtI9H/IIopqo+YOIcZOq1nJwXWBZ9p8xiu5llXlekDbZkca79a/fozEYQXIA4sW6A==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2407,8 +2432,8 @@ packages:
   '@radix-ui/react-toast@1.2.15':
     resolution: {integrity: sha512-3OSz3TacUWy4WtOXV38DggwxoqJK4+eDkNMl5Z/MJZaoUPaP4/9lf81xXMe1I2ReTAptverZUpbPY4wWwWyL5g==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2420,8 +2445,8 @@ packages:
   '@radix-ui/react-toggle-group@1.1.11':
     resolution: {integrity: sha512-5umnS0T8JQzQT6HbPyO7Hh9dgd82NmS36DQr+X/YJ9ctFNCiiQd6IJAYYZ33LUwm8M+taCz5t2ui29fHZc4Y6Q==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2433,8 +2458,8 @@ packages:
   '@radix-ui/react-toggle@1.1.10':
     resolution: {integrity: sha512-lS1odchhFTeZv3xwHH31YPObmJn8gOg7Lq12inrr0+BH/l3Tsq32VfjqH1oh80ARM3mlkfMic15n0kg4sD1poQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2446,8 +2471,8 @@ packages:
   '@radix-ui/react-toolbar@1.1.11':
     resolution: {integrity: sha512-4ol06/1bLoFu1nwUqzdD4Y5RZ9oDdKeiHIsntug54Hcr1pgaHiPqHFEaXI1IFP/EsOfROQZ8Mig9VTIRza6Tjg==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2459,8 +2484,8 @@ packages:
   '@radix-ui/react-tooltip@1.2.8':
     resolution: {integrity: sha512-tY7sVt1yL9ozIxvmbtN5qtmH2krXcBCfjEiCgKGLqunJHvgvZG2Pcl2oQ3kbcZARb1BGEHdkLzcYGO8ynVlieg==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -2472,7 +2497,7 @@ packages:
   '@radix-ui/react-use-callback-ref@1.1.1':
     resolution: {integrity: sha512-FkBMwD+qbGQeMu1cOHnuGB6x4yzPjho8ap5WtbEJ26umhgqVXbhekKUQO+hZEL1vU92a3wHwdp0HAcqAUF5iDg==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2481,7 +2506,7 @@ packages:
   '@radix-ui/react-use-controllable-state@1.2.2':
     resolution: {integrity: sha512-BjasUjixPFdS+NKkypcyyN5Pmg83Olst0+c6vGov0diwTEo6mgdqVR6hxcEgFuh4QrAs7Rc+9KuGJ9TVCj0Zzg==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2490,7 +2515,7 @@ packages:
   '@radix-ui/react-use-effect-event@0.0.2':
     resolution: {integrity: sha512-Qp8WbZOBe+blgpuUT+lw2xheLP8q0oatc9UpmiemEICxGvFLYmHm9QowVZGHtJlGbS6A6yJ3iViad/2cVjnOiA==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2499,7 +2524,7 @@ packages:
   '@radix-ui/react-use-escape-keydown@1.1.1':
     resolution: {integrity: sha512-Il0+boE7w/XebUHyBjroE+DbByORGR9KKmITzbR7MyQ4akpORYP/ZmbhAr0DG7RmmBqoOnZdy2QlvajJ2QA59g==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2508,7 +2533,7 @@ packages:
   '@radix-ui/react-use-is-hydrated@0.1.0':
     resolution: {integrity: sha512-U+UORVEq+cTnRIaostJv9AGdV3G6Y+zbVd+12e18jQ5A3c0xL03IhnHuiU4UV69wolOQp5GfR58NW/EgdQhwOA==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2517,7 +2542,7 @@ packages:
   '@radix-ui/react-use-layout-effect@1.1.1':
     resolution: {integrity: sha512-RbJRS4UWQFkzHTTwVymMTUv8EqYhOp8dOOviLj2ugtTiXRaRQS7GLGxZTLL1jWhMeoSCf5zmcZkqTl9IiYfXcQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2526,7 +2551,7 @@ packages:
   '@radix-ui/react-use-previous@1.1.1':
     resolution: {integrity: sha512-2dHfToCj/pzca2Ck724OZ5L0EVrr3eHRNsG/b3xQJLA2hZpVCS99bLAX+hm1IHXDEnzU6by5z/5MIY794/a8NQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2535,7 +2560,7 @@ packages:
   '@radix-ui/react-use-rect@1.1.1':
     resolution: {integrity: sha512-QTYuDesS0VtuHNNvMh+CjlKJ4LJickCMUAqjlE3+j8w+RlRpwyX3apEQKGFzbZGdo7XNG1tXa+bQqIE7HIXT2w==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2544,7 +2569,7 @@ packages:
   '@radix-ui/react-use-size@1.1.1':
     resolution: {integrity: sha512-ewrXRDTAqAXlkl6t/fkXWNAhFX9I+CkKlw6zjEwk86RSPKwZr3xpBRso655aqYafwtnbpHLj6toFzmd6xdVptQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -2553,8 +2578,8 @@ packages:
   '@radix-ui/react-visually-hidden@1.2.3':
     resolution: {integrity: sha512-pzJq12tEaaIhqjbzpCuv/OypJY/BPavOofm+dbab+MHLajy277+1lLm6JFcGgF5eskJ6mquGirhXY2GD/8u8Ug==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -3090,8 +3115,8 @@ packages:
     resolution: {integrity: sha512-cUMzOQb1IHmkb8MsD0TrxHT8EL92Rx3G0Huq+IFkWeoaZPGlIiaIcGTpS5VvQDeI4BVUT+ZGt6CQTpx8oSTECg==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
 
@@ -3295,8 +3320,8 @@ packages:
     engines: {node: '>=18'}
     peerDependencies:
       '@testing-library/dom': ^10.0.0
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -3429,7 +3454,7 @@ packages:
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
 
   '@types/react@19.2.14':
     resolution: {integrity: sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==}
@@ -3446,20 +3471,20 @@ packages:
     peerDependencies:
       '@typescript-eslint/parser': ^8.57.2
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
-      typescript: '>=4.8.4 <6.0.0'
+      typescript: ~5.9.2
 
   '@typescript-eslint/parser@8.57.2':
     resolution: {integrity: sha512-30ScMRHIAD33JJQkgfGW1t8CURZtjc2JpTrq5n2HFhOefbAhb7ucc7xJwdWcrEtqUIYJ73Nybpsggii6GtAHjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
-      typescript: '>=4.8.4 <6.0.0'
+      typescript: ~5.9.2
 
   '@typescript-eslint/project-service@8.57.2':
     resolution: {integrity: sha512-FuH0wipFywXRTHf+bTTjNyuNQQsQC3qh/dYzaM4I4W0jrCqjCVuUh99+xd9KamUfmCGPvbO8NDngo/vsnNVqgw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
+      typescript: ~5.9.2
 
   '@typescript-eslint/scope-manager@8.57.2':
     resolution: {integrity: sha512-snZKH+W4WbWkrBqj4gUNRIGb/jipDW3qMqVJ4C9rzdFc+wLwruxk+2a5D+uoFcKPAqyqEnSb4l2ULuZf95eSkw==}
@@ -3469,14 +3494,14 @@ packages:
     resolution: {integrity: sha512-3Lm5DSM+DCowsUOJC+YqHHnKEfFh5CoGkj5Z31NQSNF4l5wdOwqGn99wmwN/LImhfY3KJnmordBq/4+VDe2eKw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
+      typescript: ~5.9.2
 
   '@typescript-eslint/type-utils@8.57.2':
     resolution: {integrity: sha512-Co6ZCShm6kIbAM/s+oYVpKFfW7LBc6FXoPXjTRQ449PPNBY8U0KZXuevz5IFuuUj2H9ss40atTaf9dlGLzbWZg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
-      typescript: '>=4.8.4 <6.0.0'
+      typescript: ~5.9.2
 
   '@typescript-eslint/types@8.57.2':
     resolution: {integrity: sha512-/iZM6FnM4tnx9csuTxspMW4BOSegshwX5oBDznJ7S4WggL7Vczz5d2W11ecc4vRrQMQHXRSxzrCsyG5EsPPTbA==}
@@ -3486,14 +3511,14 @@ packages:
     resolution: {integrity: sha512-2MKM+I6g8tJxfSmFKOnHv2t8Sk3T6rF20A1Puk0svLK+uVapDZB/4pfAeB7nE83uAZrU6OxW+HmOd5wHVdXwXA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
+      typescript: ~5.9.2
 
   '@typescript-eslint/utils@8.57.2':
     resolution: {integrity: sha512-krRIbvPK1ju1WBKIefiX+bngPs+odIQUtR7kymzPfo1POVw3jlF+nLkmexdSSd4UCbDcQn+wMBATOOmpBbqgKg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
-      typescript: '>=4.8.4 <6.0.0'
+      typescript: ~5.9.2
 
   '@typescript-eslint/visitor-keys@8.57.2':
     resolution: {integrity: sha512-zhahknjobV2FiD6Ee9iLbS7OV9zi10rG26odsQdfBO/hjSzUQbkIYgda+iNKK1zNiW2ey+Lf8MU5btN17V3dUw==}
@@ -3913,7 +3938,7 @@ packages:
     resolution: {integrity: sha512-kcZ6+W5QzcJ3P1Mt+83OUv/oHFqZHIx8DuxG6eZ5RGMERoLqp4BuGjhHLYGK+Kf5XVkQvqBSmAy/nGWN3qDgEA==}
     engines: {node: '>=14'}
     peerDependencies:
-      typescript: '>=4.9.5'
+      typescript: ~5.9.2
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -5254,8 +5279,8 @@ packages:
   radix-ui@1.4.3:
     resolution: {integrity: sha512-aWizCQiyeAenIdUbqEpXgRA1ya65P13NKn/W8rWkcN0OPkRDxdBVLWnIEDsS2RpwCK2nobI7oMUSmexzTDyAmA==}
     peerDependencies:
-      '@types/react': ~19.2.2
-      '@types/react-dom': ~19.2.2
+      '@types/react': ~19.2.14
+      '@types/react-dom': ~19.2.3
       react: 19.2.0
       react-dom: 19.2.0
     peerDependenciesMeta:
@@ -5288,7 +5313,7 @@ packages:
     resolution: {integrity: sha512-9r+yi9+mgU33AKcj6IbT9oRCO78WriSj6t/cF8DWBZJ9aOGPOTEDvdUDz1FwKim7QXWwmHqtdHnRJfhAxEG46Q==}
     engines: {node: '>=10'}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -5298,7 +5323,7 @@ packages:
     resolution: {integrity: sha512-Iqb9NjCCTt6Hf+vOdNIZGdTiH1QSqr27H/Ek9sv/a97gfueI/5h1s3yRi1nngzMUaOOToin5dI1dXKdXiF+u0Q==}
     engines: {node: '>=10'}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -5320,7 +5345,7 @@ packages:
     resolution: {integrity: sha512-b6jSvxvVnyptAiLjbkWLE/lOnR4lfTtDAl+eUC7RZy+QQWc6wRzIV2CE6xBuMmDxc2qIihtDCZD5NPOFl7fRBQ==}
     engines: {node: '>=10'}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -5732,14 +5757,14 @@ packages:
     resolution: {integrity: sha512-OJ/ibxhPlqrMM0UiNHJ/0CKQkoKF243/AEmplt3qpRgkW8VG7IfOS41h7V8TjITqdByHzrjcS/2si+y4lIh8NA==}
     engines: {node: '>=18.12'}
     peerDependencies:
-      typescript: '>=4.8.4'
+      typescript: ~5.9.2
 
   tsconfck@3.1.6:
     resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
     engines: {node: ^18 || >=20}
     hasBin: true
     peerDependencies:
-      typescript: ^5.0.0
+      typescript: ~5.9.2
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -5788,12 +5813,7 @@ packages:
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
-      typescript: '>=4.8.4 <6.0.0'
-
-  typescript@5.9.2:
-    resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
-    engines: {node: '>=14.17'}
-    hasBin: true
+      typescript: ~5.9.2
 
   typescript@5.9.3:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
@@ -5842,7 +5862,7 @@ packages:
     resolution: {integrity: sha512-jQL3lRnocaFtu3V00JToYz/4QkNWswxijDaCVNZRiRTO3HQDLsdu1ZtmIUvV4yPp+rvWm5j0y0TG/S61cuijTg==}
     engines: {node: '>=10'}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -5852,7 +5872,7 @@ packages:
     resolution: {integrity: sha512-Fedw0aZvkhynoPYlA5WXrMCAMm+nSWdZt6lzJQ7Ok8S6Q+VsHmHpRWndVRJ8Be0ZbkfPc5LRYH+5XrzXcEeLRQ==}
     engines: {node: '>=10'}
     peerDependencies:
-      '@types/react': ~19.2.2
+      '@types/react': ~19.2.14
       react: 19.2.0
     peerDependenciesMeta:
       '@types/react':
@@ -6718,6 +6738,12 @@ snapshots:
 
   '@floating-ui/utils@0.2.11': {}
 
+  '@fontsource-variable/inter@5.2.8': {}
+
+  '@fontsource-variable/jetbrains-mono@5.2.8': {}
+
+  '@fontsource/ibm-plex-sans-thai@5.2.8': {}
+
   '@humanfs/core@0.19.1': {}
 
   '@humanfs/node@0.16.7':
@@ -6871,26 +6897,13 @@ snapshots:
 
   '@lingui/babel-plugin-extract-messages@5.9.3': {}
 
-  '@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.2)':
-    dependencies:
-      '@babel/core': 7.29.0
-      '@babel/runtime': 7.29.2
-      '@babel/types': 7.29.0
-      '@lingui/conf': 5.9.3(typescript@5.9.2)
-      '@lingui/core': 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.2))
-      '@lingui/message-utils': 5.9.3
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-    optional: true
-
   '@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3)':
     dependencies:
       '@babel/core': 7.29.0
       '@babel/runtime': 7.29.2
       '@babel/types': 7.29.0
       '@lingui/conf': 5.9.3(typescript@5.9.3)
-      '@lingui/core': 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
+      '@lingui/core': 5.9.5(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
       '@lingui/message-utils': 5.9.3
     transitivePeerDependencies:
       - supports-color
@@ -6906,7 +6919,7 @@ snapshots:
       '@lingui/babel-plugin-extract-messages': 5.9.3
       '@lingui/babel-plugin-lingui-macro': 5.9.3(typescript@5.9.3)
       '@lingui/conf': 5.9.3(typescript@5.9.3)
-      '@lingui/core': 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
+      '@lingui/core': 5.9.5(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
       '@lingui/format-po': 5.9.3(typescript@5.9.3)
       '@lingui/message-utils': 5.9.3
       chokidar: 3.5.1
@@ -6930,17 +6943,6 @@ snapshots:
       - supports-color
       - typescript
 
-  '@lingui/conf@5.9.3(typescript@5.9.2)':
-    dependencies:
-      '@babel/runtime': 7.29.2
-      cosmiconfig: 8.3.6(typescript@5.9.2)
-      jest-validate: 29.7.0
-      jiti: 2.6.1
-      picocolors: 1.1.1
-    transitivePeerDependencies:
-      - typescript
-    optional: true
-
   '@lingui/conf@5.9.3(typescript@5.9.3)':
     dependencies:
       '@babel/runtime': 7.29.2
@@ -6951,17 +6953,10 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@lingui/core@5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.2))':
+  '@lingui/core@5.9.5(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))':
     dependencies:
       '@babel/runtime': 7.29.2
-      '@lingui/message-utils': 5.9.3
-    optionalDependencies:
-      '@lingui/babel-plugin-lingui-macro': 5.9.3(typescript@5.9.2)
-
-  '@lingui/core@5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))':
-    dependencies:
-      '@babel/runtime': 7.29.2
-      '@lingui/message-utils': 5.9.3
+      '@lingui/message-utils': 5.9.5
     optionalDependencies:
       '@lingui/babel-plugin-lingui-macro': 5.9.3(typescript@5.9.3)
 
@@ -6987,7 +6982,7 @@ snapshots:
 
   '@lingui/macro@5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))(react@19.2.0)':
     dependencies:
-      '@lingui/core': 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
+      '@lingui/core': 5.9.5(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
       '@lingui/react': 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))(react@19.2.0)
     optionalDependencies:
       '@lingui/babel-plugin-lingui-macro': 5.9.3(typescript@5.9.3)
@@ -6999,29 +6994,22 @@ snapshots:
       '@messageformat/parser': 5.1.1
       js-sha256: 0.10.1
 
-  '@lingui/react@5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.2))(react@19.2.0)':
+  '@lingui/message-utils@5.9.5':
     dependencies:
-      '@babel/runtime': 7.29.2
-      '@lingui/core': 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.2))
-      react: 19.2.0
-    optionalDependencies:
-      '@lingui/babel-plugin-lingui-macro': 5.9.3(typescript@5.9.2)
+      '@messageformat/parser': 5.1.1
+      js-sha256: 0.10.1
 
   '@lingui/react@5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))(react@19.2.0)':
     dependencies:
       '@babel/runtime': 7.29.2
-      '@lingui/core': 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
+      '@lingui/core': 5.9.5(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
       react: 19.2.0
     optionalDependencies:
       '@lingui/babel-plugin-lingui-macro': 5.9.3(typescript@5.9.3)
 
-  '@lingui/swc-plugin@5.11.0(@lingui/core@5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.2)))':
+  '@lingui/swc-plugin@5.11.0(@lingui/core@5.9.5)':
     dependencies:
-      '@lingui/core': 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.2))
-
-  '@lingui/swc-plugin@5.11.0(@lingui/core@5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3)))':
-    dependencies:
-      '@lingui/core': 5.9.3(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
+      '@lingui/core': 5.9.5(@lingui/babel-plugin-lingui-macro@5.9.3(typescript@5.9.3))
 
   '@lingui/vite-plugin@5.9.3(typescript@5.9.3)(vite@8.0.3(@types/node@25.5.0)(esbuild@0.27.4)(jiti@2.6.1)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3))':
     dependencies:
@@ -9265,16 +9253,6 @@ snapshots:
 
   cookie@1.1.1: {}
 
-  cosmiconfig@8.3.6(typescript@5.9.2):
-    dependencies:
-      import-fresh: 3.3.1
-      js-yaml: 4.1.1
-      parse-json: 5.2.0
-      path-type: 4.0.0
-    optionalDependencies:
-      typescript: 5.9.2
-    optional: true
-
   cosmiconfig@8.3.6(typescript@5.9.3):
     dependencies:
       import-fresh: 3.3.1
@@ -11419,8 +11397,6 @@ snapshots:
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
-
-  typescript@5.9.2: {}
 
   typescript@5.9.3: {}
 
