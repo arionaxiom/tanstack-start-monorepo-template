@@ -26,12 +26,36 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       style={
         {
-          "--normal-bg": "var(--popover)",
-          "--normal-text": "var(--popover-foreground)",
+          // Toast container: bg-card, border-border, rounded-md, shadow-popover
+          "--normal-bg": "var(--card)",
+          "--normal-text": "var(--card-foreground)",
           "--normal-border": "var(--border)",
-          "--border-radius": "var(--radius)",
+          "--border-radius": "var(--radius-md, var(--radius))",
+          // Variant tokens — border-l-4 accent per §6.8
+          "--success-bg": "var(--card)",
+          "--success-text": "var(--card-foreground)",
+          "--success-border": "var(--success)",
+          "--warning-bg": "var(--card)",
+          "--warning-text": "var(--card-foreground)",
+          "--warning-border": "var(--warning)",
+          "--error-bg": "var(--card)",
+          "--error-text": "var(--card-foreground)",
+          "--error-border": "var(--destructive)",
         } as React.CSSProperties
       }
+      toastOptions={{
+        classNames: {
+          // Base toast: matches spec — bg-card border border-border rounded-md shadow-[var(--shadow-popover)]
+          // p-3 min-w-[320px] max-w-[420px] text-sm
+          toast:
+            "cn-toast !bg-[var(--card)] !border !border-[var(--border)] !rounded-md !shadow-[var(--shadow-popover)] !p-3 !min-w-[320px] !max-w-[420px] !text-sm",
+          // Variant left-border rules per §6.8
+          success: "!border-l-4 !border-l-[var(--success)]",
+          warning: "!border-l-4 !border-l-[var(--warning)]",
+          error: "!border-l-4 !border-l-[var(--destructive)]",
+          info: "!border-l-4 !border-l-[var(--info)]",
+        },
+      }}
       {...props}
     />
   );

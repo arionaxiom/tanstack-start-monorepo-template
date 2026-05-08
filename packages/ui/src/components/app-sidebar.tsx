@@ -47,22 +47,36 @@ export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.key}>
-                  <SidebarMenuButton asChild tooltip={item.title}>
-                    {LinkComponent ? (
-                      <LinkComponent to={item.url} onClick={handleNavigate}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </LinkComponent>
-                    ) : (
-                      <a
-                        href={item.url}
-                        onClick={handleNavigate}
-                        data-testid={`sidebar-link-${item.key}`}
-                      >
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </a>
-                    )}
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    render={
+                      LinkComponent ? (
+                        ({
+                          children: linkChildren,
+                          className: linkCn,
+                        }: {
+                          children?: React.ReactNode;
+                          className?: string;
+                        }) => (
+                          <LinkComponent
+                            to={item.url}
+                            onClick={handleNavigate}
+                            className={linkCn}
+                          >
+                            {linkChildren}
+                          </LinkComponent>
+                        )
+                      ) : (
+                        <a
+                          href={item.url}
+                          onClick={handleNavigate}
+                          data-testid={`sidebar-link-${item.key}`}
+                        />
+                      )
+                    }
+                  >
+                    <item.icon />
+                    <span>{item.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

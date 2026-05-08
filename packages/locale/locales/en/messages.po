@@ -37,8 +37,8 @@ msgstr "Go Back"
 msgid "Home"
 msgstr "Home"
 
-#: apps/web/src/components/locale-switcher.tsx:57
-#: apps/web/src/components/locale-switcher.tsx:60
+#: apps/web/src/components/locale-switcher.tsx:61
+#: apps/web/src/components/locale-switcher.tsx:64
 msgid "Language"
 msgstr "Language"
 
@@ -59,6 +59,6 @@ msgstr "The page you are looking for does not exist."
 msgid "Try Again"
 msgstr "Try Again"
 
-#: apps/web/src/components/locale-switcher.tsx:45
+#: apps/web/src/components/locale-switcher.tsx:49
 msgid "Unable to change language."
 msgstr "Unable to change language."

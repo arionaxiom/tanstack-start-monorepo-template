@@ -37,8 +37,8 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: apps/web/src/components/locale-switcher.tsx:57
-#: apps/web/src/components/locale-switcher.tsx:60
+#: apps/web/src/components/locale-switcher.tsx:61
+#: apps/web/src/components/locale-switcher.tsx:64
 msgid "Language"
 msgstr ""
 
@@ -59,6 +59,6 @@ msgstr ""
 msgid "Try Again"
 msgstr ""
 
-#: apps/web/src/components/locale-switcher.tsx:45
+#: apps/web/src/components/locale-switcher.tsx:49
 msgid "Unable to change language."
 msgstr ""
