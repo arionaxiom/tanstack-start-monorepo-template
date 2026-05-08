@@ -20,7 +20,7 @@ function customRender(
   return render(ui, { wrapper: TestProviders, ...options });
 }
 
-function customRenderHook<TProps, TResult>(
+function customRenderHook<TResult, TProps>(
   hook: (props: TProps) => TResult,
   options?: Omit<Parameters<typeof renderHook>[1], "wrapper"> & {
     initialProps?: TProps;
