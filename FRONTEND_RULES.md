@@ -162,3 +162,31 @@ When using Zustand: one store per domain concern, never a single global app stor
 - Direct API calls (use TanStack Query)
 - Business logic
 - More than ~50 lines per route file
+
+---
+
+## Quiet Editorial Discipline (R32–R40)
+
+These rules encode the Quiet Editorial design direction — deep teal primary, vivid orange spotlight, warm-paper neutrals, tabular type. They extend the base token and component rules with visual discipline constraints.
+
+**R32 — One spotlight per surface.** The orange `--spotlight` semantic MAY appear at most once per visible viewport, except for:
+
+- inline status icons within a list of mixed states
+- chart series 5 if the chart has 5+ series
+- timeline entries that need attention (one per row OK)
+
+**R33 — Only weights 400, 500, 700.** Display weights 300 and 800 are NOT in the system. Only 400, 500, 700 ship.
+
+**R34 — Hairline-as-elevation.** Only true overlays (popover, dialog, sheet, dropdown, tooltip, hover-card) may use box-shadow. In-page surfaces (cards, alerts, items) use 1px borders. No `shadow-sm` / `shadow-md` utilities. Enforced by `packages/ui/src/theme-compliance.test.ts`.
+
+**R35 — Tabular numerics for any column of numbers.** `font-feature-settings: "tnum", "lnum"` applied via the `text-mono` utility or the `tabular-nums` Tailwind class. Mixed proportional / tabular numerals in the same table is a regression.
+
+**R36 — Mode parity (light + dark).** Every PR that touches `packages/ui` or `apps/web` UI surfaces must Playwright-verify both light AND dark. Strengthens R17.
+
+**R37 — Theme toggle in the header.** The app shell should include a way for the user to switch theme. The template's `app-layout.tsx` does not ship a theme toggle by default — bring one when wiring up theme switching. Routes that deliberately omit the platform header (auth, onboarding) must include an alternative theme switcher.
+
+**R38 — Module accents are quiet identity markers, never chrome.** The `--accent-{module}` tokens MAY appear in: module icon color, module/section pill rule, dashboard page kicker, empty-state headline, sidebar section dot. They MUST NOT appear in: button fills, card/surface backgrounds, page backgrounds, action borders, charts, or toast variants. Module accent values must clear AA contrast against `--background` in both modes. Enforced by `packages/ui/src/module-accent-placement.test.ts`.
+
+**R39 — AI presence uses `--agent`, not `--primary`.** Components that visually represent the AI agent (message kickers, thinking pulses, "Ask AI" affordances, agent message kickers) consume the `--agent` semantic token. The `--agent` token currently aliases `--primary` but is allowed to diverge independently.
+
+**R40 — Design-system route is dev-only.** The route at `apps/web/src/routes/[__design-system].tsx` (URL `/__design-system`) renders only when `process.env.NODE_ENV !== "production"`. In production builds it returns the standard not-found component. Not gated by auth, not gated by feature flag — just dev-only. The bracket-escape filename is required so TanStack Router treats `__design-system` as a path segment, not a pathless layout.
