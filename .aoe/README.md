@@ -1,6 +1,6 @@
 # AoE Configuration
 
-This directory contains [Agent of Empires (AoE)](https://github.com/your-org/aoe) configuration for multi-agent orchestration in this template.
+This directory contains [Agent of Empires (AoE)](https://github.com/njbrake/agent-of-empires) configuration for multi-agent orchestration in this template.
 
 ## Directory Contents
 

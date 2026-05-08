@@ -46,7 +46,7 @@ fi
 # --- Check if this worktree already has a port assigned ---
 NEXT_PORT=""
 if [[ -f "$REGISTRY" ]]; then
-  EXISTING=$(grep "^${CURRENT_DIR}=" "$REGISTRY" 2>/dev/null | tail -1 | cut -d= -f2 || true)
+  EXISTING=$(grep -F "${CURRENT_DIR}=" "$REGISTRY" 2>/dev/null | tail -1 | cut -d= -f2 || true)
   if [[ -n "$EXISTING" ]]; then
     NEXT_PORT=$EXISTING
     echo "Reusing existing port block: ${NEXT_PORT}–$((NEXT_PORT + PORT_BLOCK_SIZE - 1))"
@@ -86,7 +86,8 @@ set_port_vars() {
   local file="$1"
   if [[ -f "$file" ]]; then
     if grep -q "^PORT_BASE=" "$file"; then
-      sed -i '' "s/^PORT_BASE=.*/PORT_BASE=$NEXT_PORT/" "$file"
+      sed -i.bak "s/^PORT_BASE=.*/PORT_BASE=$NEXT_PORT/" "$file"
+      rm -f "${file}.bak"
     else
       echo "PORT_BASE=$NEXT_PORT" >> "$file"
     fi
