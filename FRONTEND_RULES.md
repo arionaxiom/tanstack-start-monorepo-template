@@ -16,7 +16,7 @@ The codebase uses a three-tier OKLCH token system defined in `packages/tailwind-
 
 **R1 — Token consumption.** Components MUST use Tailwind semantic color classes (`bg-primary`, `text-muted-foreground`, etc.). Never reference CSS custom properties directly in className, never use raw color values (`#hex`, `rgb()`, `oklch()` literals), never use default Tailwind palette colors (`text-gray-900`, `bg-blue-500`).
 
-**R2 — Color function consistency.** When arbitrary Tailwind values must reference tier-2 tokens, use `oklch(var(--token))` — never `hsl(var(--token))`. The palette is defined in OKLCH; mixing color spaces causes perceptual inconsistencies.
+**R2 — Color function consistency.** When arbitrary Tailwind values must reference tier-2 tokens, use `oklch(var(--token))` — never `hsl(var(--token))`. The palette is defined in OKLCH; mixing color spaces causes perceptual inconsistencies. Enforced at test time by `packages/ui/src/theme-compliance.test.ts`.
 
 **R3 — Dark mode overrides.** Use `dark:` Tailwind prefix only for adjustments that can't be expressed via tier-2 token swaps alone (typically opacity modifiers like `dark:bg-destructive/60`).
 
@@ -26,7 +26,7 @@ The codebase uses a three-tier OKLCH token system defined in `packages/tailwind-
 
 **R6 — Class composition.** Always use `cn()` (from `@__APP_NAME__/ui/utils`) to merge class names. Never use string concatenation or template literals.
 
-**R7 — No default Tailwind palette.** Never use Tailwind's built-in color palette (`red-500`, `slate-200`, etc.) in component code. All colors flow through the semantic token system.
+**R7 — No default Tailwind palette.** Never use Tailwind's built-in color palette (`red-500`, `slate-200`, etc.) in component code. All colors flow through the semantic token system. Enforced at test time by `packages/ui/src/theme-compliance.test.ts`.
 
 ---
 
@@ -70,7 +70,9 @@ This is enforced by the `template/require-testid-on-action-elements` ESLint rule
 
 **R14 — Lint elements.** `packages/ui/eslint.config.mjs` must NOT exempt element files. Elements must pass the same lint rules as everything else.
 
-**R15 — Banned Tailwind color patterns.** Components must not use raw Tailwind palette color classes (`red-500`, `blue-200`, etc.) or `hsl(var(--`)) references. Optional: add a `theme-compliance.test.ts` that globs `.tsx` files and asserts compliance.
+**R14a — Use `ui/elements` for interactive primitives.** High-level code (`apps/web/src`, `packages/ui/src/components`) must never use raw HTML interactive elements (`<button>`, `<input>`, `<textarea>`, `<select>`, `<dialog>`, etc.) — always compose from `@__APP_NAME__/ui/elements/*` instead. Direct `@base-ui/react` imports are forbidden outside `packages/ui/src/elements/`. Enforced at test time by `packages/ui/src/elements-usage-compliance.test.ts`.
+
+**R15 — Banned Tailwind color patterns.** Components must not use raw Tailwind palette color classes (`red-500`, `blue-200`, etc.) or `hsl(var(--`)) references. Enforced by `packages/ui/src/theme-compliance.test.ts`.
 
 ---
 
@@ -78,9 +80,9 @@ This is enforced by the `template/require-testid-on-action-elements` ESLint rule
 
 **R16 — Route pending components.** Every route with a data loader MUST set `pendingMs: 200` (show loading after 200ms to avoid flicker on fast navigations). Routes should set `pendingComponent` with a skeleton that mirrors the page layout.
 
-**R17 — Skeleton over spinner.** Use `<Skeleton>` for content areas (preserves layout shape). Use `<Spinner>` only for inline indicators (button loading state). Never show a full-page centered spinner.
+**R17 — Skeleton over spinner.** Use `<Skeleton>` for content areas (preserves layout shape). Use `<Spinner>` only for inline indicators (button loading state). Never show a full-page centered spinner. Enforced at test time by `packages/ui/src/theme-compliance.test.ts` (bans `animate-pulse`+`bg-muted` and raw `animate-spin` outside `elements/`).
 
-**R18 — Loading state consistency.** All skeleton compositions must use the same `animate-pulse` animation from `<Skeleton>`. No custom loading animations.
+**R18 — Loading state consistency.** All skeleton compositions must use the same `animate-pulse` animation from `<Skeleton>`. No custom loading animations. Enforced at test time by `packages/ui/src/theme-compliance.test.ts`.
 
 ---
 
@@ -129,7 +131,7 @@ When using Zustand: one store per domain concern, never a single global app stor
 
 **R26 — Lazy load heavy non-route components.** Components over ~50KB (chart libraries, rich text editors) MUST be loaded via `React.lazy` with a `<Suspense>` fallback.
 
-**R27 — No barrel re-exports from `packages/ui`.** Each import path resolves to a single file. Never create an `index.ts` that re-exports all elements — it defeats tree-shaking.
+**R27 — No barrel re-exports from `packages/ui`.** Each import path resolves to a single file. Never create an `index.ts` that re-exports all elements — it defeats tree-shaking. Enforced at test time by `packages/ui/src/theme-compliance.test.ts`.
 
 ---
 
