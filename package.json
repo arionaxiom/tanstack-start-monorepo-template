@@ -18,7 +18,7 @@
     "*.{ts,tsx,md}": "prettier --write"
   },
   "devDependencies": {
-    "@lingui/cli": "^5.9.4",
+    "@lingui/cli": "^6.0.1",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.2",
@@ -37,13 +37,6 @@
       "react-dom": "19.2.0",
       "@types/react": "~19.2.14",
       "@types/react-dom": "~19.2.3",
-      "@lingui/core": "^5.9.4",
-      "@lingui/react": "^5.9.4",
-      "@lingui/cli": "^5.9.4",
-      "@lingui/macro": "^5.9.4",
-      "@lingui/loader": "^5.9.4",
-      "@lingui/vite-plugin": "^5.9.4",
-      "@lingui/swc-plugin": "^5.11.0",
       "vitest": "4.0.18",
       "@vitest/coverage-v8": "4.0.18",
       "@vitest/runner": "4.0.18",
