@@ -23,17 +23,17 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: packages/ui/src/components/not-found.tsx:20
+#: packages/ui/src/components/not-found.tsx:23
 msgid "Go back"
 msgstr ""
 
-#: packages/ui/src/components/default-catch-boundary.tsx:48
+#: packages/ui/src/components/default-catch-boundary.tsx:47
 msgid "Go Back"
 msgstr ""
 
 #: apps/web/src/nav/use-nav.ts:10
 #: apps/web/src/nav/use-nav.ts:21
-#: packages/ui/src/components/default-catch-boundary.tsx:37
+#: packages/ui/src/components/default-catch-boundary.tsx:36
 msgid "Home"
 msgstr ""
 
@@ -42,20 +42,20 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: apps/web/src/routes/index.tsx:38
+#: apps/web/src/routes/index.tsx:35
 msgid "Refresh"
 msgstr ""
 
-#: packages/ui/src/components/not-found.tsx:26
+#: packages/ui/src/components/not-found.tsx:29
 msgid "Start Over"
 msgstr ""
 
 #: packages/ui/src/components/not-found.test.tsx:9
-#: packages/ui/src/components/not-found.tsx:10
+#: packages/ui/src/components/not-found.tsx:12
 msgid "The page you are looking for does not exist."
 msgstr ""
 
-#: packages/ui/src/components/default-catch-boundary.tsx:30
+#: packages/ui/src/components/default-catch-boundary.tsx:29
 msgid "Try Again"
 msgstr ""
 
