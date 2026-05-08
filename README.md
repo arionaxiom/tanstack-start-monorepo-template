@@ -2,6 +2,18 @@
 
 Opinionated GitHub template for building modern logistics or operations dashboards with TanStack Start, Cloudflare Workers, React 19, Tailwind CSS v4, and Lingui-powered internationalization. The workspace is a pnpm + Turborepo monorepo where every package is ready to be published under your own scope (`@__APP_NAME__/*`).
 
+## AI Agent Guidance
+
+This template is designed to be worked on collaboratively with AI agents. Agent guidance is split into:
+
+- [`AGENTS.md`](./AGENTS.md) — shared baseline for every agent
+- [`CLAUDE.md`](./CLAUDE.md) — Claude-specific additions
+- [`CODEX.md`](./CODEX.md) — Codex-specific additions
+- [`FRONTEND_RULES.md`](./FRONTEND_RULES.md) — frontend conventions
+- [`PINNED_PACKAGES.md`](./PINNED_PACKAGES.md) — version constraints
+
+Multi-agent orchestration uses [Agent of Empires (AoE)](.aoe/README.md). See `.aoe/README.md` for setup and conventions.
+
 ## Highlights
 
 - **TanStack Start SSR app** running on Cloudflare Workers with Smart Placement, assets binding, and Vite dev ergonomics.
