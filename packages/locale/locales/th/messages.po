@@ -42,7 +42,7 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: apps/web/src/routes/index.tsx:34
+#: apps/web/src/routes/index.tsx:39
 msgid "Refresh"
 msgstr ""
 

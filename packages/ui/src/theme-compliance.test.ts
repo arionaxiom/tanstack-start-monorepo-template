@@ -263,6 +263,27 @@ describe("theme compliance — design system (R2, R17, R18, R27)", () => {
       `Use <Separator> from @__APP_NAME__/ui/elements/separator:\n${violations.join("\n")}`
     ).toEqual([]);
   });
+
+  it("no .tsx file open-codes Card-like surfaces (use <Surface elevation=card> or <Card>)", () => {
+    const violations: string[] = [];
+    for (const relPath of allFiles) {
+      if (relPath.includes(".test.")) continue;
+      if (relPath.includes("packages/ui/src/elements/")) continue;
+      if (relPath.includes("packages/ui/src/components/surface.tsx")) continue;
+      if (relPath.includes("packages/ui/src/components/design-system/"))
+        continue; // showcase
+      const absPath = resolve(ROOT, relPath);
+      const content = readFileSync(absPath, "utf-8");
+      // Detect className containing `bg-card` AND `border` (border or border-border) AND `rounded-lg|rounded-md|rounded-xl`
+      const re =
+        /className=[^>]*"[^"]*\bbg-card\b[^"]*\bborder(?:-border)?\b[^"]*\brounded-(?:md|lg|xl)\b[^"]*"|className=[^>]*"[^"]*\brounded-(?:md|lg|xl)\b[^"]*\bborder(?:-border)?\b[^"]*\bbg-card\b[^"]*"/;
+      if (re.test(content)) violations.push(relPath);
+    }
+    expect(
+      violations,
+      `Use <Surface elevation="card" bordered radius="lg"> from @__APP_NAME__/ui/components/surface:\n${violations.join("\n")}`
+    ).toEqual([]);
+  });
 });
 
 describe("no barrel re-exports (R27)", () => {

@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 
+import { Surface } from "@__APP_NAME__/ui/components/surface";
 import { Button } from "@__APP_NAME__/ui/elements/button";
 
 const getCurrentServerTime = createServerFn({
@@ -20,7 +21,12 @@ function Home() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <div className="w-full max-w-2xl rounded-xl border border-border bg-card p-8">
+      <Surface
+        elevation="card"
+        bordered
+        radius="xl"
+        className="w-full max-w-2xl p-8"
+      >
         <h1 className="mb-4 text-2xl font-bold text-card-foreground">
           Start Server Functions - Server Time
         </h1>
@@ -33,7 +39,7 @@ function Home() {
             <Trans>Refresh</Trans>
           </Button>
         </div>
-      </div>
+      </Surface>
     </div>
   );
 }
