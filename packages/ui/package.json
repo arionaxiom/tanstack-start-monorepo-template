@@ -17,6 +17,7 @@
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",
     "@__APP_NAME__/locale": "workspace:*",
+    "@__APP_NAME__/test-utils": "workspace:*",
     "@__APP_NAME__/tailwind-config": "workspace:*",
     "@__APP_NAME__/types": "workspace:*",
     "@__APP_NAME__/typescript-config": "workspace:*",
