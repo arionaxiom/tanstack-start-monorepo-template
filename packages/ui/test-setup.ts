@@ -12,14 +12,15 @@ expect.extend(matchers);
 i18n.loadAndActivate({ locale: "en", messages });
 
 // ─── JSDOM global mocks ──────────────────────────────────────────────────────
-// These mock browser APIs that JSDOM doesn't implement but Radix UI and
+// These mock browser APIs that JSDOM doesn't implement but Base UI and
 // motion/react depend on.
 
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
+global.ResizeObserver = class ResizeObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+  constructor(_callback: ResizeObserverCallback) {}
+};
 
 global.IntersectionObserver = vi.fn().mockImplementation((_callback) => ({
   observe: vi.fn(),
@@ -41,6 +42,7 @@ global.visualViewport = {
 
 global.HTMLElement.prototype.setPointerCapture = vi.fn();
 global.HTMLElement.prototype.hasPointerCapture = vi.fn();
+global.HTMLElement.prototype.getAnimations = vi.fn().mockReturnValue([]);
 
 // Cleanup after each test
 afterEach(() => {
