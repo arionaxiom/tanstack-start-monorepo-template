@@ -1,3 +1,4 @@
+import { defineConfig } from "eslint/config";
 import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import turboPlugin from "eslint-plugin-turbo";
@@ -96,6 +97,8 @@ export {
   aboveL2,
   aboveL3,
   bannedRelativeParent,
+  bannedPackages,
+  bannedTestingLibrary,
 };
 
 /**
@@ -103,11 +106,17 @@ export {
  *
  * @type {import("eslint").Linter.Config[]}
  */
-export const config = [
-  js.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.recommended,
+export const config = defineConfig([
   {
+    name: "base/recommended",
+    extends: [
+      js.configs.recommended,
+      eslintConfigPrettier,
+      ...tseslint.configs.recommended,
+    ],
+  },
+  {
+    name: "base/turbo-and-rules",
     plugins: {
       turbo: turboPlugin,
     },
@@ -153,6 +162,7 @@ export const config = [
   {
     // Test-utils wrapper files and vitest setup files are the ONLY places
     // allowed to import from @testing-library/react directly.
+    name: "base/test-utils-allow-rtl",
     files: [
       "src/test-utils.tsx",
       "src/test-utils.ts",
@@ -175,6 +185,7 @@ export const config = [
     // lingui.config.ts files import the root monorepo lingui.config via
     // a relative parent path. The root config is not a package, so there
     // is no absolute import for it.
+    name: "base/lingui-config-allow-relative",
     files: ["lingui.config.ts"],
     rules: {
       "no-restricted-imports": [
@@ -200,4 +211,4 @@ export const config = [
       "worker-configuration.d.ts",
     ],
   },
-];
+]);
