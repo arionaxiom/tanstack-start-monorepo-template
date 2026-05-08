@@ -1,32 +1,41 @@
-import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
+import { createRequire } from "node:module";
+import { defineConfig } from "eslint/config";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
-import tseslint from "typescript-eslint";
 
 import { config as baseConfig } from "./base.js";
+
+const require = createRequire(import.meta.url);
+const requireTestidOnActionElements = require("./rules/require-testid-on-action-elements.cjs");
+
+const templatePlugin = {
+  rules: {
+    "require-testid-on-action-elements": requireTestidOnActionElements,
+  },
+};
 
 /**
  * A custom ESLint configuration for libraries that use React.
  *
- * @type {import("eslint").Linter.Config[]} */
-export const config = [
-  ...baseConfig,
-  js.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
-   {
-    settings: {
-      react: {
-        version: "19.2.4" // or "19", "detect", etc. Avoids auto-detection crash.
-      }
-    }
+ * @type {import("eslint").Linter.Config[]}
+ */
+export const config = defineConfig([
+  {
+    name: "react-internal/extends-base",
+    extends: [baseConfig, pluginReact.configs.flat.recommended],
   },
   {
+    name: "react-internal/react-settings",
+    settings: {
+      react: {
+        version: "19.2.4",
+      },
+    },
+  },
+  {
+    name: "react-internal/browser-globals",
     languageOptions: {
-      ...pluginReact.configs.flat.recommended.languageOptions,
       globals: {
         ...globals.serviceworker,
         ...globals.browser,
@@ -34,15 +43,24 @@ export const config = [
     },
   },
   {
+    name: "react-internal/react-hooks",
     plugins: {
       "react-hooks": pluginReactHooks,
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
       "no-console": "error",
       "react/no-unescaped-entities": "off",
     },
   },
-];
+  {
+    name: "react-internal/template-plugin",
+    plugins: {
+      template: templatePlugin,
+    },
+    rules: {
+      "template/require-testid-on-action-elements": "error",
+    },
+  },
+]);

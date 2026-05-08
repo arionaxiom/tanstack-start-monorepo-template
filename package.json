@@ -2,26 +2,29 @@
   "name": "__APP_NAME__",
   "private": true,
   "scripts": {
+    "aoe:cleanup": ".aoe/scripts/cleanup-worktree.sh",
+    "aoe:dispatch": ".aoe/scripts/create-dispatch.sh",
+    "aoe:send": ".aoe/scripts/send-message.sh",
     "build": "turbo run build",
+    "check-types": "turbo run check-types",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "format:staged": "lint-staged",
-    "check-types": "turbo run check-types",
-    "prepare": "husky"
+    "lint": "turbo run lint",
+    "prepare": "husky",
+    "test": "turbo run test"
   },
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
   },
   "devDependencies": {
-    "@lingui/cli": "^5.9.3",
+    "@lingui/cli": "^6.0.1",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "husky": "^9.1.7",
-    "lint-staged": "^16.4.0",
-    "prettier": "^3.8.1",
-    "prettier-plugin-tailwindcss": "^0.7.2",
-    "turbo": "^2.8.20",
+    "lint-staged": "^17.0.2",
+    "prettier": "^3.8.3",
+    "prettier-plugin-tailwindcss": "^0.8.0",
+    "turbo": "^2.9.10",
     "typescript": "~5.9.2"
   },
   "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be",
@@ -32,12 +35,13 @@
     "overrides": {
       "react": "19.2.0",
       "react-dom": "19.2.0",
-      "@types/react": "~19.2.2",
-      "@types/react-dom": "~19.2.2",
-      "@lingui/core": "^5.9.3",
+      "@types/react": "~19.2.14",
+      "@types/react-dom": "~19.2.3",
       "vitest": "4.0.18",
       "@vitest/coverage-v8": "4.0.18",
-      "@vitest/runner": "4.0.18"
+      "@vitest/runner": "4.0.18",
+      "@vitest/spy": "4.0.18",
+      "typescript": "~5.9.2"
     },
     "onlyBuiltDependencies": [
       "@swc/core",

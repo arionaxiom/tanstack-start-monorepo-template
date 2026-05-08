@@ -34,4 +34,6 @@ function SubmitButton({
   );
 }
 
+SubmitButton.displayName = "SubmitButton";
+
 export { SubmitButton };

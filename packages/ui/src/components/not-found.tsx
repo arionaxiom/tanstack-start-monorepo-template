@@ -1,10 +1,13 @@
 import { Trans } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
 
+import { Button, buttonVariants } from "@__APP_NAME__/ui/elements/button";
+import { cn } from "@__APP_NAME__/ui/utils/cn";
+
 export function NotFound({ children }: { children?: React.ReactNode }) {
   return (
     <div className="space-y-2 p-2">
-      <div className="text-gray-600 dark:text-gray-400">
+      <div className="text-muted-foreground">
         {children || (
           <p>
             <Trans>The page you are looking for does not exist.</Trans>
@@ -12,15 +15,18 @@ export function NotFound({ children }: { children?: React.ReactNode }) {
         )}
       </div>
       <p className="flex flex-wrap items-center gap-2">
-        <button
+        <Button
+          variant="default"
+          size="sm"
           onClick={() => window.history.back()}
-          className="rounded bg-emerald-500 px-2 py-1 text-sm font-black text-white uppercase"
+          data-testid="go-back-button"
         >
           <Trans>Go back</Trans>
-        </button>
+        </Button>
         <Link
           to="/"
-          className="rounded bg-cyan-600 px-2 py-1 text-sm font-black text-white uppercase"
+          data-testid="start-over-link"
+          className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
         >
           <Trans>Start Over</Trans>
         </Link>
@@ -28,3 +34,5 @@ export function NotFound({ children }: { children?: React.ReactNode }) {
     </div>
   );
 }
+
+NotFound.displayName = "NotFound";

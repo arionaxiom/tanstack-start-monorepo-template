@@ -1,3 +1,12 @@
+/* -------------------------------------------------------------------------- */
+/* Fonts — managed via @fontsource npm packages (font-display: swap baked in) */
+/* -------------------------------------------------------------------------- */
+@import "@fontsource-variable/inter";
+@import "@fontsource/ibm-plex-sans-thai/400.css";
+@import "@fontsource/ibm-plex-sans-thai/500.css";
+@import "@fontsource/ibm-plex-sans-thai/700.css";
+@import "@fontsource-variable/jetbrains-mono";
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -7,7 +16,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* -------------------------------------------------------------------------- */
-/* @theme: bridge semantic tokens -> Tailwind color-* (using oklch + var)     */
+/* @theme bridge                                                              */
 /* -------------------------------------------------------------------------- */
 @theme {
   --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
@@ -16,53 +25,96 @@
     var(--tw-gradient-stops)
   );
 
-  /* Radius bridge */
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  /* Radius */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-base: var(--radius-md);
 
-  /* Core shadcn-style theme colors (oklch) */
+  /* Typography scale (Tailwind v4 native — registers text-* utilities
+     with font-size + line-height + letter-spacing. Font weight is
+     applied by consumers via font-bold / font-semibold / font-medium.) */
+  --text-display-lg: 3.5rem;
+  --text-display-lg--line-height: 1.05;
+  --text-display-lg--letter-spacing: -0.025em;
+  --text-display: 2.25rem;
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.022em;
+  --text-headline: 1.5rem;
+  --text-headline--line-height: 1.2;
+  --text-headline--letter-spacing: -0.018em;
+  --text-title: 1.125rem;
+  --text-title--line-height: 1.3;
+  --text-title--letter-spacing: -0.012em;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.55;
+  --text-body--letter-spacing: -0.005em;
+  --text-small: 0.8125rem;
+  --text-small--line-height: 1.5;
+  --text-kicker: 0.75rem;
+  --text-kicker--line-height: 1.4;
+  --text-kicker--letter-spacing: 0.08em;
+  --text-mono: 0.875rem;
+  --text-mono--line-height: 1.5;
+
+  /* Surfaces */
   --color-background: oklch(var(--background));
   --color-foreground: oklch(var(--foreground));
-
+  --color-surface: oklch(var(--surface));
   --color-card: oklch(var(--card));
   --color-card-foreground: oklch(var(--card-foreground));
-
+  --color-elevated: oklch(var(--elevated));
   --color-popover: oklch(var(--popover));
   --color-popover-foreground: oklch(var(--popover-foreground));
 
+  /* Text */
+  --color-muted: oklch(var(--muted));
+  --color-muted-foreground: oklch(var(--muted-foreground));
+  --color-subtle-foreground: oklch(var(--subtle-foreground));
+  --color-inverse-foreground: oklch(var(--inverse-foreground));
+
+  /* Action */
   --color-primary: oklch(var(--primary));
   --color-primary-foreground: oklch(var(--primary-foreground));
-
   --color-secondary: oklch(var(--secondary));
   --color-secondary-foreground: oklch(var(--secondary-foreground));
 
-  --color-muted: oklch(var(--muted));
-  --color-muted-foreground: oklch(var(--muted-foreground));
-
-  --color-accent: oklch(var(--accent));
-  --color-accent-foreground: oklch(var(--accent-foreground));
-
+  /* AI / status */
+  --color-spotlight: oklch(var(--spotlight));
+  --color-spotlight-foreground: oklch(var(--spotlight-foreground));
+  --color-info: oklch(var(--info));
+  --color-info-foreground: oklch(var(--info-foreground));
+  --color-agent: oklch(var(--agent));
+  --color-agent-foreground: oklch(var(--agent-foreground));
+  --color-success: oklch(var(--success));
+  --color-success-foreground: oklch(var(--success-foreground));
+  --color-warning: oklch(var(--warning));
+  --color-warning-foreground: oklch(var(--warning-foreground));
   --color-destructive: oklch(var(--destructive));
   --color-destructive-foreground: oklch(var(--destructive-foreground));
 
+  /* Structure */
   --color-border: oklch(var(--border));
+  --color-border-strong: oklch(var(--border-strong));
   --color-input: oklch(var(--input));
   --color-ring: oklch(var(--ring));
+  --color-overlay: oklch(var(--overlay));
 
-  /* Charts */
+  /* Charts (re-skinned per §7.1) */
   --color-chart-1: oklch(var(--chart-1));
   --color-chart-2: oklch(var(--chart-2));
   --color-chart-3: oklch(var(--chart-3));
   --color-chart-4: oklch(var(--chart-4));
   --color-chart-5: oklch(var(--chart-5));
 
-  /* Extra colors from your previous @theme inline bridge */
-  --color-main: oklch(var(--main));
-  --color-main-foreground: oklch(var(--main-foreground));
-  --color-secondary-background: oklch(var(--secondary-background));
-  --color-overlay: oklch(var(--overlay));
+  /* Module accents (§6.10) */
+  --color-accent-stock: oklch(var(--accent-stock));
+  --color-accent-leadgen: oklch(var(--accent-leadgen));
+  --color-accent-jobs: oklch(var(--accent-jobs));
 
+  /* Sidebar (kept for compatibility; re-skinned to point at new tokens) */
   --color-sidebar: oklch(var(--sidebar));
   --color-sidebar-foreground: oklch(var(--sidebar-foreground));
   --color-sidebar-primary: oklch(var(--sidebar-primary));
@@ -72,239 +124,315 @@
   --color-sidebar-border: oklch(var(--sidebar-border));
   --color-sidebar-ring: oklch(var(--sidebar-ring));
 
-  /* Other design tokens you had in @theme inline */
-  --spacing-boxShadowX: 4px;
-  --spacing-boxShadowY: 4px;
-  --spacing-reverseBoxShadowX: -4px;
-  --spacing-reverseBoxShadowY: -4px;
-  --radius-base: 5px;
-  --shadow-shadow: var(--shadow);
-  --font-weight-base: 500;
-  --font-weight-heading: 700;
+  /* Typography */
+  --font-sans:
+    "Inter Variable", "IBM Plex Sans Thai", system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono:
+    "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
 
-  /* Animations */
-  --animate-accordion-down: accordion-down 0.2s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.2, 0, 0.1, 1);
+  --duration-1: 120ms;
+  --duration-2: 200ms;
+  --duration-3: 320ms;
+
+  /* Animations (kept; existing tw-animate-css helpers + accordion) */
+  --animate-accordion-down: accordion-down 0.2s var(--ease);
+  --animate-accordion-up: accordion-up 0.2s var(--ease);
 
   @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
   }
   @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
   }
+
+  @keyframes spotlight-pulse {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1.0; }
+  }
+  --animate-spotlight-pulse: spotlight-pulse 1800ms ease-in-out infinite;
 }
 
-/*
-  Tailwind v4 border color compatibility
-*/
+/* Tailwind v4 border color compatibility */
 @layer base {
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-}
-
-@layer utilities {
-  :root {
-    --foreground-rgb: 0, 0, 0;
-    --background-start-rgb: 214, 219, 220;
-    --background-end-rgb: 255, 255, 255;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --foreground-rgb: 255, 255, 255;
-      --background-start-rgb: 0, 0, 0;
-      --background-end-rgb: 0, 0, 0;
-    }
+    border-color: oklch(var(--border));
   }
 }
 
 /* -------------------------------------------------------------------------- */
-/* Base OKLCH tokens: raw numbers only here                                   */
+/* Tier 1: raw OKLCH palette (defined ONCE)                                   */
 /* -------------------------------------------------------------------------- */
 @layer base {
   :root {
-    /* Base palette (raw OKLCH – defined ONCE) */
-    --color-a: 0.2873 0.0737 253.98; /* deep indigo */
-    --color-b: 0.7348 0.0674 257.82; /* lavender */
-    --color-c: 0.9564 0.0025 48.72;  /* near-white neutral */
-    --color-d: 0.7929 0.162 88.43;   /* lime accent */
-    --color-e: 0.3177 0.1151 257.5;  /* rich purple (primary) */
-    --color-f: 0.3226 0.1324 29.23;  /* warm destructive */
+    /* Ink scale — warm hue 55–85 across the lightness range */
+    --ink-50:  0.99 0.004 85;
+    --ink-100: 0.97 0.006 80;
+    --ink-200: 0.93 0.008 75;
+    --ink-300: 0.86 0.010 70;
+    --ink-400: 0.68 0.012 65;
+    --ink-500: 0.52 0.014 62;
+    --ink-600: 0.38 0.016 60;
+    --ink-700: 0.28 0.018 58;
+    --ink-800: 0.20 0.020 56;
+    --ink-900: 0.14 0.014 55;
+    --ink-950: 0.09 0.010 55;
 
-    /* Extra raw tokens used only in dark/derived roles */
-    --color-secondary-dark: 0.26 0.06 255;
-    --color-muted-dark: 0.24 0.05 255;
-    --color-muted-foreground-dark: 0.76 0.03 250;
+    /* Brand teal (#006152 ≈ 0.42 0.072 174) */
+    --brand-400: 0.60 0.080 175;
+    --brand-500: 0.42 0.072 174;
+    --brand-700: 0.32 0.064 174;
 
-    --color-border-light: 0.88 0.015 250;
-    --color-input-light: 0.9 0.01 250;
+    /* Spotlight orange (#ff4400 ≈ 0.66 0.221 37) */
+    --spotlight-400: 0.74 0.180 40;
+    --spotlight-500: 0.66 0.221 37;
 
-    --color-border-dark: 0.32 0.05 260 / 0.6;
-    --color-input-dark: 0.32 0.05 260 / 0.8;
+    /* State scale */
+    --success-500: 0.58 0.120 155;
+    --warning-500: 0.78 0.150 80;
+    --danger-500:  0.55 0.180 25;
 
-    --color-sidebar-accent-dark: 0.36 0.06 260;
-    --color-sidebar-border-dark: 0.40 0.03 260 / 0.7;
+    /* Module accents — low-chroma identity markers (§6.10) */
+    --accent-stock-light:   0.50 0.06 50;
+    --accent-stock-dark:    0.62 0.06 50;
+    --accent-leadgen-light: 0.50 0.06 220;
+    --accent-leadgen-dark:  0.62 0.06 220;
+    --accent-jobs-light:    0.50 0.06 290;
+    --accent-jobs-dark:     0.62 0.06 290;
 
-    --overlay-light: 0.2873 0.0737 253.98 / 0.4;
-    --overlay-dark: 0 0 0 / 0.55;
+    /* App radius alias kept for shadcn primitives that read --radius directly */
+    --radius: 0.5rem;
 
-    --shadow-light: 0 0 0 / 0.18;
-    --shadow-dark: 0 0 0 / 0.6;
+    /* ----------- LIGHT MODE semantic tokens ----------- */
+    --background:           var(--ink-50);
+    --surface:              var(--ink-100);
+    --foreground:           var(--ink-700);
+    --muted:                var(--ink-100);
+    --muted-foreground:     var(--ink-500);
+    --subtle-foreground:    var(--ink-400);
+    --inverse-foreground:   var(--ink-50);
 
-    /* App semantic tokens */
-    --radius: 0.625rem;
+    --card:                 var(--ink-50);
+    --card-foreground:      var(--ink-700);
+    --elevated:             var(--ink-50);
+    --popover:              var(--ink-50);
+    --popover-foreground:   var(--ink-700);
 
-    /* LIGHT THEME (default) – all semantic tokens use var(...) */
-    --background: var(--color-c);
-    --foreground: var(--color-a);
+    --border:               var(--ink-200);
+    --border-strong:        var(--ink-300);
+    --input:                var(--ink-200);
+    --ring:                 var(--brand-500);
 
-    --card: var(--color-c);
-    --card-foreground: var(--color-a);
+    --primary:              var(--brand-500);
+    --primary-foreground:   var(--ink-50);
+    --secondary:            var(--ink-100);
+    --secondary-foreground: var(--ink-700);
 
-    --popover: var(--color-c);
-    --popover-foreground: var(--color-a);
+    --spotlight:            var(--spotlight-500);
+    --spotlight-foreground: var(--ink-900);
+    --info:                 var(--brand-500);
+    --info-foreground:      var(--ink-50);
+    --agent:                var(--brand-500);
+    --agent-foreground:     var(--ink-50);
 
-    --primary: var(--color-e);
-    --primary-foreground: var(--color-c);
+    --success:              var(--success-500);
+    --success-foreground:   var(--ink-900);
+    --warning:              var(--warning-500);
+    --warning-foreground:   var(--ink-700);
+    --destructive:          var(--danger-500);
+    --destructive-foreground: var(--ink-50);
 
-    --secondary: var(--color-b);
-    --secondary-foreground: var(--color-a);
+    --overlay:              0 0 0 / 0.18;
 
-    --muted: var(--color-b);
-    --muted-foreground: var(--color-a);
+    /* Charts */
+    --chart-1: var(--brand-500);
+    --chart-2: 0.62 0.060 200;
+    --chart-3: 0.55 0.090 145;
+    --chart-4: var(--spotlight-500);
+    --chart-5: 0.45 0.030 60;
 
-    --accent: var(--color-d);
-    --accent-foreground: var(--color-a);
+    /* Module accents (light) */
+    --accent-stock:   var(--accent-stock-light);
+    --accent-leadgen: var(--accent-leadgen-light);
+    --accent-jobs:    var(--accent-jobs-light);
 
-    --destructive: var(--color-f);
-    --destructive-foreground: var(--color-c);
+    /* Sidebar — points at platform tokens; sidebar is "the same paper" as main */
+    --sidebar:                       var(--background);
+    --sidebar-foreground:            var(--foreground);
+    --sidebar-primary:               var(--primary);
+    --sidebar-primary-foreground:    var(--primary-foreground);
+    --sidebar-accent:                var(--muted);
+    --sidebar-accent-foreground:     var(--foreground);
+    --sidebar-border:                var(--border);
+    --sidebar-ring:                  var(--ring);
 
-    --border: var(--color-border-light);
-    --input: var(--color-input-light);
-    --ring: var(--color-e);
-
-    /* Charts based on palette */
-    --chart-1: var(--color-e);
-    --chart-2: var(--color-b);
-    --chart-3: var(--color-d);
-    --chart-4: var(--color-f);
-    --chart-5: var(--color-a);
-
-    /* Sidebar (light) */
-    --sidebar: var(--card);
-    --sidebar-foreground: var(--foreground);
-    --sidebar-primary: var(--primary);
-    --sidebar-primary-foreground: var(--primary-foreground);
-    --sidebar-accent: var(--secondary);
-    --sidebar-accent-foreground: var(--secondary-foreground);
-    --sidebar-border: var(--color-border-light);
-    --sidebar-ring: var(--primary);
-
-    /* Extra tokens */
-    --main: var(--primary);
-    --main-foreground: var(--primary-foreground);
-    --secondary-background: var(--secondary);
-
-    --overlay: var(--overlay-light);
-    --shadow: var(--shadow-light);
+    /* Shadows (§3.5). Note: tokens not registered in @theme — used directly via CSS. */
+    --shadow-flat:    none;
+    --shadow-popover: 0 1px 2px oklch(0 0 0 / 0.04), 0 0 0 1px oklch(var(--border));
+    --shadow-modal:   0 10px 40px oklch(0 0 0 / 0.08), 0 0 0 1px oklch(var(--border));
   }
 
   .dark {
-    /* DARK THEME – reuse palette via var(...) only */
+    --background:           var(--ink-900);
+    --surface:              var(--ink-800);
+    --foreground:           var(--ink-100);
+    --muted:                var(--ink-800);
+    --muted-foreground:     var(--ink-400);
+    --subtle-foreground:    var(--ink-500);
+    --inverse-foreground:   var(--ink-900);
 
-    --background: var(--color-a);
-    --foreground: var(--color-c);
+    --card:                 var(--ink-800);
+    --card-foreground:      var(--ink-100);
+    --elevated:             var(--ink-700);
+    --popover:              var(--ink-800);
+    --popover-foreground:   var(--ink-100);
 
-    --card: var(--color-e);
-    --card-foreground: var(--color-c);
+    /* raw triples + alpha — cannot use oklch(var(--ink-N) / a) because @theme bridge wraps as oklch(var(--border)) */
+    --border:               0.20 0.020 56 / 0.6;
+    --border-strong:        0.28 0.018 58 / 0.7;
+    --input:                0.20 0.020 56 / 0.7;
+    --ring:                 var(--brand-400);
 
-    --popover: var(--color-e);
-    --popover-foreground: var(--color-c);
+    --primary:              var(--brand-400);
+    --primary-foreground:   var(--ink-50);
+    --secondary:            var(--ink-800);
+    --secondary-foreground: var(--ink-100);
 
-    --primary: var(--color-b);
-    --primary-foreground: var(--color-a);
+    --spotlight:            var(--spotlight-400);
+    --spotlight-foreground: var(--ink-900);
+    --info:                 var(--brand-400);
+    --info-foreground:      var(--ink-50);
+    --agent:                var(--brand-400);
+    --agent-foreground:     var(--ink-50);
 
-    --secondary: var(--color-secondary-dark);
-    --secondary-foreground: var(--color-c);
+    --success:              var(--success-500);
+    --success-foreground:   var(--ink-900);
+    --warning:              var(--warning-500);
+    --warning-foreground:   var(--ink-900);
+    --destructive:          var(--danger-500);
+    --destructive-foreground: var(--ink-50);
 
-    --muted: var(--color-muted-dark);
-    --muted-foreground: var(--color-muted-foreground-dark);
+    --overlay:              0 0 0 / 0.5;
 
-    --accent: var(--color-d);
-    --accent-foreground: var(--color-a);
+    --chart-1: var(--brand-400);
+    --chart-2: 0.70 0.060 200;
+    --chart-3: 0.65 0.090 145;
+    --chart-4: var(--spotlight-400);
+    --chart-5: 0.65 0.020 60;
 
-    --destructive: var(--color-f);
-    --destructive-foreground: var(--color-c);
+    --accent-stock:   var(--accent-stock-dark);
+    --accent-leadgen: var(--accent-leadgen-dark);
+    --accent-jobs:    var(--accent-jobs-dark);
 
-    --border: var(--color-border-dark);
-    --input: var(--color-input-dark);
-    --ring: var(--color-b);
+    --sidebar:                    var(--background);
+    --sidebar-foreground:         var(--foreground);
+    --sidebar-primary:            var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent:             var(--muted);
+    --sidebar-accent-foreground:  var(--foreground);
+    --sidebar-border:             var(--border);
+    --sidebar-ring:               var(--ring);
 
-    /* Charts (dark) */
-    --chart-1: var(--color-b);
-    --chart-2: var(--color-d);
-    --chart-3: var(--color-f);
-    --chart-4: var(--color-c);
-    --chart-5: var(--color-e);
-
-    /* Sidebar (dark) */
-    --sidebar: var(--color-e);
-    --sidebar-foreground: var(--color-c);
-    --sidebar-primary: var(--color-b);
-    --sidebar-primary-foreground: var(--color-a);
-    --sidebar-accent: var(--color-sidebar-accent-dark);
-    --sidebar-accent-foreground: var(--color-c);
-    --sidebar-border: var(--color-sidebar-border-dark);
-    --sidebar-ring: var(--color-b);
-
-    /* Extra tokens */
-    --main: var(--primary);
-    --main-foreground: var(--primary-foreground);
-    --secondary-background: var(--secondary);
-
-    --overlay: var(--overlay-dark);
-    --shadow: var(--shadow-dark);
+    --shadow-flat:    none;
+    --shadow-popover: 0 1px 2px oklch(0 0 0 / 0.4),  0 0 0 1px oklch(var(--ink-700));
+    --shadow-modal:   0 10px 40px oklch(0 0 0 / 0.6), 0 0 0 1px oklch(var(--ink-700));
   }
 }
 
 /* -------------------------------------------------------------------------- */
-/* Typography + outline styles (same as your original)                        */
+/* Typography defaults                                                        */
 /* -------------------------------------------------------------------------- */
 @layer base {
-  body {
-    @apply text-foreground font-base bg-background;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-heading;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11", "tnum";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.018em;
+  }
+
+  /* Thai locale — taller line-height, no negative tracking on body */
+  :root[lang="th"] body { line-height: 1.7; letter-spacing: 0; }
+  :root[lang="th"] .text-body { line-height: 1.7; letter-spacing: 0; }
+
+  /* Numerics */
+  .numeric { font-feature-settings: "tnum", "lnum"; font-variant-numeric: tabular-nums lining-nums; }
+}
+
+/* Utility: border + outline default */
+@layer base {
+  * { @apply border-border; }
+  *:focus-visible {
+    outline: 2px solid oklch(var(--ring));
+    outline-offset: 2px;
+  }
+}
+
+@utility scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+@layer utilities {
+  /* Spotlight pulse — used for proposal-pending, agent-thinking */
+  .animate-spotlight-pulse {
+    animation: spotlight-pulse 1800ms ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-spotlight-pulse,
+    .animate-pulse,
+    .animate-accordion-down,
+    .animate-accordion-up { animation: none !important; }
+  }
+
+  /*
+   * `text-mono` is registered in @theme as a font-size token, which gives it
+   * size + line-height + letter-spacing. Tailwind v4's --text-{name}--*
+   * sub-properties don't include font-family or font-feature-settings, so we
+   * extend the generated `.text-mono` class here to bundle the rest of the
+   * mono treatment. Result: `text-mono` alone is a complete mono utility
+   * (family + tabular-nums + size). Use `text-mono text-[size]` to override
+   * the default size. Use of raw `font-mono` is forbidden by theme-compliance
+   * (see test) — `text-mono` is the single source of truth.
+   */
+  .text-mono {
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum", "lnum";
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+}
+
+/* Module accent wiring (§6.10) — sets --accent-current for descendants */
+@layer utilities {
+  [data-module-accent="stock"]   { --accent-current: oklch(var(--accent-stock));   }
+  [data-module-accent="leadgen"] { --accent-current: oklch(var(--accent-leadgen)); }
+  [data-module-accent="jobs"]    { --accent-current: oklch(var(--accent-jobs));   }
+
+  /* Utility consumed by module-switcher pill — 2px left border */
+  .module-accent-border-l {
+    border-left-width: 2px;
+    border-left-color: var(--accent-current);
+  }
+
+  /* Utility consumed by dashboard page kicker — color via accent */
+  .module-accent-kicker {
+    color: var(--accent-current);
   }
 }

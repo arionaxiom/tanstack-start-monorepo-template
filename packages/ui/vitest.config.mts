@@ -1,11 +1,14 @@
+import { createRequire } from "node:module";
 import path from "path";
 import viteReact from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vitest/config";
 
+const require = createRequire(import.meta.url);
+
 export default defineConfig({
   plugins: [
     viteReact({
-      plugins: [["@lingui/swc-plugin", {}]],
+      plugins: [[require.resolve("@lingui/swc-plugin"), {}]],
     }),
   ],
   resolve: {
