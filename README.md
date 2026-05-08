@@ -63,15 +63,16 @@ apps/
 packages/
   assets/               # Static assets bundled via Wrangler assets binding
   constants/            # Shared constants
-  eslint-config/        # Base + React ESLint configs
-  fixtures/             # Sample data (seed/mocks)
+  eslint-config/        # Base + React ESLint configs (with custom rules)
+  form-options/         # TanStack Form options (Zod schemas + default values)
   locale/               # Lingui config + locale catalogs
   node-fn/              # Worker-side helpers / server-only code
   react-hooks/          # Cross-app React hooks
   tailwind-config/      # Tailwind v4 shared config + shared CSS
+  test-utils/           # Shared TestProviders wrapper + testing-library re-exports
   types/                # Shared TypeScript types
   typescript-config/    # Reusable tsconfig presets
-  ui/                   # Design system components/elements/hooks/utils
+  ui/                   # Design system components/elements/hooks/utils (Base UI)
   utils/                # Framework-agnostic utilities
 ```
 
