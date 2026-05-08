@@ -23,8 +23,9 @@ interface AppSidebarProps {
   LinkComponent?: ComponentType<{
     to: string;
     children: React.ReactNode;
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>;
     className?: string;
+    [key: string]: unknown;
   }>;
   menuItems: MenuItem[];
 }
@@ -52,18 +53,21 @@ export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
                     render={
                       LinkComponent ? (
                         ({
-                          children: linkChildren,
-                          className: linkCn,
-                        }: {
-                          children?: React.ReactNode;
-                          className?: string;
-                        }) => (
+                          children,
+                          className,
+                          onClick: baseOnClick,
+                          ...rest
+                        }: React.HTMLAttributes<HTMLAnchorElement>) => (
                           <LinkComponent
                             to={item.url}
-                            onClick={handleNavigate}
-                            className={linkCn}
+                            className={className}
+                            onClick={(e) => {
+                              baseOnClick?.(e);
+                              handleNavigate();
+                            }}
+                            {...(rest as Record<string, unknown>)}
                           >
-                            {linkChildren}
+                            {children}
                           </LinkComponent>
                         )
                       ) : (

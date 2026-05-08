@@ -40,8 +40,9 @@ interface AppLayoutProps {
   LinkComponent?: ComponentType<{
     to: string;
     children: React.ReactNode;
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>;
     className?: string;
+    [key: string]: unknown;
   }>;
   headerActions?: React.ReactNode;
 }
