@@ -1,35 +1,53 @@
-import type { ComponentType } from "react";
+import type { ComponentType, ReactNode } from "react";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
   useSidebar,
 } from "@__APP_NAME__/ui/elements/sidebar";
 
+export const APP_NAV_SIDEBAR_PANEL_ID = "app-nav";
+
 export interface MenuItem {
+  key: string; // kebab-case stable identifier (used for data-testid; must not change with locale)
   title: string;
   url: string;
   icon: ComponentType<{ className?: string }>;
 }
 
 interface AppSidebarProps {
+  /**
+   * Optional label shown in the sidebar header. Defaults to
+   * `__APP_NAME__`. Override to customise without forking the component.
+   */
+  groupLabel?: ReactNode;
   LinkComponent?: ComponentType<{
     to: string;
     children: React.ReactNode;
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>;
     className?: string;
+    [key: string]: unknown;
   }>;
   menuItems: MenuItem[];
+  children?: ReactNode;
+  panelId?: string;
 }
 
-export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
-  const { isMobile, openMobile, toggleSidebar } = useSidebar();
+export function AppSidebar({
+  groupLabel = "__APP_NAME__",
+  LinkComponent,
+  menuItems,
+  children,
+  panelId = APP_NAV_SIDEBAR_PANEL_ID,
+}: AppSidebarProps) {
+  const { isMobile, openMobile, toggleSidebar } = useSidebar(panelId);
 
   const handleNavigate = () => {
     if (isMobile && openMobile) {
@@ -38,33 +56,64 @@ export function AppSidebar({ LinkComponent, menuItems }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar>
+    <Sidebar panelId={panelId}>
+      <SidebarHeader className="flex-row items-center justify-between border-b border-sidebar-border px-3 py-2">
+        <div className="min-w-0 truncate text-sm font-semibold text-sidebar-foreground">
+          {groupLabel}
+        </div>
+        <SidebarTrigger panelId={panelId} className="size-8 shrink-0" />
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>__APP_NAME__</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild tooltip={item.title}>
-                    {LinkComponent ? (
-                      <LinkComponent to={item.url} onClick={handleNavigate}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </LinkComponent>
-                    ) : (
-                      <a href={item.url} onClick={handleNavigate}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </a>
-                    )}
+                <SidebarMenuItem key={item.key}>
+                  <SidebarMenuButton
+                    panelId={panelId}
+                    tooltip={item.title}
+                    render={
+                      LinkComponent ? (
+                        ({
+                          children,
+                          className,
+                          onClick: baseOnClick,
+                          ...rest
+                        }: React.HTMLAttributes<HTMLAnchorElement>) => (
+                          <LinkComponent
+                            to={item.url}
+                            className={className}
+                            data-testid={`sidebar-link-${item.key}`}
+                            onClick={(e) => {
+                              baseOnClick?.(e);
+                              handleNavigate();
+                            }}
+                            {...(rest as Record<string, unknown>)}
+                          >
+                            {children}
+                          </LinkComponent>
+                        )
+                      ) : (
+                        <a
+                          href={item.url}
+                          onClick={handleNavigate}
+                          data-testid={`sidebar-link-${item.key}`}
+                        />
+                      )
+                    }
+                  >
+                    <item.icon />
+                    <span>{item.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        {children}
       </SidebarContent>
     </Sidebar>
   );
 }
+
+AppSidebar.displayName = "AppSidebar";

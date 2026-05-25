@@ -5,7 +5,8 @@
   },
   "scripts": {
     "check-types": "tsc --noEmit true",
-    "lint": "eslint . --max-warnings 0 --cache --cache-location .eslintcache"
+    "lint": "eslint . --max-warnings 0 --cache --cache-location .eslintcache",
+    "test": "node ../../scripts/vitest-run.mjs --silent=true"
   },
   "type": "module",
   "dependencies": {
@@ -14,9 +15,11 @@
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",
     "@__APP_NAME__/typescript-config": "workspace:*",
-    "eslint": "^10.1.0"
+    "@vitest/coverage-v8": "4.1.7",
+    "eslint": "^10.4.0",
+    "vitest": "4.1.7"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^6"
   }
 }

@@ -8,25 +8,26 @@
   "scripts": {
     "check-types": "tsc --noEmit true",
     "lint": "eslint . --max-warnings 0 --cache --cache-location .eslintcache",
-    "test": "vitest run --coverage --silent=true"
+    "test": "node ../../scripts/vitest-run.mjs --coverage --silent=true"
   },
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",
+    "@__APP_NAME__/test-utils": "workspace:*",
     "@__APP_NAME__/types": "workspace:*",
     "@__APP_NAME__/typescript-config": "workspace:*",
-    "@lingui/core": "^5.9.3",
-    "@lingui/react": "^5.9.3",
-    "@lingui/swc-plugin": "^5.9.3",
+    "@lingui/core": "^6.1.0",
+    "@lingui/react": "^6.1.0",
+    "@lingui/swc-plugin": "^6.2.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "@types/react": "~19.2.2",
-    "@vitejs/plugin-react-swc": "^4.3.0",
-    "@vitest/coverage-v8": "^4.0.18",
-    "eslint": "^10.1.0",
-    "jsdom": "^29.0.1",
-    "vitest": "^4.0.18"
+    "@types/react": "~19.2.15",
+    "@vitejs/plugin-react-swc": "^4.3.1",
+    "@vitest/coverage-v8": "4.1.7",
+    "eslint": "^10.4.0",
+    "jsdom": "^29.1.1",
+    "vitest": "4.1.7"
   },
   "dependencies": {
     "@__APP_NAME__/constants": "workspace:*",
@@ -36,6 +37,6 @@
   "peerDependencies": {
     "@lingui/react": "*",
     "react": "^19",
-    "typescript": "^5"
+    "typescript": "^6"
   }
 }

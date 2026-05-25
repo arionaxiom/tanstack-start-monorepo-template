@@ -8,7 +8,8 @@ import {
 } from "@tanstack/react-router";
 import type { ErrorComponentProps } from "@tanstack/react-router";
 
-import { Button } from "@__APP_NAME__/ui/elements/button";
+import { Button, buttonVariants } from "@__APP_NAME__/ui/elements/button";
+import { cn } from "@__APP_NAME__/ui/utils/cn";
 
 export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
   const router = useRouter();
@@ -22,24 +23,26 @@ export function DefaultCatchBoundary({ error }: ErrorComponentProps) {
       <ErrorComponent error={error} />
       <div className="flex flex-wrap items-center gap-2">
         <Button
+          data-testid="error-retry-button"
           onClick={() => {
             router.invalidate();
           }}
-          className={`rounded bg-gray-600 px-2 py-1 font-extrabold text-white uppercase dark:bg-gray-700`}
         >
           <Trans>Try Again</Trans>
         </Button>
         {isRoot ? (
           <Link
             to="/"
-            className={`rounded bg-gray-600 px-2 py-1 font-extrabold text-white uppercase dark:bg-gray-700`}
+            data-testid="error-home-link"
+            className={cn(buttonVariants({ variant: "secondary" }))}
           >
             <Trans>Home</Trans>
           </Link>
         ) : (
           <Link
             to="/"
-            className={`rounded bg-gray-600 px-2 py-1 font-extrabold text-white uppercase dark:bg-gray-700`}
+            data-testid="error-back-link"
+            className={cn(buttonVariants({ variant: "secondary" }))}
             onClick={(e) => {
               e.preventDefault();
               window.history.back();

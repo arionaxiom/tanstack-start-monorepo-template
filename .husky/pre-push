@@ -1,0 +1,16 @@
+# --- Start PATH Fix ---
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+# --- End PATH Fix ---
+
+echo "Validating locale catalogs..."
+pnpm run --filter @__APP_NAME__/locale build
+pnpm run --filter @__APP_NAME__/locale compile
+
+if ! git diff --quiet -- packages/locale/locales; then
+  echo "Locale catalogs changed; auto-committing the regen."
+  git status --short -- packages/locale/locales
+  git add -- packages/locale/locales
+  git commit -m "chore(locale): regenerate catalogs"
+fi

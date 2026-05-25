@@ -1,5 +1,3 @@
-"use client";
-
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 
@@ -28,8 +26,12 @@ export function LocaleSwitcher() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleChange = async (nextLocale: string) => {
-    if (!isLocaleValid(nextLocale) || nextLocale === i18n.locale) {
+  const handleChange = async (nextLocale: string | null) => {
+    if (
+      !nextLocale ||
+      !isLocaleValid(nextLocale) ||
+      nextLocale === i18n.locale
+    ) {
       return;
     }
 
@@ -56,6 +58,7 @@ export function LocaleSwitcher() {
           className="w-[160px]"
           aria-label={t`Language`}
           disabled={isUpdating}
+          data-testid="locale-switcher-trigger"
         >
           <SelectValue placeholder={t`Language`} />
         </SelectTrigger>

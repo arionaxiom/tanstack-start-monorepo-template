@@ -3,7 +3,12 @@ import { lingui } from "@lingui/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react-swc";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
+
+const linguiSwcPlugin = fileURLToPath(
+  import.meta.resolve("@lingui/swc-plugin")
+);
 
 const config = defineConfig({
   publicDir: "../../packages/assets/src/",
@@ -13,12 +18,23 @@ const config = defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
+  // Pre-bundle Lingui at startup. Without this, Vite discovers @lingui/core
+  // and @lingui/react mid-request the first time SSR renders a route that
+  // imports them, which triggers a known dep-optimization race on the
+  // TanStack Start + Cloudflare Workers runtime — the SSR worker holds a
+  // stale module reference and serves 500s until restarted. Listing them
+  // here means Vite optimizes them upfront, eliminating the race for the
+  // common cold-start path. The dev-with-warmup.mjs wrapper remains as a
+  // backstop for any edge case this misses.
+  optimizeDeps: {
+    include: ["@lingui/core", "@lingui/react", "@lingui/react/macro"],
+  },
   plugins: [
     tailwindcss(),
     cloudflare({ viteEnvironment: { name: "ssr" } }),
     tanstackStart(),
     viteReact({
-      plugins: [["@lingui/swc-plugin", {}]],
+      plugins: [[linguiSwcPlugin, {}]],
     }),
     lingui(),
   ],

@@ -3,7 +3,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 
+import { Surface } from "@__APP_NAME__/ui/components/surface";
 import { Button } from "@__APP_NAME__/ui/elements/button";
+import { toast } from "@__APP_NAME__/ui/elements/sonner";
 
 const getCurrentServerTime = createServerFn({
   method: "GET",
@@ -19,26 +21,38 @@ function Home() {
   const [time, setTime] = useState(originalTime);
 
   return (
-    <div
-      className="flex min-h-screen items-center justify-center bg-linear-to-br from-zinc-800 to-black p-4 text-white"
-      style={{
-        backgroundImage:
-          "radial-gradient(50% 50% at 20% 60%, #23272a 0%, #18181b 50%, #000000 100%)",
-      }}
-    >
-      <div className="w-full max-w-2xl rounded-xl border-8 border-black/10 bg-black/50 p-8 shadow-xl backdrop-blur-md">
-        <h1 className="mb-4 text-2xl">Start Server Functions - Server Time</h1>
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <Surface
+        elevation="card"
+        bordered
+        radius="xl"
+        className="w-full max-w-2xl p-8"
+      >
+        <h1 className="mb-4 text-2xl font-bold text-card-foreground">
+          Start Server Functions - Server Time
+        </h1>
         <div className="flex flex-col gap-2">
-          <div className="text-xl">Starting Time: {originalTime}</div>
-          <div className="text-xl">Current Time: {time}</div>
-          <Button
-            className="rounded-lg bg-blue-500 px-4 py-3 font-bold text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-blue-500/50"
-            onClick={async () => setTime(await getCurrentServerTime())}
-          >
-            <Trans>Refresh</Trans>
-          </Button>
+          <div className="text-xl text-foreground">
+            Starting Time: {originalTime}
+          </div>
+          <div className="text-xl text-foreground">Current Time: {time}</div>
+          <div className="flex gap-2">
+            <Button onClick={async () => setTime(await getCurrentServerTime())}>
+              <Trans>Refresh</Trans>
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                toast.success("Toaster is wired up", {
+                  description: "Sonner from @__APP_NAME__/ui/elements/sonner.",
+                })
+              }
+            >
+              <Trans>Show toast</Trans>
+            </Button>
+          </div>
         </div>
-      </div>
+      </Surface>
     </div>
   );
 }

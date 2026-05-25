@@ -1,18 +1,23 @@
-import path from "path";
 import viteReact from "@vitejs/plugin-react-swc";
+import { fileURLToPath } from "node:url";
+import path from "path";
 import { defineConfig } from "vitest/config";
+
+const linguiSwcPlugin = fileURLToPath(
+  import.meta.resolve("@lingui/swc-plugin")
+);
 
 export default defineConfig({
   plugins: [
     viteReact({
-      plugins: [["@lingui/swc-plugin", {}]],
+      plugins: [[linguiSwcPlugin, {}]],
     }),
   ],
   resolve: {
     alias: {
       "@__APP_NAME__/locale/locales/en": path.resolve(
-        __dirname,
-        "../locale/locales/en/messages.js"
+        import.meta.dirname,
+        "../locale/locales/en/messages.ts"
       ),
     },
   },

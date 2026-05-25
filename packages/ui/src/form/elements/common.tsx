@@ -1,5 +1,3 @@
-import type { Label as LabelPrimitive } from "radix-ui";
-import { Slot } from "radix-ui";
 import * as React from "react";
 
 import { Label } from "@__APP_NAME__/ui/elements/label";
@@ -7,26 +5,35 @@ import {
   FormItemContext,
   useFieldContext,
 } from "@__APP_NAME__/ui/elements/tanstack-form";
-import { cn } from "@__APP_NAME__/ui/utils/index";
+import { cn } from "@__APP_NAME__/ui/utils/cn";
+
+/**
+ * Base props that every form field component registered in `createFormHook`
+ * MUST extend. This enforces R15 (data-testid passthrough) at the type level.
+ *
+ * When creating a new form field component in this directory, extend this
+ * interface and destructure + forward `data-testid` to the underlying DOM
+ * element.
+ */
+export interface FormFieldBaseProps {
+  "data-testid"?: string;
+}
 
 function FormItem({ className, ...props }: React.ComponentProps<"div">) {
   const id = React.useId();
 
   return (
-    <FormItemContext.Provider value={{ id }}>
+    <FormItemContext value={{ id }}>
       <div
         data-slot="form-item"
         className={cn("grid gap-2", className)}
         {...props}
       />
-    </FormItemContext.Provider>
+    </FormItemContext>
   );
 }
 
-function FormLabel({
-  className,
-  ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+function FormLabel({ className, ...props }: React.ComponentProps<"label">) {
   const field = useFieldContext();
   const hasError = field.state.meta.errors.length > 0;
 
@@ -41,22 +48,29 @@ function FormLabel({
   );
 }
 
-function FormControl({ ...props }: React.ComponentProps<typeof Slot.Root>) {
+function FormControl({
+  children,
+  ...props
+}: React.PropsWithChildren<React.HTMLAttributes<HTMLElement>>) {
   const field = useFieldContext();
   const hasError = field.state.meta.errors.length > 0;
 
-  return (
-    <Slot.Root
-      data-slot="form-control"
-      id={field.formItemId}
-      aria-describedby={
-        !hasError
-          ? field.formDescriptionId
-          : `${field.formDescriptionId} ${field.formMessageId}`
-      }
-      aria-invalid={hasError}
-      {...props}
-    />
+  const child = React.Children.only(children);
+  if (!React.isValidElement(child)) return <>{children}</>;
+
+  const formControlProps: Record<string, unknown> = {
+    "data-slot": "form-control",
+    id: field.formItemId,
+    "aria-describedby": !hasError
+      ? field.formDescriptionId
+      : `${field.formDescriptionId} ${field.formMessageId}`,
+    "aria-invalid": hasError,
+    ...props,
+  };
+
+  return React.cloneElement(
+    child as React.ReactElement<Record<string, unknown>>,
+    formControlProps
   );
 }
 

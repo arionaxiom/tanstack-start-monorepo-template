@@ -14,51 +14,59 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: apps/web/src/nav/use-nav.ts:11
-#: apps/web/src/nav/use-nav.ts:25
+#: apps/web/src/nav/use-nav.ts:27
 msgid "About"
 msgstr "About"
 
 #: apps/web/src/nav/use-nav.ts:12
-#: apps/web/src/nav/use-nav.ts:30
+#: apps/web/src/nav/use-nav.ts:33
 msgid "Contact"
 msgstr "Contact"
 
-#: packages/ui/src/components/not-found.tsx:19
+#: packages/ui/src/components/not-found.tsx:24
 msgid "Go back"
 msgstr "Go back"
 
-#: packages/ui/src/components/default-catch-boundary.tsx:48
+#: packages/ui/src/components/default-catch-boundary.tsx:51
 msgid "Go Back"
 msgstr "Go Back"
 
 #: apps/web/src/nav/use-nav.ts:10
-#: apps/web/src/nav/use-nav.ts:20
-#: packages/ui/src/components/default-catch-boundary.tsx:37
+#: apps/web/src/nav/use-nav.ts:21
+#: packages/ui/src/components/default-catch-boundary.tsx:39
 msgid "Home"
 msgstr "Home"
 
-#: apps/web/src/components/locale-switcher.tsx:57
-#: apps/web/src/components/locale-switcher.tsx:60
+#: apps/web/src/components/locale-switcher.tsx:59
+#: apps/web/src/components/locale-switcher.tsx:63
 msgid "Language"
 msgstr "Language"
 
-#: apps/web/src/routes/index.tsx:38
+#: apps/web/src/routes/index.tsx:41
 msgid "Refresh"
 msgstr "Refresh"
 
-#: packages/ui/src/components/not-found.tsx:25
+#: apps/web/src/routes/index.tsx:51
+msgid "Show toast"
+msgstr "Show toast"
+
+#: packages/ui/src/components/app-layout.tsx:95
+msgid "Skip to content"
+msgstr "Skip to content"
+
+#: packages/ui/src/components/not-found.tsx:31
 msgid "Start Over"
 msgstr "Start Over"
 
 #: packages/ui/src/components/not-found.test.tsx:9
-#: packages/ui/src/components/not-found.tsx:10
+#: packages/ui/src/components/not-found.tsx:13
 msgid "The page you are looking for does not exist."
 msgstr "The page you are looking for does not exist."
 
-#: packages/ui/src/components/default-catch-boundary.tsx:30
+#: packages/ui/src/components/default-catch-boundary.tsx:31
 msgid "Try Again"
 msgstr "Try Again"
 
-#: apps/web/src/components/locale-switcher.tsx:45
+#: apps/web/src/components/locale-switcher.tsx:47
 msgid "Unable to change language."
 msgstr "Unable to change language."
