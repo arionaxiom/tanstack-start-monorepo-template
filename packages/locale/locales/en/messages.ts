@@ -1,6 +1,1 @@
-/*eslint-disable*/
-import type { Messages } from "@lingui/core";
-
-export const messages = JSON.parse(
-  '{"0P2gFy":["The page you are looking for does not exist."],"CKyk7Q":["Go back"],"L2CVk3":["Skip to content"],"XF7Hlq":["Start Over"],"i0qMbr":["Home"],"jfC_xh":["Contact"],"jpUu_-":["Unable to change language."],"lCF0wC":["Refresh"],"qJb6G2":["Try Again"],"sr0UJD":["Go Back"],"uyJsf6":["About"],"vXIe7J":["Language"],"xngpdn":["Show toast"]}'
-) as Messages;
+/*eslint-disable*/import type{Messages}from"@lingui/core";export const messages=JSON.parse("{\"0P2gFy\":[\"The page you are looking for does not exist.\"],\"CKyk7Q\":[\"Go back\"],\"L2CVk3\":[\"Skip to content\"],\"XF7Hlq\":[\"Start Over\"],\"i0qMbr\":[\"Home\"],\"jfC_xh\":[\"Contact\"],\"jpUu_-\":[\"Unable to change language.\"],\"lCF0wC\":[\"Refresh\"],\"qJb6G2\":[\"Try Again\"],\"sr0UJD\":[\"Go Back\"],\"uyJsf6\":[\"About\"],\"vXIe7J\":[\"Language\"],\"xngpdn\":[\"Show toast\"]}")as Messages;
