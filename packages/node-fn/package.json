@@ -12,11 +12,11 @@
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",
     "@__APP_NAME__/typescript-config": "workspace:*",
-    "@vitest/coverage-v8": "4.0.18",
-    "@vitest/runner": "4.0.18",
-    "eslint": "^10.3.0",
+    "@vitest/coverage-v8": "4.1.7",
+    "@vitest/runner": "4.1.7",
+    "eslint": "^10.4.0",
     "type-fest": "^5.6.0",
-    "vitest": "4.0.18",
+    "vitest": "4.1.7",
     "vitest-fetch-mock": "^0.4.5"
   },
   "dependencies": {
@@ -25,6 +25,6 @@
     "@__APP_NAME__/utils": "workspace:*"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^6"
   }
 }

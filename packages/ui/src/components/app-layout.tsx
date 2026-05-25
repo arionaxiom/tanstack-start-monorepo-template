@@ -21,7 +21,9 @@ import {
   SidebarTrigger,
 } from "@__APP_NAME__/ui/elements/sidebar";
 
-import { AppSidebar, MenuItem } from "./app-sidebar";
+import { APP_NAV_SIDEBAR_PANEL_ID, AppSidebar, MenuItem } from "./app-sidebar";
+
+export const APP_RIGHT_SIDEBAR_PANEL_ID = "app-right";
 
 export interface NavigationItem {
   title: string;
@@ -56,6 +58,13 @@ interface AppLayoutProps {
     [key: string]: unknown;
   }>;
   headerActions?: React.ReactNode;
+  leftSidebarOpen?: boolean;
+  onLeftSidebarOpenChange?: (open: boolean) => void;
+  onRightSidebarOpenChange?: (open: boolean) => void;
+  rightSidebarOpen?: boolean;
+  rightSidebarPanelId?: string;
+  rightSidebar?: React.ReactNode;
+  sidebarContent?: React.ReactNode;
 }
 
 const DefaultBrand = () => (
@@ -79,24 +88,57 @@ export function AppLayout({
   LinkComponent,
   menuItems = [],
   headerActions,
+  leftSidebarOpen,
+  onLeftSidebarOpenChange,
+  onRightSidebarOpenChange,
+  rightSidebarOpen,
+  rightSidebarPanelId = APP_RIGHT_SIDEBAR_PANEL_ID,
+  rightSidebar,
+  sidebarContent,
 }: AppLayoutProps) {
   return (
-    <SidebarProvider defaultOpen={false}>
-      <AppSidebar LinkComponent={LinkComponent} menuItems={menuItems} />
+    <SidebarProvider
+      panels={{
+        [APP_NAV_SIDEBAR_PANEL_ID]: {
+          cookieName: leftSidebarOpen === undefined ? "sidebar_state" : null,
+          defaultOpen: true,
+          keyboardShortcut: "b",
+          onOpenChange: onLeftSidebarOpenChange,
+          open: leftSidebarOpen,
+        },
+        [rightSidebarPanelId]: {
+          cookieName: null,
+          defaultOpen: false,
+          keyboardShortcut: null,
+          onOpenChange: onRightSidebarOpenChange,
+          open: rightSidebarOpen,
+        },
+      }}
+    >
+      <AppSidebar
+        LinkComponent={LinkComponent}
+        menuItems={menuItems}
+        panelId={APP_NAV_SIDEBAR_PANEL_ID}
+      >
+        {sidebarContent}
+      </AppSidebar>
       <main
         id="main-content"
         className="relative flex flex-1 flex-col overflow-y-auto bg-background"
       >
         <a
           href="#main-content"
-          className="sr-only focus-visible:not-sr-only focus-visible:absolute focus-visible:top-3 focus-visible:left-4 focus-visible:z-40 focus-visible:rounded-md focus-visible:bg-primary focus-visible:px-3 focus-visible:py-1.5 focus-visible:text-sm focus-visible:font-medium focus-visible:text-primary-foreground focus-visible:shadow-[var(--shadow-popover)]"
+          className="sr-only focus-visible:not-sr-only focus-visible:absolute focus-visible:top-3 focus-visible:left-4 focus-visible:z-40 focus-visible:rounded-md focus-visible:bg-primary focus-visible:px-3 focus-visible:py-1.5 focus-visible:text-sm focus-visible:font-medium focus-visible:text-primary-foreground focus-visible:shadow-(--shadow-popover)"
           data-testid="skip-to-content"
         >
           <Trans>Skip to content</Trans>
         </a>
         <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background md:h-12">
           <div className="flex flex-1 items-center gap-4 px-4">
-            <SidebarTrigger className="-ml-1" />
+            <SidebarTrigger
+              panelId={APP_NAV_SIDEBAR_PANEL_ID}
+              className="-ml-1"
+            />
             {LinkComponent ? (
               <LinkComponent to="/" data-testid="brand-logo-link">
                 {brand}
@@ -156,8 +198,9 @@ export function AppLayout({
             ) : null}
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
+        <div className="flex flex-1 flex-col gap-4 px-3 py-4">{children}</div>
       </main>
+      {rightSidebar}
     </SidebarProvider>
   );
 }

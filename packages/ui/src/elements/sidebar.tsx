@@ -31,32 +31,66 @@ const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
+const DEFAULT_SIDEBAR_PANEL_ID = "default";
+const SIDEBAR_RESIZE_DEFAULT_WIDTH = 320;
+const SIDEBAR_RESIZE_MIN_WIDTH = 280;
+const SIDEBAR_RESIZE_MAX_WIDTH = 560;
+
+type SidebarResizableWidthConfig = {
+  defaultWidth?: number;
+  maxWidth?: number;
+  minWidth?: number;
+  storageKey?: string;
+};
+
+type ResolvedSidebarResizableWidthConfig = {
+  defaultWidth: number;
+  maxWidth: number;
+  minWidth: number;
+  storageKey?: string;
+};
+
+type SidebarPanelConfig = {
+  cookieName?: string | null;
+  defaultOpen?: boolean;
+  keyboardShortcut?: string | null;
+  onOpenChange?: (open: boolean) => void;
+  open?: boolean;
+};
+
+type SidebarPanelRuntimeState = {
+  open: boolean;
+  openMobile: boolean;
+  setOpen: (open: boolean | ((open: boolean) => boolean)) => void;
+  setOpenMobile: (open: boolean | ((open: boolean) => boolean)) => void;
+  state: "expanded" | "collapsed";
+  toggleSidebar: () => void;
+};
 
 type SidebarContextProps = {
-  state: "expanded" | "collapsed";
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  openMobile: boolean;
-  setOpenMobile: (open: boolean) => void;
   isMobile: boolean;
-  toggleSidebar: () => void;
+  panel: (panelId?: string) => SidebarPanelRuntimeState;
 };
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null);
 
-function useSidebar() {
+function useSidebar(panelId = DEFAULT_SIDEBAR_PANEL_ID) {
   const context = React.useContext(SidebarContext);
   if (!context) {
     throw new Error("useSidebar must be used within a SidebarProvider.");
   }
 
-  return context;
+  return {
+    isMobile: context.isMobile,
+    ...context.panel(panelId),
+  };
 }
 
 function SidebarProvider({
   defaultOpen = true,
   open: openProp,
   onOpenChange: setOpenProp,
+  panels,
   className,
   style,
   children,
@@ -65,65 +99,141 @@ function SidebarProvider({
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  panels?: Record<string, SidebarPanelConfig>;
 }) {
   const isMobile = useIsMobile();
-  const [openMobile, setOpenMobile] = React.useState(false);
+  const [openByPanelId, setOpenByPanelId] = React.useState<
+    Record<string, boolean>
+  >({});
+  const [openMobileByPanelId, setOpenMobileByPanelId] = React.useState<
+    Record<string, boolean>
+  >({});
 
-  // This is the internal state of the sidebar.
-  // We use openProp and setOpenProp for control from outside the component.
-  const [_open, _setOpen] = React.useState(defaultOpen);
-  const open = openProp ?? _open;
-  const setOpen = React.useCallback(
-    (value: boolean | ((value: boolean) => boolean)) => {
-      const openState = typeof value === "function" ? value(open) : value;
-      if (setOpenProp) {
-        setOpenProp(openState);
-      } else {
-        _setOpen(openState);
-      }
-
-      // This sets the cookie to keep the sidebar state.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
-    },
-    [setOpenProp, open]
+  const panelConfigs = React.useMemo<Record<string, SidebarPanelConfig>>(
+    () => ({
+      [DEFAULT_SIDEBAR_PANEL_ID]: {
+        cookieName: SIDEBAR_COOKIE_NAME,
+        defaultOpen,
+        keyboardShortcut: SIDEBAR_KEYBOARD_SHORTCUT,
+        onOpenChange: setOpenProp,
+        open: openProp,
+      },
+      ...(panels ?? {}),
+    }),
+    [defaultOpen, openProp, panels, setOpenProp]
   );
 
-  // Helper to toggle the sidebar.
-  const toggleSidebar = React.useCallback(() => {
-    return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open);
-  }, [isMobile, setOpen, setOpenMobile]);
+  const getConfig = React.useCallback(
+    (panelId = DEFAULT_SIDEBAR_PANEL_ID) =>
+      panelConfigs[panelId] ?? { defaultOpen: false },
+    [panelConfigs]
+  );
 
-  // Adds a keyboard shortcut to toggle the sidebar.
+  const readOpen = React.useCallback(
+    (panelId = DEFAULT_SIDEBAR_PANEL_ID) => {
+      const config = getConfig(panelId);
+      return (
+        config.open ?? openByPanelId[panelId] ?? config.defaultOpen ?? false
+      );
+    },
+    [getConfig, openByPanelId]
+  );
+
+  const readOpenMobile = React.useCallback(
+    (panelId = DEFAULT_SIDEBAR_PANEL_ID) =>
+      openMobileByPanelId[panelId] ?? false,
+    [openMobileByPanelId]
+  );
+
+  const setPanelOpen = React.useCallback(
+    (panelId: string, value: boolean | ((currentOpen: boolean) => boolean)) => {
+      const currentOpen = readOpen(panelId);
+      const nextOpen = typeof value === "function" ? value(currentOpen) : value;
+      const config = getConfig(panelId);
+
+      config.onOpenChange?.(nextOpen);
+      if (config.open === undefined) {
+        setOpenByPanelId((current) => ({
+          ...current,
+          [panelId]: nextOpen,
+        }));
+      }
+      if (config.cookieName) {
+        document.cookie = `${config.cookieName}=${nextOpen}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+      }
+    },
+    [getConfig, readOpen]
+  );
+
+  const setPanelOpenMobile = React.useCallback(
+    (panelId: string, value: boolean | ((currentOpen: boolean) => boolean)) => {
+      setOpenMobileByPanelId((current) => {
+        const currentOpen = current[panelId] ?? false;
+        const nextOpen =
+          typeof value === "function" ? value(currentOpen) : value;
+        return {
+          ...current,
+          [panelId]: nextOpen,
+        };
+      });
+    },
+    []
+  );
+
+  const panel = React.useCallback(
+    (panelId = DEFAULT_SIDEBAR_PANEL_ID): SidebarPanelRuntimeState => {
+      const open = readOpen(panelId);
+      const openMobile = readOpenMobile(panelId);
+      const setOpen = (value: boolean | ((currentOpen: boolean) => boolean)) =>
+        setPanelOpen(panelId, value);
+      const setOpenMobile = (
+        value: boolean | ((currentOpen: boolean) => boolean)
+      ) => setPanelOpenMobile(panelId, value);
+      const toggleSidebar = () => {
+        if (isMobile) {
+          setOpenMobile((current) => !current);
+          return;
+        }
+        setOpen((current) => !current);
+      };
+
+      return {
+        open,
+        openMobile,
+        setOpen,
+        setOpenMobile,
+        state: open ? "expanded" : "collapsed",
+        toggleSidebar,
+      };
+    },
+    [isMobile, readOpen, readOpenMobile, setPanelOpen, setPanelOpenMobile]
+  );
+
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
-        (event.metaKey || event.ctrlKey)
-      ) {
-        event.preventDefault();
-        toggleSidebar();
+      for (const [panelId, config] of Object.entries(panelConfigs)) {
+        if (
+          config.keyboardShortcut &&
+          event.key === config.keyboardShortcut &&
+          (event.metaKey || event.ctrlKey)
+        ) {
+          event.preventDefault();
+          panel(panelId).toggleSidebar();
+          return;
+        }
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [toggleSidebar]);
-
-  // We add a state so that we can do data-state="expanded" or "collapsed".
-  // This makes it easier to style the sidebar with Tailwind classes.
-  const state = open ? "expanded" : "collapsed";
+  }, [panel, panelConfigs]);
 
   const contextValue = React.useMemo<SidebarContextProps>(
     () => ({
-      state,
-      open,
-      setOpen,
       isMobile,
-      openMobile,
-      setOpenMobile,
-      toggleSidebar,
+      panel,
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+    [isMobile, panel]
   );
 
   return (
@@ -150,19 +260,143 @@ function SidebarProvider({
 }
 
 function Sidebar({
+  panelId = DEFAULT_SIDEBAR_PANEL_ID,
   side = "left",
   variant = "sidebar",
   collapsible = "offcanvas",
   className,
   children,
   dir,
+  resizableWidth,
   ...props
 }: React.ComponentProps<"div"> & {
+  panelId?: string;
+  resizableWidth?: boolean | SidebarResizableWidthConfig;
   side?: "left" | "right";
   variant?: "sidebar" | "floating" | "inset";
   collapsible?: "offcanvas" | "icon" | "none";
 }) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  const { isMobile, state, openMobile, setOpenMobile } = useSidebar(panelId);
+  const resizeConfig = React.useMemo(
+    () => resolveResizableWidthConfig(resizableWidth),
+    [resizableWidth]
+  );
+  const [sidebarWidth, setSidebarWidth] = React.useState(() =>
+    initialResizableSidebarWidth(resizeConfig)
+  );
+  const widthRef = React.useRef(sidebarWidth);
+  const activeResizeRef = React.useRef<{
+    startWidth: number;
+    startX: number;
+  } | null>(null);
+
+  React.useEffect(() => {
+    widthRef.current = sidebarWidth;
+  }, [sidebarWidth]);
+
+  React.useEffect(() => {
+    if (!resizeConfig) return;
+    setSidebarWidth((current) => clampSidebarWidth(current, resizeConfig));
+  }, [resizeConfig]);
+
+  React.useEffect(() => {
+    if (!resizeConfig?.storageKey) return;
+    const storedWidth = readStoredSidebarWidth(resizeConfig.storageKey);
+    if (storedWidth == null) return;
+    setSidebarWidth(clampSidebarWidth(storedWidth, resizeConfig));
+  }, [resizeConfig]);
+
+  const persistWidth = React.useCallback(
+    (width: number) => {
+      if (!resizeConfig?.storageKey || typeof window === "undefined") return;
+      window.localStorage.setItem(resizeConfig.storageKey, String(width));
+    },
+    [resizeConfig]
+  );
+
+  React.useEffect(() => {
+    if (!resizeConfig) return;
+
+    const handlePointerMove = (event: PointerEvent) => {
+      if (!activeResizeRef.current) return;
+      const delta =
+        side === "right"
+          ? activeResizeRef.current.startX - event.clientX
+          : event.clientX - activeResizeRef.current.startX;
+      const nextWidth = clampSidebarWidth(
+        activeResizeRef.current.startWidth + delta,
+        resizeConfig
+      );
+      widthRef.current = nextWidth;
+      setSidebarWidth(nextWidth);
+    };
+
+    const handlePointerUp = () => {
+      if (!activeResizeRef.current) return;
+      activeResizeRef.current = null;
+      persistWidth(widthRef.current);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerUp);
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerUp);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+  }, [persistWidth, resizeConfig, side]);
+
+  const startResize = React.useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      if (!resizeConfig || state !== "expanded") return;
+      event.preventDefault();
+      activeResizeRef.current = {
+        startWidth: widthRef.current,
+        startX: event.clientX,
+      };
+      event.currentTarget.setPointerCapture?.(event.pointerId);
+      document.body.style.cursor = "col-resize";
+      document.body.style.userSelect = "none";
+    },
+    [resizeConfig, state]
+  );
+
+  const resizeByKeyboard = React.useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (!resizeConfig || state !== "expanded") return;
+      const step = event.shiftKey ? 48 : 16;
+      const direction = side === "right" ? -1 : 1;
+      let nextWidth: number | null = null;
+
+      if (event.key === "ArrowLeft") {
+        nextWidth = sidebarWidth - step * direction;
+      } else if (event.key === "ArrowRight") {
+        nextWidth = sidebarWidth + step * direction;
+      } else if (event.key === "Home") {
+        nextWidth = resizeConfig.minWidth;
+      } else if (event.key === "End") {
+        nextWidth = resizeConfig.maxWidth;
+      }
+
+      if (nextWidth == null) return;
+      event.preventDefault();
+      const clampedWidth = clampSidebarWidth(nextWidth, resizeConfig);
+      widthRef.current = clampedWidth;
+      setSidebarWidth(clampedWidth);
+      persistWidth(clampedWidth);
+    },
+    [persistWidth, resizeConfig, side, sidebarWidth, state]
+  );
+  const resizableStyle = resizeConfig
+    ? ({
+        "--sidebar-width": `${sidebarWidth}px`,
+      } as React.CSSProperties)
+    : undefined;
 
   if (collapsible === "none") {
     return (
@@ -207,12 +441,13 @@ function Sidebar({
 
   return (
     <div
-      className="group peer hidden text-sidebar-foreground md:block"
+      className="group peer hidden shrink-0 text-sidebar-foreground md:block"
       data-state={state}
       data-collapsible={state === "collapsed" ? collapsible : ""}
       data-variant={variant}
       data-side={side}
       data-slot="sidebar"
+      style={resizableStyle}
     >
       {/* This is what handles the sidebar gap on desktop */}
       <div
@@ -239,10 +474,30 @@ function Sidebar({
         )}
         {...props}
       >
+        {resizeConfig && state === "expanded" ? (
+          <div
+            role="separator"
+            aria-label={`Resize ${side} sidebar`}
+            aria-orientation="vertical"
+            aria-valuemin={resizeConfig.minWidth}
+            aria-valuemax={resizeConfig.maxWidth}
+            aria-valuenow={sidebarWidth}
+            data-slot="sidebar-resize-handle"
+            tabIndex={0}
+            onKeyDown={resizeByKeyboard}
+            onPointerDown={startResize}
+            className={cn(
+              "absolute inset-y-0 z-30 hidden w-3 cursor-col-resize touch-none items-center justify-center outline-hidden after:h-12 after:w-px after:rounded-full after:bg-sidebar-border after:opacity-0 hover:after:opacity-100 focus-visible:ring-2 focus-visible:ring-ring md:flex",
+              side === "right"
+                ? "left-0 -translate-x-1/2"
+                : "right-0 translate-x-1/2"
+            )}
+          />
+        ) : null}
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className="flex size-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:shadow-[var(--shadow-popover)] group-data-[variant=floating]:ring-1 group-data-[variant=floating]:ring-sidebar-border"
+          className="flex size-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:shadow-(--shadow-popover) group-data-[variant=floating]:ring-1 group-data-[variant=floating]:ring-sidebar-border"
         >
           {children}
         </div>
@@ -251,12 +506,57 @@ function Sidebar({
   );
 }
 
+function resolveResizableWidthConfig(
+  value: boolean | SidebarResizableWidthConfig | undefined
+): ResolvedSidebarResizableWidthConfig | null {
+  if (!value) return null;
+  const config = value === true ? {} : value;
+  const minWidth = config.minWidth ?? SIDEBAR_RESIZE_MIN_WIDTH;
+  const maxWidth = Math.max(
+    minWidth,
+    config.maxWidth ?? SIDEBAR_RESIZE_MAX_WIDTH
+  );
+  return {
+    defaultWidth: config.defaultWidth ?? SIDEBAR_RESIZE_DEFAULT_WIDTH,
+    maxWidth,
+    minWidth,
+    storageKey: config.storageKey,
+  };
+}
+
+function initialResizableSidebarWidth(
+  config: ResolvedSidebarResizableWidthConfig | null
+) {
+  if (!config) return SIDEBAR_RESIZE_DEFAULT_WIDTH;
+  return clampSidebarWidth(config.defaultWidth, config);
+}
+
+function readStoredSidebarWidth(storageKey: string | undefined) {
+  if (!storageKey || typeof window === "undefined") return null;
+  const storedValue = window.localStorage.getItem(storageKey);
+  if (!storedValue) return null;
+  const storedWidth = Number(storedValue);
+  return Number.isFinite(storedWidth) ? storedWidth : null;
+}
+
+function clampSidebarWidth(
+  width: number,
+  config: ResolvedSidebarResizableWidthConfig
+) {
+  return Math.min(
+    config.maxWidth,
+    Math.max(config.minWidth, Math.round(width))
+  );
+}
+
 function SidebarTrigger({
+  children,
+  panelId = DEFAULT_SIDEBAR_PANEL_ID,
   className,
   onClick,
   ...props
-}: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar();
+}: React.ComponentProps<typeof Button> & { panelId?: string }) {
+  const { toggleSidebar } = useSidebar(panelId);
 
   return (
     <Button
@@ -271,14 +571,18 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      {children ?? <PanelLeftIcon />}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );
 }
 
-function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
-  const { toggleSidebar } = useSidebar();
+function SidebarRail({
+  panelId = DEFAULT_SIDEBAR_PANEL_ID,
+  className,
+  ...props
+}: React.ComponentProps<"button"> & { panelId?: string }) {
+  const { toggleSidebar } = useSidebar(panelId);
 
   return (
     <button
@@ -307,7 +611,7 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
     <main
       data-slot="sidebar-inset"
       className={cn(
-        "relative flex w-full flex-1 flex-col bg-background md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-[var(--shadow-popover)] md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
+        "relative flex w-full flex-1 flex-col bg-background md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-(--shadow-popover) md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
         className
       )}
       {...props}
@@ -497,6 +801,7 @@ const sidebarMenuButtonVariants = cva(
 );
 
 function SidebarMenuButton({
+  panelId = DEFAULT_SIDEBAR_PANEL_ID,
   render,
   isActive = false,
   variant = "default",
@@ -507,9 +812,10 @@ function SidebarMenuButton({
 }: useRender.ComponentProps<"button"> &
   React.ComponentProps<"button"> & {
     isActive?: boolean;
+    panelId?: string;
     tooltip?: string | React.ComponentProps<typeof TooltipContent>;
   } & VariantProps<typeof sidebarMenuButtonVariants>) {
-  const { isMobile, state } = useSidebar();
+  const { isMobile, state } = useSidebar(panelId);
   const comp = useRender({
     defaultTagName: "button",
     props: mergeProps<"button">(

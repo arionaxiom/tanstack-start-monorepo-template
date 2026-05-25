@@ -1,11 +1,11 @@
-"use strict";
+import tsParser from "@typescript-eslint/parser";
+import { RuleTester } from "eslint";
 
-const { RuleTester } = require("eslint");
-const rule = require("./require-testid-on-action-elements.cjs");
+import rule from "./require-testid-on-action-elements.js";
 
 const tester = new RuleTester({
   languageOptions: {
-    parser: require("@typescript-eslint/parser"),
+    parser: tsParser,
     parserOptions: { ecmaFeatures: { jsx: true } },
   },
 });

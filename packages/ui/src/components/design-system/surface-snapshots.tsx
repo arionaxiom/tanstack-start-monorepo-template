@@ -131,9 +131,9 @@ function FullChatSnapshot() {
         </StatusBadge>
       </div>
       <div className="min-h-0 flex-1 space-y-3 overflow-y-auto">
-        {messages.map((msg, i) => (
+        {messages.map((msg) => (
           <div
-            key={i}
+            key={`${msg.role}:${msg.content}`}
             className={cn(
               "flex gap-2",
               msg.role === "user" && "flex-row-reverse"

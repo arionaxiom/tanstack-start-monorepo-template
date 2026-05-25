@@ -52,7 +52,7 @@ The codebase uses a three-tier OKLCH token system defined in `packages/tailwind-
 | Dropdown triggers                                 | YES       |
 | Display-only text, structural wrappers, icons     | NO        |
 
-This is enforced by the `template/require-testid-on-action-elements` ESLint rule (see `packages/eslint-config/rules/require-testid-on-action-elements.cjs`).
+This is enforced by the `template/require-testid-on-action-elements` ESLint rule (see `packages/eslint-config/rules/require-testid-on-action-elements.js`).
 
 **R9 — Use `testId()` for dynamic IDs.** When the test ID includes a runtime value (slug, key), use the `testId()` utility from `@__APP_NAME__/ui/utils`. For static IDs on form fields, inline `data-testid="..."` strings are acceptable.
 

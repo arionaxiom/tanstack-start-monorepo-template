@@ -14,9 +14,9 @@
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",
     "@__APP_NAME__/typescript-config": "workspace:*",
-    "eslint": "^10.3.0"
+    "eslint": "^10.4.0"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^6"
   }
 }

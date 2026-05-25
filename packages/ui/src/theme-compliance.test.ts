@@ -159,7 +159,7 @@ describe("theme compliance — design system (R2, R17, R18, R27)", () => {
   it("no non-test .tsx file uses Tailwind shadow-sm/shadow-md utilities (R51)", () => {
     // R51: in-page surfaces use hairline borders, not shadow. True overlays
     // (popover/dialog/sheet/dropdown/tooltip/hover-card) must consume
-    // `--shadow-popover` or `--shadow-modal` via `shadow-[var(--shadow-...)]`,
+    // `--shadow-popover` or `--shadow-modal` via `shadow-(--shadow-...)`,
     // not Tailwind's default `shadow-sm` / `shadow-md` (which point at tokens
     // we don't override and contradict the editorial elevation system).
     const SHADOW_REGEX =

@@ -1,13 +1,10 @@
-import { createRequire } from "node:module";
-import { defineConfig } from "eslint/config";
-import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
+import { defineConfig } from "eslint/config";
 import globals from "globals";
 
 import { config as baseConfig } from "./base.js";
-
-const require = createRequire(import.meta.url);
-const requireTestidOnActionElements = require("./rules/require-testid-on-action-elements.cjs");
+import { eslintReactRecommended } from "./react-preset.js";
+import requireTestidOnActionElements from "./rules/require-testid-on-action-elements.js";
 
 const templatePlugin = {
   rules: {
@@ -23,15 +20,7 @@ const templatePlugin = {
 export const config = defineConfig([
   {
     name: "react-internal/extends-base",
-    extends: [baseConfig, pluginReact.configs.flat.recommended],
-  },
-  {
-    name: "react-internal/react-settings",
-    settings: {
-      react: {
-        version: "19.2.4",
-      },
-    },
+    extends: [baseConfig, eslintReactRecommended],
   },
   {
     name: "react-internal/browser-globals",
@@ -49,9 +38,9 @@ export const config = defineConfig([
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      "react/react-in-jsx-scope": "off",
       "no-console": "error",
-      "react/no-unescaped-entities": "off",
+      "@eslint-react/no-children-only": "off",
+      "@eslint-react/no-clone-element": "off",
     },
   },
   {
