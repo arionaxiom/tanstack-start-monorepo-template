@@ -1,13 +1,38 @@
-// Path fragment that triggers this rule. Update if you restructure where shared UI components live.
-const TARGET_PATH_FRAGMENT = "/packages/ui/src/components/";
+import { basename, extname, normalize, sep } from "node:path";
+
+// Path segments that trigger this rule. Update if you restructure where shared UI components live.
+const TARGET_PATH_SEGMENTS = ["packages", "ui", "src", "components"];
 const ACTION_TAGS = new Set(["button", "a"]);
+
+function filenameSegments(filename) {
+  return normalize(filename).split(sep).filter(Boolean);
+}
+
+function includesSegments(segments, target) {
+  for (let index = 0; index <= segments.length - target.length; index += 1) {
+    if (
+      target.every((segment, offset) => segments[index + offset] === segment)
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function isTestFile(filename) {
+  const normalized = normalize(filename);
+  return normalized.endsWith(".test.tsx") || normalized.endsWith(".spec.tsx");
+}
+
+function isPrivateComponentFile(filename) {
+  return basename(filename).startsWith("_") && extname(filename) === ".tsx";
+}
 
 function isExempt(filename) {
   return (
-    !filename.includes(TARGET_PATH_FRAGMENT) ||
-    filename.endsWith(".test.tsx") ||
-    filename.endsWith(".spec.tsx") ||
-    /\/_[^/]+\.tsx$/.test(filename) // _Private components
+    !includesSegments(filenameSegments(filename), TARGET_PATH_SEGMENTS) ||
+    isTestFile(filename) ||
+    isPrivateComponentFile(filename)
   );
 }
 

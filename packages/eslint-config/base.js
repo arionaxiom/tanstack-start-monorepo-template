@@ -268,6 +268,8 @@ export const config = defineConfig([
       "**/coverage/",
       "babel.config.js",
       "worker-configuration.d.ts",
+      "src/routeTree.gen.ts",
+      "locales/*/messages.ts",
     ],
   },
 ]);

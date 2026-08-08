@@ -1,5 +1,6 @@
 import tsParser from "@typescript-eslint/parser";
 import { RuleTester } from "eslint";
+import { join } from "node:path";
 
 import rule from "./require-testid-on-action-elements.js";
 
@@ -42,6 +43,11 @@ tester.run("require-testid-on-action-elements", rule, {
     {
       code: `<a href="/x">Home</a>`,
       filename: "/repo/packages/ui/src/components/foo.tsx",
+      errors: [{ messageId: "missingTestId" }],
+    },
+    {
+      code: `<button>Go</button>`,
+      filename: join("repo", "packages", "ui", "src", "components", "foo.tsx"),
       errors: [{ messageId: "missingTestId" }],
     },
     {
