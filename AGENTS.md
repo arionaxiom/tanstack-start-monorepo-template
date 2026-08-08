@@ -118,7 +118,8 @@ If a lower-layer package needs something from a higher layer, the design is wron
 
 - **Files**: `kebab-case.ts` / `kebab-case.tsx` — no PascalCase or camelCase filenames
 - **Components**: `PascalCase` for React components (exported, not file names)
-- **Test files**: `*.test.ts` or `*.test.tsx` — colocated with source, never `.spec.ts`
+- **Unit test files**: `*.test.ts` or `*.test.tsx` — colocated with source, never `.spec.ts`
+- **End-to-end test files**: `*.e2e.ts` — isolated in `apps/e2e/tests`
 - **Package names**: `@__APP_NAME__/kebab-case`
 
 ### UI Package Structure (`packages/ui/src/`)
@@ -175,11 +176,12 @@ The shared `TestProviders` wrapper provides Lingui `I18nProvider` so translation
 Before claiming work is done, run:
 
 ```bash
-pnpm verify
+pnpm verify:all
 ```
 
-Formatting, lint, TypeScript, tests, and the production build must pass with
-**zero warnings** and **zero type errors**.
+Formatting, lint, TypeScript, unit tests, the production build, and Playwright
+must pass with **zero warnings**, **zero type errors**, and **zero browser
+console errors**.
 
 ## Toolchain Compatibility
 
@@ -194,4 +196,4 @@ overrides and the TypeScript 7 / ESLint side-by-side setup.
 - **Workspace dependencies**: Use `workspace:*` protocol for internal packages.
 - **Prettier + Husky**: Code is auto-formatted on commit via lint-staged.
 - **Strict ESLint**: Max warnings set to 0; build fails on warnings.
-- **App name placeholder**: This template uses `__APP_NAME__` everywhere — find/replace it with your actual scope when bootstrapping a new project.
+- **Template identity placeholders**: `__APP_NAME__` is the package/Worker slug and `__APP_DISPLAY_NAME__` is the human-readable product name. Use the tested initializer rather than manual replacement.

@@ -19,8 +19,9 @@ export function DesignSystemShowcase() {
           Visual Architecture
         </h1>
         <p className="max-w-prose text-body text-muted-foreground">
-          Quiet Editorial. Visual contract for __APP_NAME__. Dev-only. Deep teal
-          primary, vivid orange spotlight, warm-paper neutrals, editorial type.
+          Quiet Editorial. Visual contract for __APP_DISPLAY_NAME__. Dev-only.
+          Deep teal primary, vivid orange spotlight, warm-paper neutrals,
+          editorial type.
         </p>
       </header>
       <Swatches />

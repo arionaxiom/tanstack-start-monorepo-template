@@ -6,6 +6,9 @@
     "check-types": "turbo run check-types",
     "clean:node-modules": "node scripts/clean-node-modules.mjs",
     "dev": "turbo run dev",
+    "e2e": "pnpm --filter=e2e e2e",
+    "e2e:all": "pnpm --filter=e2e e2e:all",
+    "e2e:install": "pnpm --filter=e2e e2e:install",
     "esm:check": "node scripts/verify-esm.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -15,7 +18,8 @@
     "template:init": "node scripts/init-template.mjs",
     "template:init:test": "node scripts/init-template.test.mjs",
     "test": "node scripts/verify-esm.mjs && node scripts/init-template.test.mjs && turbo run test --concurrency=50%",
-    "verify": "pnpm format:check && pnpm lint && pnpm check-types && pnpm test && pnpm build"
+    "verify": "pnpm format:check && pnpm lint && pnpm check-types && pnpm test && pnpm build",
+    "verify:all": "pnpm verify && pnpm e2e"
   },
   "lint-staged": {
     "*.{js,mjs,ts,mts,tsx,json,jsonc,md,css,yaml,yml}": "prettier --write"

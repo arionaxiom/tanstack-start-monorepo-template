@@ -1,5 +1,7 @@
 {
   "name": "@__APP_NAME__/locale",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
     "build": "lingui extract --clean",
     "lingui:extract": "lingui extract --clean",
@@ -9,8 +11,8 @@
     "./lingui.config": "./lingui.config.ts",
     "./appRouterI18n": "./appRouterI18n.ts",
     "./i18n": "./i18n.ts",
-    "./locales/en.po": "./locales/en.po",
-    "./locales/th.po": "./locales/th.po",
+    "./locales/en.po": "./locales/en/messages.po",
+    "./locales/th.po": "./locales/th/messages.po",
     "./locales/en": "./locales/en/messages.ts",
     "./locales/th": "./locales/th/messages.ts"
   },

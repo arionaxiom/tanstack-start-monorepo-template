@@ -19,11 +19,15 @@ try {
   });
   await writeFile(
     join(fixtureRoot, "package.json"),
-    '{"name":"__APP_NAME__"}\n'
+    '{"name":"__APP_NAME__","product":"__APP_DISPLAY_NAME__"}\n'
   );
   await writeFile(
     join(fixtureRoot, "pnpm-lock.yaml"),
     "dependencies:\n  '@__APP_NAME__/example': workspace:*\n"
+  );
+  await writeFile(
+    join(fixtureRoot, "wrangler.jsonc"),
+    '{"name":"tanstack-start-template"}\n'
   );
   await writeFile(
     join(fixtureRoot, "packages", "example", "src", "example.ts"),
@@ -54,11 +58,33 @@ try {
   assert.match(result.stdout, /updated pnpm-lock\.yaml/);
   assert.equal(
     await readFile(join(fixtureRoot, "package.json"), "utf8"),
-    '{"name":"acme-operations"}\n'
+    '{"name":"acme-operations","product":"Acme Operations"}\n'
   );
   assert.doesNotMatch(
     await readFile(join(fixtureRoot, "pnpm-lock.yaml"), "utf8"),
     /__APP_NAME__/
+  );
+  assert.equal(
+    await readFile(join(fixtureRoot, "wrangler.jsonc"), "utf8"),
+    '{"name":"acme-operations"}\n'
+  );
+
+  await writeFile(
+    join(fixtureRoot, "display-name.txt"),
+    "__APP_NAME__ | __APP_DISPLAY_NAME__\n"
+  );
+  await execFileAsync(process.execPath, [
+    scriptPath,
+    "--root",
+    fixtureRoot,
+    "--name",
+    "acme-operations",
+    "--display-name",
+    "Acme Control Center",
+  ]);
+  assert.equal(
+    await readFile(join(fixtureRoot, "display-name.txt"), "utf8"),
+    "acme-operations | Acme Control Center\n"
   );
   assert.doesNotMatch(
     await readFile(
@@ -71,6 +97,16 @@ try {
   await assert.rejects(
     execFileAsync(process.execPath, [scriptPath, "--name", "Invalid_Name"]),
     /--name must start with a lowercase letter/
+  );
+  await assert.rejects(
+    execFileAsync(process.execPath, [
+      scriptPath,
+      "--name",
+      "valid-name",
+      "--display-name",
+      "",
+    ]),
+    /--display-name must contain between 1 and 80 characters/
   );
 } finally {
   await rm(fixtureRoot, { recursive: true, force: true });

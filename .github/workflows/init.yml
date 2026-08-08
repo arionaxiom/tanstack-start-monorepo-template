@@ -9,6 +9,10 @@ on:
         description: "Override app name (defaults to repo name)"
         required: false
         type: string
+      display_name:
+        description: "Override display name (defaults to title-cased app name)"
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -29,7 +33,15 @@ jobs:
       - name: Initialize template
         env:
           APP_NAME: ${{ github.event.inputs.app_name || github.event.repository.name }}
-        run: node scripts/init-template.mjs --name "$APP_NAME"
+          DISPLAY_NAME: ${{ github.event.inputs.display_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=(--name "$APP_NAME")
+          if [[ -n "$DISPLAY_NAME" ]]; then
+            args+=(--display-name "$DISPLAY_NAME")
+          fi
+          node scripts/init-template.mjs "${args[@]}"
 
       - name: Commit changes
         shell: bash

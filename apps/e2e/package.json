@@ -1,0 +1,25 @@
+{
+  "name": "e2e",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check-types": "tsc --noEmit true",
+    "e2e": "playwright test --project=chromium-desktop --project=chromium-mobile",
+    "e2e:all": "playwright test",
+    "e2e:headed": "playwright test --headed --project=chromium-desktop",
+    "e2e:install": "playwright install chromium",
+    "e2e:install:ci": "playwright install --with-deps chromium",
+    "lint": "eslint . --max-warnings 0 --cache --cache-location .eslintcache"
+  },
+  "devDependencies": {
+    "@__APP_NAME__/eslint-config": "workspace:*",
+    "@__APP_NAME__/typescript-config": "workspace:*",
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.2.0",
+    "eslint": "^10.8.1",
+    "globals": "^17.9.0",
+    "typescript": "npm:@typescript/typescript6@6.0.2"
+  }
+}

@@ -1,5 +1,7 @@
 {
   "name": "@__APP_NAME__/utils",
+  "version": "0.0.0",
+  "private": true,
   "exports": {
     "./*": "./src/*.ts"
   },

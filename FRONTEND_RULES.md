@@ -185,6 +185,6 @@ These rules encode the Quiet Editorial design direction — deep teal primary, v
 
 **R36 — Mode parity (light + dark).** Every PR that touches `packages/ui` or `apps/web` UI surfaces must Playwright-verify both light AND dark. Strengthens R17.
 
-**R37 — Theme toggle in the header.** The app shell should include a way for the user to switch theme. The template's `app-layout.tsx` does not ship a theme toggle by default — bring one when wiring up theme switching. Routes that deliberately omit the platform header (auth, onboarding) must include an alternative theme switcher.
+**R37 — Theme toggle in the header.** The root app shell ships with an SSR-safe system/light/dark theme provider and a persistent theme toggle in the header. Keep that control available when extending the platform shell. Routes that deliberately omit the platform header (auth, onboarding) must include an alternative theme switcher.
 
 **R38 — Design-system route is dev-only.** The route at `apps/web/src/routes/[__design-system].tsx` (URL `/__design-system`) renders only when `process.env.NODE_ENV !== "production"`. In production builds it returns the standard not-found component. Not gated by auth, not gated by feature flag — just dev-only. The bracket-escape filename is required so TanStack Router treats `__design-system` as a path segment, not a pathless layout.

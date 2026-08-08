@@ -9,6 +9,8 @@ import appCss from "@__APP_NAME__/tailwind-config/shared-styles.css?url";
 import { AppLayout } from "@__APP_NAME__/ui/components/app-layout";
 import { DefaultCatchBoundary } from "@__APP_NAME__/ui/components/default-catch-boundary";
 import { NotFound } from "@__APP_NAME__/ui/components/not-found";
+import { ThemeProvider } from "@__APP_NAME__/ui/components/theme-provider";
+import { ThemeToggle } from "@__APP_NAME__/ui/components/theme-toggle";
 import { Toaster } from "@__APP_NAME__/ui/elements/sonner";
 import { TooltipProvider } from "@__APP_NAME__/ui/elements/tooltip";
 import { seo } from "@__APP_NAME__/utils/seo/seo";
@@ -34,9 +36,9 @@ export const Route = createRootRouteWithContext<AppContext>()({
         content: "width=device-width, initial-scale=1",
       },
       ...seo({
-        title:
-          "TanStack Start | Type-Safe, Client-First, Full-Stack React Framework",
-        description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
+        title: "__APP_DISPLAY_NAME__",
+        description:
+          "A production-ready operations workspace built with TanStack Start.",
       }),
     ],
     links: [
@@ -44,8 +46,8 @@ export const Route = createRootRouteWithContext<AppContext>()({
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "manifest", href: "/site.webmanifest", color: "#fffff" },
-      { rel: "icon", href: "/logo/favicon.ico" },
+      { rel: "manifest", href: "/site.webmanifest" },
+      { rel: "icon", href: "/logo/brand-mark.svg", type: "image/svg+xml" },
     ],
   }),
 
@@ -68,20 +70,27 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   const isDev = Boolean(import.meta.hot);
 
   return (
-    <html lang={loaderLocale ?? "en"}>
+    <html lang={loaderLocale ?? "en"} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        <AppLayout
-          LinkComponent={Link}
-          navigationItems={navigationItems}
-          menuItems={menuItems}
-          headerActions={<LocaleSwitcher />}
-        >
-          <TooltipProvider>{children}</TooltipProvider>
-        </AppLayout>
-        <Toaster />
+        <ThemeProvider>
+          <AppLayout
+            LinkComponent={Link}
+            navigationItems={navigationItems}
+            menuItems={menuItems}
+            headerActions={
+              <>
+                <ThemeToggle />
+                <LocaleSwitcher />
+              </>
+            }
+          >
+            <TooltipProvider>{children}</TooltipProvider>
+          </AppLayout>
+          <Toaster />
+        </ThemeProvider>
         {isDev ? <DevelopmentTanStackDevtools /> : null}
         <Scripts />
       </body>

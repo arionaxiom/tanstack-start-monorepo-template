@@ -1,5 +1,7 @@
 {
   "name": "@__APP_NAME__/react-hooks",
+  "version": "0.0.0",
+  "private": true,
   "exports": {
     "./*": "./src/*.ts",
     "./test-utils": "./src/test-utils.tsx"

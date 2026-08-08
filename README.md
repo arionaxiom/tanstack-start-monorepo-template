@@ -1,6 +1,6 @@
 # TanStack Start + Cloudflare Template
 
-Opinionated GitHub template for building modern logistics or operations dashboards with TanStack Start, Cloudflare Workers, React 19, Tailwind CSS v4, and Lingui-powered internationalization. The workspace is a pnpm + Turborepo monorepo where every package is ready to be published under your own scope (`@__APP_NAME__/*`).
+Opinionated GitHub template for building modern logistics or operations dashboards with TanStack Start, Cloudflare Workers, React 19, Tailwind CSS v4, and Lingui-powered internationalization. The workspace is a pnpm + Turborepo monorepo with private, strictly isolated packages under your own scope (`@__APP_NAME__/*`).
 
 ## AI Agent Guidance
 
@@ -16,9 +16,9 @@ This template is designed to be worked on collaboratively with AI agents. Agent 
 
 - **TanStack Start SSR app** running on Cloudflare Workers with Smart Placement, assets binding, and Vite dev ergonomics.
 - **React 19, Tailwind v4, Base UI primitives, shadcn-style library** shipped from `packages/ui`.
-- **i18n out of the box** via Lingui with English, Thai, and pseudo locales plus router-level locale awareness.
+- **i18n out of the box** via Lingui with complete English and Thai catalogs plus router-level locale awareness.
 - **Shared packages** for hooks, utils, constants, assets, ESLint, Tailwind, and TS configs to keep features isolated but consistent.
-- **Strict quality gates** (Prettier, ESLint, Vitest, TypeScript, ESM verification, and production builds) enforced in CI.
+- **Strict quality gates** (Prettier, ESLint, Vitest, TypeScript, ESM verification, production builds, and Playwright + Axe in desktop/mobile Chromium) enforced in CI.
 
 ## Requirements
 
@@ -29,17 +29,20 @@ This template is designed to be worked on collaboratively with AI agents. Agent 
 
 ## Quick Start
 
-1. **Use this template**  
+1. **Use this template**
+
    On GitHub, click “Use this template” → “Create a new repository”, then clone your repo locally.
 
 2. **Install dependencies**
 
    ```bash
    pnpm install
+   pnpm e2e:install
    ```
 
-3. **Rename the workspace scope**  
-   The repo ships with `.github/workflows/init.yml` (“Initialize from template”) that replaces every `__APP_NAME__` placeholder with your repo name on the first push to `main` (or whenever you manually run it via **Actions → Initialize from template → Run workflow**, optionally supplying `app_name`). You can run the same tested initializer locally with `pnpm template:init -- --name acme`.
+3. **Initialize the workspace identity**
+
+   The repo ships with `.github/workflows/init.yml` (“Initialize from template”) that replaces the package scope and product-name placeholders on the first push to `main` (or whenever you manually run it via **Actions → Initialize from template → Run workflow**). You can run the same tested initializer locally with `pnpm template:init -- --name acme-operations`; it derives “Acme Operations” as the display name, or accepts `--display-name "Acme Control Center"`.
 
 4. **Start the dev server**
 
@@ -50,13 +53,15 @@ This template is designed to be worked on collaboratively with AI agents. Agent 
 
    The web app's dev wrapper probes `/healthz` and automatically retries the rare TanStack Start + Cloudflare + Lingui cold-start race.
 
-5. **Commit hooks**  
+5. **Commit hooks**
+
    Husky’s pre-commit hook automatically formats staged files via Prettier. Linting, tests, and type checks are manual—see “Quality Checks”.
 
 ## Workspace Layout
 
 ```
 apps/
+  e2e/                 # Playwright + Axe browser suite and shared fixtures
   web/                  # TanStack Start app (Cloudflare Workers entry)
 packages/
   assets/               # Static assets bundled via Wrangler assets binding
@@ -76,21 +81,23 @@ packages/
 
 ## Core Scripts
 
-| Location        | Script                | Purpose                                  |
-| --------------- | --------------------- | ---------------------------------------- |
-| root            | `pnpm dev`            | Run `turbo run dev` (all apps/packages)  |
-| root            | `pnpm build`          | Build everything via Turborepo           |
-| root            | `pnpm lint`           | Run ESLint with `--max-warnings 0`       |
-| root            | `pnpm check-types`    | Type-check every package                 |
-| root            | `pnpm format`         | Format the repository with Prettier      |
-| root            | `pnpm format:check`   | Verify formatting without writing        |
-| root            | `pnpm verify`         | Run every CI quality gate                |
-| root            | `pnpm template:init`  | Replace template scope placeholders      |
-| apps/web        | `pnpm dev`            | Start TanStack Start (Vite) on port 3000 |
-| apps/web        | `pnpm build`          | Build SSR bundle for Workers             |
-| apps/web        | `pnpm deploy`         | Build + deploy via Wrangler              |
-| packages/locale | `pnpm lingui:extract` | Extract strings from app + UI packages   |
-| packages/locale | `pnpm compile`        | Compile `.po` catalogs into runtime JS   |
+| Location        | Script                | Purpose                                     |
+| --------------- | --------------------- | ------------------------------------------- |
+| root            | `pnpm dev`            | Run `turbo run dev` (all apps/packages)     |
+| root            | `pnpm build`          | Build everything via Turborepo              |
+| root            | `pnpm lint`           | Run ESLint with `--max-warnings 0`          |
+| root            | `pnpm check-types`    | Type-check every package                    |
+| root            | `pnpm format`         | Format the repository with Prettier         |
+| root            | `pnpm format:check`   | Verify formatting without writing           |
+| root            | `pnpm verify`         | Run static, unit, and build quality gates   |
+| root            | `pnpm e2e`            | Run Chromium desktop + mobile browser tests |
+| root            | `pnpm verify:all`     | Run static gates, build, and browser tests  |
+| root            | `pnpm template:init`  | Replace template scope placeholders         |
+| apps/web        | `pnpm dev`            | Start TanStack Start (Vite) on port 3000    |
+| apps/web        | `pnpm build`          | Build SSR bundle for Workers                |
+| apps/web        | `pnpm deploy`         | Build + deploy via Wrangler                 |
+| packages/locale | `pnpm lingui:extract` | Extract strings from app + UI packages      |
+| packages/locale | `pnpm compile`        | Compile `.po` catalogs into runtime JS      |
 
 Run any script from the repo root with `pnpm --filter=<package>` when you need a package-specific command (e.g., `pnpm --filter=@__APP_NAME__/ui build`).
 
@@ -108,7 +115,7 @@ Run any script from the repo root with `pnpm --filter=<package>` when you need a
    ```bash
    pnpm --filter=@__APP_NAME__/locale lingui:extract
    ```
-3. Translate the generated `.po` files in `packages/locale/locales/{en|th|pseudo}.po`.
+3. Translate the generated `.po` files in `packages/locale/locales/{en|th}/messages.po`.
 4. Compile for runtime usage:
    ```bash
    pnpm --filter=@__APP_NAME__/locale compile
@@ -118,7 +125,7 @@ Run any script from the repo root with `pnpm --filter=<package>` when you need a
 ## Quality Checks
 
 ```bash
-pnpm verify # format check, lint, TypeScript 7, tests, and production build
+pnpm verify:all # format, lint, TypeScript, unit/E2E tests, and production build
 ```
 
 These are the checks you should run before every push. Automation assumes they return clean results.
@@ -150,4 +157,4 @@ All dependencies track their latest stable releases. React and Vitest families u
 
 ---
 
-You now have everything required to spin up a production-ready TanStack Start + Cloudflare stack. Swap in your own branding, replace the `__APP_NAME__` scope, add routes/components, and ship. Have fun building!
+You now have everything required to spin up a production-ready TanStack Start + Cloudflare stack. Run the initializer, add routes/components, and ship. Have fun building!

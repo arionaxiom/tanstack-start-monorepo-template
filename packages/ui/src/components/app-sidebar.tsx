@@ -25,7 +25,7 @@ export interface MenuItem {
 interface AppSidebarProps {
   /**
    * Optional label shown in the sidebar header. Defaults to
-   * `__APP_NAME__`. Override to customise without forking the component.
+   * `__APP_DISPLAY_NAME__`. Override to customise without forking the component.
    */
   groupLabel?: ReactNode;
   LinkComponent: ComponentType<{
@@ -41,7 +41,7 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({
-  groupLabel = "__APP_NAME__",
+  groupLabel = "__APP_DISPLAY_NAME__",
   LinkComponent,
   menuItems,
   children,

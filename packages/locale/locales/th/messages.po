@@ -11,62 +11,74 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: apps/web/src/nav/use-nav.ts:11
 #: apps/web/src/nav/use-nav.ts:27
 msgid "About"
-msgstr ""
+msgstr "เกี่ยวกับ"
+
+#: packages/ui/src/components/theme-toggle.tsx:28
+msgid "Change theme"
+msgstr "เปลี่ยนธีม"
 
 #: apps/web/src/nav/use-nav.ts:12
 #: apps/web/src/nav/use-nav.ts:33
 msgid "Contact"
-msgstr ""
+msgstr "ติดต่อ"
 
 #: packages/ui/src/components/not-found.tsx:24
 msgid "Go back"
-msgstr ""
+msgstr "ย้อนกลับ"
 
 #: packages/ui/src/components/default-catch-boundary.tsx:51
 msgid "Go Back"
-msgstr ""
+msgstr "ย้อนกลับ"
 
 #: apps/web/src/nav/use-nav.ts:10
 #: apps/web/src/nav/use-nav.ts:21
 #: packages/ui/src/components/default-catch-boundary.tsx:39
 msgid "Home"
-msgstr ""
+msgstr "หน้าหลัก"
 
 #: apps/web/src/components/locale-switcher.tsx:59
 #: apps/web/src/components/locale-switcher.tsx:63
 msgid "Language"
-msgstr ""
+msgstr "ภาษา"
 
-#: apps/web/src/routes/index.tsx:41
+#: apps/web/src/routes/index.tsx:44
 msgid "Refresh"
-msgstr ""
+msgstr "รีเฟรช"
 
-#: apps/web/src/routes/index.tsx:51
+#: apps/web/src/routes/index.tsx:55
 msgid "Show toast"
-msgstr ""
+msgstr "แสดงการแจ้งเตือน"
 
 #: packages/ui/src/components/app-layout.tsx:138
 msgid "Skip to content"
-msgstr ""
+msgstr "ข้ามไปยังเนื้อหา"
 
 #: packages/ui/src/components/not-found.tsx:31
 msgid "Start Over"
-msgstr ""
+msgstr "เริ่มใหม่"
+
+#: packages/ui/src/components/theme-toggle.tsx:27
+msgid "Switch to dark theme"
+msgstr "สลับเป็นธีมมืด"
+
+#: packages/ui/src/components/theme-toggle.tsx:26
+msgid "Switch to light theme"
+msgstr "สลับเป็นธีมสว่าง"
 
 #: packages/ui/src/components/not-found.test.tsx:9
 #: packages/ui/src/components/not-found.tsx:13
 msgid "The page you are looking for does not exist."
-msgstr ""
+msgstr "ไม่พบหน้าที่คุณกำลังค้นหา"
 
 #: packages/ui/src/components/default-catch-boundary.tsx:31
 msgid "Try Again"
-msgstr ""
+msgstr "ลองอีกครั้ง"
 
 #: apps/web/src/components/locale-switcher.tsx:47
 msgid "Unable to change language."
-msgstr ""
+msgstr "ไม่สามารถเปลี่ยนภาษาได้"

@@ -6,12 +6,12 @@
  *
  * What it does:
  *   1. Spawn `vite dev <forwarded args>` as a child with inherited stdio.
- *   2. Probe `/healthz` repeatedly. The route is trivial — any 5xx means
- *      the SSR bundle itself is broken (lingui catalog not ready yet, etc.).
+ *   2. Probe `/healthz` repeatedly. The route is trivial and must return an
+ *      exact HTTP 200. Redirects and error responses are never considered ready.
  *      Connection refused (code 0) means the server is still starting.
- *   3. If `/healthz` keeps returning 5xx for `WARMUP_TIMEOUT_MS` after the
- *      first response, kill the child and respawn (up to `MAX_ATTEMPTS`).
- *   4. As soon as a 2xx (or any non-5xx) comes back, stop probing and let
+ *   3. If `/healthz` keeps returning anything other than 200 for
+ *      `WARMUP_TIMEOUT_MS`, kill the child and respawn (up to `MAX_ATTEMPTS`).
+ *   4. As soon as an exact 200 comes back, stop probing and let
  *      the child run normally — wrapper exits with the child's exit code.
  *   5. Forward SIGINT/SIGTERM so Ctrl+C cleans up the child.
  *
@@ -19,6 +19,8 @@
  * does not need external orchestration infrastructure for a reliable startup.
  */
 import { spawn } from "node:child_process";
+
+import { classifyProbeStatus, parsePort } from "./dev-warmup-state.mjs";
 
 const PORT = parsePort(process.argv) ?? 3000;
 const PROBE_PATH = "/healthz";
@@ -29,20 +31,6 @@ const MAX_ATTEMPTS = 3;
 
 let child = null;
 let stopping = false;
-
-function parsePort(argv) {
-  const i = argv.indexOf("--port");
-  if (i !== -1 && argv[i + 1]) {
-    const n = Number(argv[i + 1]);
-    return Number.isFinite(n) ? n : null;
-  }
-  const eq = argv.find((a) => a.startsWith("--port="));
-  if (eq) {
-    const n = Number(eq.split("=")[1]);
-    return Number.isFinite(n) ? n : null;
-  }
-  return null;
-}
 
 function spawnVite(args) {
   return spawn("vite", ["dev", ...args], {
@@ -101,7 +89,6 @@ async function attempt(attemptNo, args) {
   child = spawnVite(args);
 
   const startedAt = Date.now();
-  let firstResponseAt = null;
   let firstFailureAt = null;
 
   while (!stopping) {
@@ -113,8 +100,9 @@ async function attempt(attemptNo, args) {
     }
 
     const code = await probeOnce();
+    const probeState = classifyProbeStatus(code);
 
-    if (code === 0) {
+    if (probeState === "starting") {
       // Connection refused — server still starting
       if (Date.now() - startedAt > STARTUP_TIMEOUT_MS) {
         log(
@@ -127,21 +115,18 @@ async function attempt(attemptNo, args) {
       continue;
     }
 
-    // Got a real HTTP response from this point on
-    if (firstResponseAt === null) {
-      firstResponseAt = Date.now();
-    }
-
-    if (code >= 200 && code < 500) {
-      // 2xx/3xx/4xx — server is responding from app code, not the broken-SSR state
+    if (probeState === "ready") {
       log(`ready: GET ${PROBE_PATH} -> ${code}`);
       return "ready";
     }
 
-    // 5xx — probable SSR/lingui race
     if (firstFailureAt === null) {
       firstFailureAt = Date.now();
-      log(`${PROBE_PATH} -> ${code} (probable SSR/lingui race; warming up)`);
+      const reason =
+        probeState === "server-error"
+          ? "probable SSR/lingui race"
+          : "expected an exact HTTP 200";
+      log(`${PROBE_PATH} -> ${code} (${reason}; warming up)`);
     }
     if (Date.now() - firstFailureAt >= WARMUP_TIMEOUT_MS) {
       log(
@@ -180,9 +165,8 @@ async function main() {
   }
 
   if (lastResult === "retry") {
-    log(
-      `still failing after ${MAX_ATTEMPTS} attempts — letting the last child run anyway`
-    );
+    log(`still failing after ${MAX_ATTEMPTS} attempts — startup failed`);
+    process.exit(1);
   }
 
   // Wait for child to exit and propagate code

@@ -38,7 +38,7 @@ interface AppLayoutProps {
   children: ReactNode;
   /**
    * Brand mark shown at the top-left of the header. Defaults to a
-   * simple logo + `__APP_NAME__` wordmark. Override to plug in your
+   * simple logo + `__APP_DISPLAY_NAME__` wordmark. Override to plug in your
    * own brand without forking the layout.
    */
   brand?: ReactNode;
@@ -74,12 +74,12 @@ interface AppLayoutProps {
 const DefaultBrand = () => (
   <div className="flex shrink-0 items-center gap-2">
     <img
-      src="/logo/logo512.png"
-      alt="__APP_NAME__"
+      src="/logo/brand-mark.svg"
+      alt="__APP_DISPLAY_NAME__"
       className="size-7 shrink-0 rounded-md object-contain"
     />
     <span className="hidden text-sm font-semibold tracking-tight text-foreground sm:inline">
-      __APP_NAME__
+      __APP_DISPLAY_NAME__
     </span>
   </div>
 );

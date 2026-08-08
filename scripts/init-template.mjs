@@ -4,7 +4,9 @@ import { readFile, readdir, writeFile } from "node:fs/promises";
 import { basename, extname, join, relative, resolve } from "node:path";
 import { parseArgs } from "node:util";
 
-const PLACEHOLDER = "__APP_NAME__";
+const APP_NAME_PLACEHOLDER = "__APP_NAME__";
+const DISPLAY_NAME_PLACEHOLDER = "__APP_DISPLAY_NAME__";
+const DEFAULT_WORKER_NAME = "tanstack-start-template";
 const SKIPPED_DIRECTORIES = new Set([
   ".git",
   ".turbo",
@@ -40,16 +42,35 @@ const TEXT_EXTENSIONS = new Set([
 const options = parseTemplateArguments(process.argv.slice(2));
 const repositoryRoot = resolve(options.root ?? process.cwd());
 const appName = requirePackageSlug(options.name);
+const displayName = requireDisplayName(
+  options.displayName ?? humanizePackageSlug(appName)
+);
+const replacements = new Map([
+  [APP_NAME_PLACEHOLDER, appName],
+  [DISPLAY_NAME_PLACEHOLDER, displayName],
+  [DEFAULT_WORKER_NAME, appName],
+]);
 const changedPaths = [];
 
 for await (const filePath of walk(repositoryRoot)) {
   if (!isTextFile(filePath)) continue;
 
   const before = await readFile(filePath, "utf8").catch(() => undefined);
-  if (before === undefined || !before.includes(PLACEHOLDER)) continue;
+  if (
+    before === undefined ||
+    !Array.from(replacements.keys()).some((placeholder) =>
+      before.includes(placeholder)
+    )
+  ) {
+    continue;
+  }
 
   if (!options.dryRun) {
-    await writeFile(filePath, before.replaceAll(PLACEHOLDER, appName));
+    let after = before;
+    for (const [placeholder, replacement] of replacements) {
+      after = after.replaceAll(placeholder, replacement);
+    }
+    await writeFile(filePath, after);
   }
   changedPaths.push(relative(repositoryRoot, filePath));
 }
@@ -94,6 +115,7 @@ function parseTemplateArguments(args) {
     allowPositionals: false,
     options: {
       "dry-run": { type: "boolean", default: false },
+      "display-name": { type: "string" },
       help: { type: "boolean", short: "h", default: false },
       name: { type: "string" },
       root: { type: "string" },
@@ -105,9 +127,25 @@ function parseTemplateArguments(args) {
 
   return {
     dryRun: parsed.values["dry-run"],
+    displayName: parsed.values["display-name"],
     name: parsed.values.name,
     root: parsed.values.root,
   };
+}
+
+function humanizePackageSlug(value) {
+  return value
+    .split("-")
+    .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+    .join(" ");
+}
+
+function requireDisplayName(value) {
+  const displayName = value.trim();
+  if (displayName.length === 0 || displayName.length > 80) {
+    throw new Error("--display-name must contain between 1 and 80 characters.");
+  }
+  return displayName;
 }
 
 function requirePackageSlug(value) {
@@ -122,10 +160,11 @@ function requirePackageSlug(value) {
 function printUsageAndExit(code) {
   console.log(
     [
-      "Usage: pnpm template:init -- --name <app-slug> [--root <path>] [--dry-run]",
+      "Usage: pnpm template:init -- --name <app-slug> [--display-name <name>] [--root <path>] [--dry-run]",
       "",
       "Examples:",
       "  pnpm template:init -- --name acme-operations",
+      '  pnpm template:init -- --name acme-operations --display-name "Acme Control Center"',
       "  pnpm template:init -- --name acme-operations --dry-run",
     ].join("\n")
   );

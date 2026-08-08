@@ -37,11 +37,15 @@ function Home() {
           </div>
           <div className="text-xl text-foreground">Current Time: {time}</div>
           <div className="flex gap-2">
-            <Button onClick={async () => setTime(await getCurrentServerTime())}>
+            <Button
+              data-testid="server-time-refresh"
+              onClick={async () => setTime(await getCurrentServerTime())}
+            >
               <Trans>Refresh</Trans>
             </Button>
             <Button
               variant="secondary"
+              data-testid="toast-show"
               onClick={() =>
                 toast.success("Toaster is wired up", {
                   description: "Sonner from @__APP_NAME__/ui/elements/sonner.",

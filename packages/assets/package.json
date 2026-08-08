@@ -1,5 +1,7 @@
 {
   "name": "@__APP_NAME__/assets",
+  "version": "0.0.0",
+  "private": true,
   "files": [
     "src/"
   ],
