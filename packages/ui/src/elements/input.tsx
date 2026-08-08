@@ -20,7 +20,7 @@ function Input({
         "flex h-9 w-full rounded-md border border-border bg-background px-3 text-sm",
         "text-foreground placeholder:text-subtle-foreground",
         "shadow-none outline-none",
-        "transition-colors duration-[var(--duration-1)] ease-[var(--ease)]",
+        "duration-fast transition-colors ease-standard",
         "hover:border-border-strong",
         "focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20",
         "disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground",

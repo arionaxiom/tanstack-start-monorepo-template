@@ -210,9 +210,15 @@ function ProposalCard({
     <div className={cn("space-y-3 rounded-lg bg-card p-4", borderClass)}>
       <div className="flex items-center gap-2">
         {variant === "attention" ? (
-          <ZapIcon className="size-4 text-spotlight" strokeWidth={1.5} />
+          <ZapIcon
+            className="size-4 text-spotlight-emphasis"
+            strokeWidth={1.5}
+          />
         ) : (
-          <CheckCircle2Icon className="size-4 text-success" strokeWidth={1.5} />
+          <CheckCircle2Icon
+            className="size-4 text-success-emphasis"
+            strokeWidth={1.5}
+          />
         )}
         <span className="text-title font-semibold text-foreground">
           {title}
@@ -223,19 +229,19 @@ function ProposalCard({
           <div key={item.name} className="flex items-center gap-2 text-small">
             {item.status === "ok" && (
               <CheckCircle2Icon
-                className="size-3.5 shrink-0 text-success"
+                className="size-3.5 shrink-0 text-success-emphasis"
                 strokeWidth={1.5}
               />
             )}
             {item.status === "fail" && (
               <XCircleIcon
-                className="size-3.5 shrink-0 text-destructive"
+                className="size-3.5 shrink-0 text-destructive-emphasis"
                 strokeWidth={1.5}
               />
             )}
             {item.status === "warn" && (
               <AlertCircleIcon
-                className="size-3.5 shrink-0 text-warning"
+                className="size-3.5 shrink-0 text-warning-emphasis"
                 strokeWidth={1.5}
               />
             )}
@@ -285,14 +291,14 @@ function KpiCard({
           <div className="text-display font-bold text-foreground tabular-nums">
             {value}
           </div>
-          <div className="flex items-center gap-1 text-small text-success">
+          <div className="flex items-center gap-1 text-small text-success-emphasis">
             <TrendingUpIcon className="size-3" strokeWidth={1.5} />
             {delta}
           </div>
         </>
       )}
       {state === "error" && (
-        <div className="flex items-center gap-1 text-small text-destructive">
+        <div className="flex items-center gap-1 text-small text-destructive-emphasis">
           <AlertCircleIcon className="size-3.5" strokeWidth={1.5} />
           Failed to load
         </div>

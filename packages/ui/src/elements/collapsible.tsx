@@ -14,7 +14,7 @@ function CollapsibleTrigger({
     <CollapsiblePrimitive.Trigger
       data-slot="collapsible-trigger"
       className={cn(
-        "flex w-full items-center justify-between px-3 py-2 text-left text-sm font-medium hover:bg-muted/50",
+        "duration-fast flex w-full items-center justify-between px-3 py-2 text-left text-sm font-medium transition-colors ease-standard hover:bg-muted/50",
         className
       )}
       {...props}
@@ -30,7 +30,7 @@ function CollapsibleContent({
     <CollapsiblePrimitive.Panel
       data-slot="collapsible-content"
       className={cn(
-        "overflow-hidden data-closed:animate-accordion-up data-open:animate-accordion-down",
+        "duration-default h-(--collapsible-panel-height) overflow-hidden transition-[height] ease-standard data-ending-style:h-0 data-starting-style:h-0 motion-reduce:transition-none",
         className
       )}
       {...props}

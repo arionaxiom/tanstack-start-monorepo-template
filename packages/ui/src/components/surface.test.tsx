@@ -28,4 +28,25 @@ describe("Surface", () => {
     const { container } = render(<Surface as="section">x</Surface>);
     expect(container.querySelector("section")).not.toBeNull();
   });
+
+  it("keeps in-page elevated surfaces border-based", () => {
+    const { container } = render(<Surface elevation="elevated">x</Surface>);
+
+    expect(container.firstChild).toHaveClass(
+      "bg-elevated",
+      "border",
+      "border-border"
+    );
+    expect(container.firstChild).not.toHaveClass("shadow-popover");
+  });
+
+  it("reserves shadow elevation for floating surfaces", () => {
+    const { container } = render(<Surface elevation="floating">x</Surface>);
+
+    expect(container.firstChild).toHaveClass(
+      "bg-popover",
+      "text-popover-foreground",
+      "shadow-popover"
+    );
+  });
 });

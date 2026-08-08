@@ -57,7 +57,7 @@ function InputOTPSlot({
       data-active={isActive}
       className={cn(
         "relative flex h-9 w-9 items-center justify-center border-y border-r border-border text-center font-mono text-sm",
-        "shadow-none transition-colors duration-[var(--duration-1)] ease-[var(--ease)] outline-none",
+        "duration-fast shadow-none transition-colors ease-standard outline-none",
         "first:rounded-l-md first:border-l last:rounded-r-md",
         "aria-invalid:border-destructive",
         "data-[active=true]:z-10 data-[active=true]:border-primary data-[active=true]:ring-2 data-[active=true]:ring-primary/20",
@@ -69,7 +69,7 @@ function InputOTPSlot({
       {char}
       {hasFakeCaret && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
+          <div className="duration-fast0 h-4 w-px animate-caret-blink bg-foreground" />
         </div>
       )}
     </div>

@@ -27,6 +27,7 @@ const ELEVATION_LABELS = [
   { elevation: "section" as const, label: "section" },
   { elevation: "card" as const, label: "card" },
   { elevation: "elevated" as const, label: "elevated" },
+  { elevation: "floating" as const, label: "floating" },
   { elevation: "inverse" as const, label: "inverse" },
 ] as const;
 
@@ -41,6 +42,10 @@ export function CompositionGallery() {
 
       {/* Surface elevations */}
       <Subsection title="Surface elevations">
+        <p className="text-small text-muted-foreground">
+          In-page elevated surfaces use a hairline border. Floating surfaces are
+          reserved for overlays and use the popover shadow token.
+        </p>
         <div className="flex flex-wrap gap-3">
           {ELEVATION_LABELS.map(({ elevation, label }) => (
             <Surface

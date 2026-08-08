@@ -29,7 +29,7 @@ function RadioGroupItem({
       data-testid={dataTestId}
       className={cn(
         "group/radio-group-item peer relative flex aspect-square size-4 shrink-0 rounded-full border border-border-strong bg-background outline-none",
-        "transition-colors duration-[var(--duration-1)] ease-[var(--ease)]",
+        "duration-fast transition-colors ease-standard",
         "after:absolute after:-inset-x-3 after:-inset-y-2",
         "focus-visible:ring-2 focus-visible:ring-primary/20",
         "disabled:cursor-not-allowed disabled:opacity-50",

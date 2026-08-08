@@ -15,6 +15,6 @@ describe("StatusBadge", () => {
       <StatusBadge variant="agent">running</StatusBadge>
     );
     const badge = container.firstChild as HTMLElement;
-    expect(badge.className).toMatch(/text-agent/);
+    expect(badge.className).toMatch(/text-agent-emphasis/);
   });
 });

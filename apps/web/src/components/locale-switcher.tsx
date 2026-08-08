@@ -72,7 +72,7 @@ export function LocaleSwitcher() {
       </Select>
       {isUpdating ? <Spinner className="size-4" /> : null}
       {error ? (
-        <span className="text-xs text-destructive" role="alert">
+        <span className="text-xs text-destructive-emphasis" role="alert">
           {i18n._(error)}
         </span>
       ) : null}

@@ -144,11 +144,58 @@ describe("theme compliance (R7)", () => {
       `hsl() token references found:\n${violations.join("\n")}`
     ).toHaveLength(0);
   });
+
+  it("no .tsx file reaches through semantic tokens into the raw palette", () => {
+    const violations: string[] = [];
+    const rawTokenReference =
+      /var\(--(?:ink|brand|spotlight|success|warning|danger)-\d+/;
+
+    for (const relPath of allFiles) {
+      const content = readFileSync(resolve(ROOT, relPath), "utf-8");
+      if (rawTokenReference.test(content)) violations.push(relPath);
+    }
+
+    expect(
+      violations,
+      `Consume semantic tokens instead of tier-one palette variables:\n${violations.join("\n")}`
+    ).toEqual([]);
+  });
+
+  it("uses registered semantic utilities instead of arbitrary OKLCH token syntax", () => {
+    const violations: string[] = [];
+    const arbitrarySemanticToken =
+      /(?:bg|text|border|ring|fill|stroke|outline)-\[oklch\(var\(--[a-z0-9-]+\)\)\]/;
+
+    for (const relPath of allFiles) {
+      const content = readFileSync(resolve(ROOT, relPath), "utf-8");
+      if (arbitrarySemanticToken.test(content)) violations.push(relPath);
+    }
+
+    expect(
+      violations,
+      `Use the registered Tailwind semantic utility:\n${violations.join("\n")}`
+    ).toEqual([]);
+  });
+
+  it("does not use undefined fg shorthand utilities", () => {
+    const violations: string[] = [];
+
+    for (const relPath of allFiles) {
+      const content = readFileSync(resolve(ROOT, relPath), "utf-8");
+      if (/\b(?:text|bg|border|ring)-fg\b/.test(content))
+        violations.push(relPath);
+    }
+
+    expect(
+      violations,
+      `Use foreground instead of the undefined fg shorthand:\n${violations.join("\n")}`
+    ).toEqual([]);
+  });
 });
 
 const SPOTLIGHT_OCCURRENCE_LIMIT = 3;
 const SPOTLIGHT_REGEX =
-  /\b(?:bg|text|border|ring|fill|stroke|outline)-spotlight(?:\/\d+)?\b/g;
+  /\b(?:bg|text|border|ring|fill|stroke|outline)-spotlight(?!-)(?:\/\d+)?\b/g;
 
 describe("theme compliance — design system (R2, R17, R18, R27)", () => {
   const allFiles = [
@@ -159,7 +206,7 @@ describe("theme compliance — design system (R2, R17, R18, R27)", () => {
   it("no non-test .tsx file uses Tailwind shadow-sm/shadow-md utilities (R51)", () => {
     // R51: in-page surfaces use hairline borders, not shadow. True overlays
     // (popover/dialog/sheet/dropdown/tooltip/hover-card) must consume
-    // `--shadow-popover` or `--shadow-modal` via `shadow-(--shadow-...)`,
+    // `--shadow-popover` or `--shadow-modal` via their semantic utilities,
     // not Tailwind's default `shadow-sm` / `shadow-md` (which point at tokens
     // we don't override and contradict the editorial elevation system).
     const SHADOW_REGEX =

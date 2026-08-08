@@ -7,103 +7,159 @@ import { oklchContrast } from "@__APP_NAME__/utils/contrast";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const CSS_PATH = resolve(ROOT, "packages/tailwind-config/shared-styles.css");
+const CSS = readFileSync(CSS_PATH, "utf-8");
 
-const PAIRS_NORMAL: Array<[string, string]> = [
+const TEXT_PAIRS: Array<[string, string]> = [
   ["foreground", "background"],
   ["muted-foreground", "background"],
   ["muted-foreground", "muted"],
   ["card-foreground", "card"],
+  ["popover-foreground", "popover"],
   ["secondary-foreground", "secondary"],
+  ["primary-foreground", "primary"],
   ["spotlight-foreground", "spotlight"],
+  ["info-foreground", "info"],
+  ["agent-foreground", "agent"],
   ["destructive-foreground", "destructive"],
   ["success-foreground", "success"],
   ["warning-foreground", "warning"],
   ["foreground", "card"],
 ];
 
-// UI/large text: 3:1 minimum (WCAG AA for non-text contrast and large text).
-// primary-foreground on primary is button-label text — a UI element, not body
-// text — so 3:1 applies (WCAG 1.4.11, not 1.4.3).
-const PAIRS_UI: Array<[string, string]> = [
-  ["primary", "background"],
-  ["spotlight", "background"],
-  ["primary-foreground", "primary"],
+const EMPHASIS_TOKENS = [
+  "spotlight-emphasis",
+  "info-emphasis",
+  "agent-emphasis",
+  "success-emphasis",
+  "warning-emphasis",
+  "destructive-emphasis",
 ];
 
-const RAW_TIER1: Record<string, string> = {
-  "ink-50": "0.99 0.004 85",
-  "ink-100": "0.97 0.006 80",
-  "ink-200": "0.93 0.008 75",
-  "ink-300": "0.86 0.010 70",
-  "ink-400": "0.68 0.012 65",
-  "ink-500": "0.52 0.014 62",
-  "ink-600": "0.38 0.016 60",
-  "ink-700": "0.28 0.018 58",
-  "ink-800": "0.20 0.020 56",
-  "ink-900": "0.14 0.014 55",
-  "ink-950": "0.09 0.010 55",
-  "brand-400": "0.60 0.080 175",
-  "brand-500": "0.42 0.072 174",
-  "brand-700": "0.32 0.064 174",
-  "spotlight-400": "0.74 0.180 40",
-  "spotlight-500": "0.66 0.221 37",
-  "success-500": "0.58 0.120 155",
-  "warning-500": "0.78 0.150 80",
-  "danger-500": "0.55 0.180 25",
-};
+const EMPHASIS_SURFACES = ["background", "surface", "card"];
 
-function parseSemantic(scope: ":root" | ".dark"): Record<string, string> {
-  const css = readFileSync(CSS_PATH, "utf-8");
-  const blockRe = new RegExp(
-    `${scope.replace(".", "\\.")}\\s*\\{([\\s\\S]*?)\\}`,
-    "g"
-  );
-  const map: Record<string, string> = {};
-  for (const match of css.matchAll(blockRe)) {
-    const body = match[1]!;
-    for (const line of body.split("\n")) {
-      const m = line.match(/--([a-z0-9-]+)\s*:\s*([^;]+);/);
-      if (!m) continue;
-      const [, name, raw] = m;
-      const v = raw!.trim();
-      const varMatch = v.match(/^var\(--([a-z0-9-]+)\)$/);
-      if (varMatch) {
-        map[name!] = RAW_TIER1[varMatch[1]!] ?? map[varMatch[1]!] ?? v;
-      } else {
-        map[name!] = v;
-      }
-    }
+const NON_TEXT_PAIRS: Array<[string, string]> = [
+  ["primary", "background"],
+  ["spotlight", "background"],
+  ["input", "background"],
+  ["input", "card"],
+  ["input", "surface"],
+  ["border-strong", "background"],
+  ["border-strong", "card"],
+  ["border-strong", "surface"],
+  ["ring", "background"],
+];
+
+const INTERACTION_TEXT_PAIRS: Array<[string, string]> = [
+  ["primary-foreground", "primary-hover"],
+  ["primary-foreground", "primary-active"],
+  ["spotlight-foreground", "spotlight-hover"],
+  ["spotlight-foreground", "spotlight-active"],
+  ["destructive-foreground", "destructive-hover"],
+  ["destructive-foreground", "destructive-active"],
+];
+
+function declarationsFor(selector: ":root" | ".dark") {
+  const selectorPattern = selector === ":root" ? ":root" : "\\.dark";
+  const match = new RegExp(`${selectorPattern}\\s*\\{`).exec(CSS);
+
+  if (!match) {
+    throw new Error(`Could not find ${selector} token block`);
   }
-  return map;
+
+  const bodyStart = match.index + match[0].length;
+  let depth = 1;
+  let bodyEnd = bodyStart;
+
+  while (bodyEnd < CSS.length && depth > 0) {
+    if (CSS[bodyEnd] === "{") depth += 1;
+    if (CSS[bodyEnd] === "}") depth -= 1;
+    bodyEnd += 1;
+  }
+
+  const declarations: Record<string, string> = {};
+  const body = CSS.slice(bodyStart, bodyEnd - 1);
+
+  for (const token of body.matchAll(/--([a-z0-9-]+)\s*:\s*([^;]+);/g)) {
+    declarations[token[1]!] = token[2]!.trim();
+  }
+
+  return declarations;
 }
 
-function resolve2(map: Record<string, string>, name: string): string {
-  const v = map[name];
-  if (!v) throw new Error(`Token --${name} not found`);
-  const varMatch = v.match(/^var\(--([a-z0-9-]+)\)$/);
-  if (varMatch) return RAW_TIER1[varMatch[1]!] ?? map[varMatch[1]!] ?? v;
-  return v.split("/")[0]!.trim();
+const ROOT_TOKENS = declarationsFor(":root");
+const DARK_TOKENS = { ...ROOT_TOKENS, ...declarationsFor(".dark") };
+
+function resolveToken(
+  tokens: Record<string, string>,
+  name: string,
+  seen = new Set<string>()
+): string {
+  if (seen.has(name)) {
+    throw new Error(`Circular token reference involving --${name}`);
+  }
+
+  const value = tokens[name];
+  if (!value) throw new Error(`Token --${name} not found`);
+
+  const reference = value.match(/^var\(--([a-z0-9-]+)\)$/);
+  if (!reference) return value;
+
+  seen.add(name);
+  return resolveToken(tokens, reference[1]!, seen);
 }
 
-describe.each([":root" as const, ".dark" as const])(
-  "AA contrast in %s",
-  (scope) => {
-    const tokens = parseSemantic(scope);
+describe.each([
+  ["light", ROOT_TOKENS],
+  ["dark", DARK_TOKENS],
+] as const)("AA contrast in %s mode", (mode, tokens) => {
+  it.each(TEXT_PAIRS)("%s on %s clears 4.5:1 for text", (fg, bg) => {
+    const ratio = oklchContrast(
+      resolveToken(tokens, fg),
+      resolveToken(tokens, bg)
+    );
+    expect(
+      ratio,
+      `${mode}: ${fg} on ${bg} → ${ratio.toFixed(2)}`
+    ).toBeGreaterThanOrEqual(4.5);
+  });
 
-    it.each(PAIRS_NORMAL)("%s on %s clears 4.5:1 (body text)", (fg, bg) => {
-      const ratio = oklchContrast(resolve2(tokens, fg), resolve2(tokens, bg));
+  it.each(
+    EMPHASIS_TOKENS.flatMap((token) =>
+      EMPHASIS_SURFACES.map((surface) => [token, surface] as const)
+    )
+  )("%s on %s clears 4.5:1 for status text", (fg, bg) => {
+    const ratio = oklchContrast(
+      resolveToken(tokens, fg),
+      resolveToken(tokens, bg)
+    );
+    expect(
+      ratio,
+      `${mode}: ${fg} on ${bg} → ${ratio.toFixed(2)}`
+    ).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it.each(NON_TEXT_PAIRS)("%s against %s clears 3:1", (fg, bg) => {
+    const ratio = oklchContrast(
+      resolveToken(tokens, fg),
+      resolveToken(tokens, bg)
+    );
+    expect(
+      ratio,
+      `${mode}: ${fg} against ${bg} → ${ratio.toFixed(2)}`
+    ).toBeGreaterThanOrEqual(3);
+  });
+
+  it.each(INTERACTION_TEXT_PAIRS)(
+    "%s on %s clears 4.5:1 in interaction states",
+    (fg, bg) => {
+      const ratio = oklchContrast(
+        resolveToken(tokens, fg),
+        resolveToken(tokens, bg)
+      );
       expect(
         ratio,
-        `${scope}: ${fg} on ${bg} → ${ratio.toFixed(2)}`
+        `${mode}: ${fg} on ${bg} → ${ratio.toFixed(2)}`
       ).toBeGreaterThanOrEqual(4.5);
-    });
-
-    it.each(PAIRS_UI)("%s on %s clears 3:1 (UI/large text)", (fg, bg) => {
-      const ratio = oklchContrast(resolve2(tokens, fg), resolve2(tokens, bg));
-      expect(
-        ratio,
-        `${scope}: ${fg} on ${bg} → ${ratio.toFixed(2)}`
-      ).toBeGreaterThanOrEqual(3.0);
-    });
-  }
-);
+    }
+  );
+});

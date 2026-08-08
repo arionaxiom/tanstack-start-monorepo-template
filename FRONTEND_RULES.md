@@ -14,9 +14,11 @@ The codebase uses a three-tier OKLCH token system defined in `packages/tailwind-
 | 2 — Semantic tokens | Role-named aliases of tier-1         | `:root` and `.dark` selectors | `--primary`, `--foreground`              |
 | 3 — Tailwind bridge | `oklch(var(--semantic))` in `@theme` | `@theme {}` block             | `--color-primary: oklch(var(--primary))` |
 
-**R1 — Token consumption.** Components MUST use Tailwind semantic color classes (`bg-primary`, `text-muted-foreground`, etc.). Never reference CSS custom properties directly in className, never use raw color values (`#hex`, `rgb()`, `oklch()` literals), never use default Tailwind palette colors (`text-gray-900`, `bg-blue-500`).
+**R1 — Token consumption.** Components MUST use Tailwind semantic color classes (`bg-primary`, `text-muted-foreground`, etc.). Never reach through a semantic role to a tier-1 palette variable, never use raw color values (`#hex`, `rgb()`, `oklch()` literals), and never use default Tailwind palette colors (`text-gray-900`, `bg-blue-500`). Direct custom-property access is reserved for genuinely dynamic values supplied by a third-party primitive or a scoped adapter; if a stable semantic utility can represent the value, use that utility.
 
-**R2 — Color function consistency.** When arbitrary Tailwind values must reference tier-2 tokens, use `oklch(var(--token))` — never `hsl(var(--token))`. The palette is defined in OKLCH; mixing color spaces causes perceptual inconsistencies. Enforced at test time by `packages/ui/src/theme-compliance.test.ts`.
+**R2 — Color function consistency.** Register stable tier-2 colors in `@theme` and consume their generated utilities. When a dynamic adapter must construct a color from an unregistered token, use `oklch(var(--token))` — never `hsl(var(--token))`. The palette is defined in OKLCH; mixing color spaces causes perceptual inconsistencies. Enforced at test time by `packages/ui/src/theme-compliance.test.ts`.
+
+Status colors expose three roles: the base token is a solid fill, `*-foreground` is text placed on that fill, and `*-emphasis` is readable status text or an icon placed on a neutral/tinted surface. Do not use a fill token directly as small text.
 
 **R3 — Dark mode overrides.** Use `dark:` Tailwind prefix only for adjustments that can't be expressed via tier-2 token swaps alone (typically opacity modifiers like `dark:bg-destructive/60`).
 
@@ -88,7 +90,7 @@ This is enforced by the `template/require-testid-on-action-elements` ESLint rule
 
 ## Animation Conventions (R19–R21)
 
-**R19 — Animation approach.** Use Tailwind transition utilities and `tw-animate-css` keyframes only. Do not add Framer Motion or any JS animation library. (Enforced by ESLint banned-imports.)
+**R19 — Animation approach.** Use Tailwind transition utilities and `tw-animate-css` keyframes only. Ordinary controls and overlays consume the semantic `duration-fast`, `duration-default`, `duration-slow`, `ease-standard`, `ease-enter`, and `ease-exit` utilities. Bespoke physics are allowed only for gestures such as drawers or carousels. Do not add Framer Motion or any JS animation library. (Enforced by ESLint banned-imports.)
 
 **R20 — Base UI state transitions.** All Base UI overlay components (Dialog, Sheet, Popover, DropdownMenu, Tooltip) MUST use the standardized enter/exit pattern:
 
@@ -175,9 +177,9 @@ These rules encode the Quiet Editorial design direction — deep teal primary, v
 - chart series 5 if the chart has 5+ series
 - timeline entries that need attention (one per row OK)
 
-**R33 — Only weights 400, 500, 700.** Display weights 300 and 800 are NOT in the system. Only 400, 500, 700 ship.
+**R33 — Only weights 400, 500, 700.** Display weights 300 and 800 are NOT in the system. Only 400, 500, 700 ship; `font-semibold` intentionally aliases to 500. Thai pages put IBM Plex Sans Thai first in the locale-specific stack and remove Latin negative tracking from body copy.
 
-**R34 — Hairline-as-elevation.** Only true overlays (popover, dialog, sheet, dropdown, tooltip, hover-card) may use box-shadow. In-page surfaces (cards, alerts, items) use 1px borders. No `shadow-sm` / `shadow-md` utilities. Enforced by `packages/ui/src/theme-compliance.test.ts`.
+**R34 — Hairline-as-elevation.** Only true overlays (popover, dialog, sheet, dropdown, tooltip, hover-card) may use box-shadow. In-page surfaces (cards, alerts, items, and `Surface elevation="elevated"`) use 1px borders. Use `shadow-popover` for anchored floating surfaces and `shadow-modal` for blocking overlays; never use default `shadow-sm` / `shadow-md` utilities. Enforced by `packages/ui/src/theme-compliance.test.ts`.
 
 **R35 — Tabular numerics for any column of numbers.** `font-feature-settings: "tnum", "lnum"` applied via the `text-mono` utility or the `tabular-nums` Tailwind class. Mixed proportional / tabular numerals in the same table is a regression.
 

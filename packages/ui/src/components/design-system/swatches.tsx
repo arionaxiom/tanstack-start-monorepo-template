@@ -19,6 +19,7 @@ const TOKEN_GROUPS: TokenGroup[] = [
       { name: "ink-200", value: "0.93 0.008 75" },
       { name: "ink-300", value: "0.86 0.010 70" },
       { name: "ink-400", value: "0.68 0.012 65" },
+      { name: "ink-450", value: "0.64 0.013 63" },
       { name: "ink-500", value: "0.52 0.014 62" },
       { name: "ink-600", value: "0.38 0.016 60" },
       { name: "ink-700", value: "0.28 0.018 58" },
@@ -30,6 +31,7 @@ const TOKEN_GROUPS: TokenGroup[] = [
   {
     name: "Brand",
     tokens: [
+      { name: "brand-300", value: "0.68 0.075 175" },
       { name: "brand-400", value: "0.60 0.080 175" },
       { name: "brand-500", value: "0.42 0.072 174" },
       { name: "brand-700", value: "0.32 0.064 174" },
@@ -40,14 +42,21 @@ const TOKEN_GROUPS: TokenGroup[] = [
     tokens: [
       { name: "spotlight-400", value: "0.74 0.180 40" },
       { name: "spotlight-500", value: "0.66 0.221 37" },
+      { name: "spotlight-700", value: "0.40 0.140 37" },
     ],
   },
   {
     name: "State",
     tokens: [
+      { name: "success-400", value: "0.72 0.100 155" },
       { name: "success-500", value: "0.58 0.120 155" },
+      { name: "success-700", value: "0.40 0.100 155" },
+      { name: "warning-400", value: "0.82 0.130 80" },
       { name: "warning-500", value: "0.78 0.150 80" },
+      { name: "warning-700", value: "0.40 0.100 80" },
+      { name: "danger-400", value: "0.70 0.140 25" },
       { name: "danger-500", value: "0.55 0.180 25" },
+      { name: "danger-700", value: "0.40 0.140 25" },
     ],
   },
   {
@@ -73,9 +82,9 @@ export function Swatches() {
           <h3 className="mb-3 text-title font-semibold text-foreground">
             {group.name}
           </h3>
-          <div className="grid grid-cols-4 gap-3 md:grid-cols-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-6">
             {group.tokens.map((tok) => (
-              <div key={tok.name} className="flex flex-col gap-1">
+              <div key={tok.name} className="flex min-w-0 flex-col gap-1">
                 <div
                   className="size-12 rounded-md border border-border"
                   style={{ backgroundColor: `oklch(${tok.value})` }}

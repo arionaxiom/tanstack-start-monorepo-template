@@ -12,7 +12,7 @@ const alertVariants = cva(
         info: "before:bg-primary",
         warning: "before:bg-warning bg-warning/5",
         destructive:
-          "before:bg-destructive bg-destructive/5 text-destructive *:data-[slot=alert-description]:text-destructive/90",
+          "before:bg-destructive bg-destructive/5 text-destructive-emphasis *:data-[slot=alert-description]:text-destructive-emphasis/90",
         spotlight: "before:bg-spotlight bg-spotlight/5",
       },
     },

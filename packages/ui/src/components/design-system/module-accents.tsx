@@ -62,9 +62,8 @@ export function ModuleAccents() {
                 {/* Icon + name */}
                 <div className="flex items-center gap-2">
                   <Icon
-                    className="size-5"
+                    className="module-accent-kicker size-5"
                     strokeWidth={1.5}
-                    style={{ color: "var(--accent-current)" }}
                   />
                   <span className="text-title font-semibold text-foreground">
                     {name}
@@ -84,9 +83,8 @@ export function ModuleAccents() {
                 </div>
                 <div className="module-accent-border-l flex items-center gap-2 rounded-sm bg-muted px-2 py-1.5">
                   <Icon
-                    className="size-4 shrink-0"
+                    className="module-accent-kicker size-4 shrink-0"
                     strokeWidth={1.5}
-                    style={{ color: "var(--accent-current)" }}
                   />
                   <span className="text-small text-foreground">{name}</span>
                 </div>
@@ -99,9 +97,8 @@ export function ModuleAccents() {
                 </div>
                 <div className="rounded-md border border-dashed border-border p-4 text-center">
                   <Icon
-                    className="mx-auto mb-2 size-6"
+                    className="module-accent-kicker mx-auto mb-2 size-6"
                     strokeWidth={1.5}
-                    style={{ color: "var(--accent-current)" }}
                   />
                   <div className="mb-1 text-title font-semibold text-foreground">
                     {emptyHeadline}

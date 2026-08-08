@@ -21,7 +21,7 @@ function InputGroup({
       className={cn(
         "group/input-group relative flex h-9 w-full min-w-0 items-center rounded-md border border-border bg-background",
         "shadow-none outline-none",
-        "transition-colors duration-[var(--duration-1)] ease-[var(--ease)]",
+        "duration-fast transition-colors ease-standard",
         "in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0",
         "has-[[data-slot=input-group-control]:focus-visible]:border-primary has-[[data-slot=input-group-control]:focus-visible]:ring-2 has-[[data-slot=input-group-control]:focus-visible]:ring-primary/20",
         "has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-2 has-[[data-slot][aria-invalid=true]]:ring-destructive/15",

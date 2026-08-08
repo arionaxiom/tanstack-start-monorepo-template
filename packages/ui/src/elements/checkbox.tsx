@@ -16,7 +16,7 @@ function Checkbox({
       data-testid={dataTestId}
       className={cn(
         "peer relative flex size-4 shrink-0 items-center justify-center rounded-xs border border-border-strong bg-background",
-        "shadow-none transition-colors duration-[var(--duration-1)] ease-[var(--ease)] outline-none",
+        "duration-fast shadow-none transition-colors ease-standard outline-none",
         "after:absolute after:-inset-x-3 after:-inset-y-2",
         "focus-visible:ring-2 focus-visible:ring-primary/20",
         "disabled:cursor-not-allowed disabled:opacity-50",

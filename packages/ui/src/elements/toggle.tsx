@@ -9,7 +9,7 @@ const toggleVariants = cva(
   cn(
     "group/toggle inline-flex items-center justify-center gap-1 rounded-md text-sm font-medium whitespace-nowrap",
     "bg-transparent text-foreground",
-    "transition-colors duration-[var(--duration-1)] ease-[var(--ease)]",
+    "duration-fast transition-colors ease-standard",
     "hover:bg-muted active:bg-muted",
     "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     "disabled:pointer-events-none disabled:opacity-60",

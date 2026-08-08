@@ -78,22 +78,34 @@
   /* Action */
   --color-primary: oklch(var(--primary));
   --color-primary-foreground: oklch(var(--primary-foreground));
+  --color-primary-hover: oklch(var(--primary-hover));
+  --color-primary-active: oklch(var(--primary-active));
   --color-secondary: oklch(var(--secondary));
   --color-secondary-foreground: oklch(var(--secondary-foreground));
 
   /* AI / status */
   --color-spotlight: oklch(var(--spotlight));
   --color-spotlight-foreground: oklch(var(--spotlight-foreground));
+  --color-spotlight-emphasis: oklch(var(--spotlight-emphasis));
+  --color-spotlight-hover: oklch(var(--spotlight-hover));
+  --color-spotlight-active: oklch(var(--spotlight-active));
   --color-info: oklch(var(--info));
   --color-info-foreground: oklch(var(--info-foreground));
+  --color-info-emphasis: oklch(var(--info-emphasis));
   --color-agent: oklch(var(--agent));
   --color-agent-foreground: oklch(var(--agent-foreground));
+  --color-agent-emphasis: oklch(var(--agent-emphasis));
   --color-success: oklch(var(--success));
   --color-success-foreground: oklch(var(--success-foreground));
+  --color-success-emphasis: oklch(var(--success-emphasis));
   --color-warning: oklch(var(--warning));
   --color-warning-foreground: oklch(var(--warning-foreground));
+  --color-warning-emphasis: oklch(var(--warning-emphasis));
   --color-destructive: oklch(var(--destructive));
   --color-destructive-foreground: oklch(var(--destructive-foreground));
+  --color-destructive-emphasis: oklch(var(--destructive-emphasis));
+  --color-destructive-hover: oklch(var(--destructive-hover));
+  --color-destructive-active: oklch(var(--destructive-active));
 
   /* Structure */
   --color-border: oklch(var(--border));
@@ -128,39 +140,30 @@
   --font-sans:
     "Inter Variable", "IBM Plex Sans Thai", system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans-thai:
+    "IBM Plex Sans Thai", "Inter Variable", system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono:
     "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
+  --font-weight-semibold: var(--font-weight-medium);
   --font-weight-bold: 700;
 
   /* Motion */
-  --ease: cubic-bezier(0.2, 0, 0, 1);
-  --ease-out: cubic-bezier(0.2, 0, 0.1, 1);
-  --duration-1: 120ms;
-  --duration-2: 200ms;
-  --duration-3: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-enter: cubic-bezier(0.2, 0, 0.1, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --duration-fast: 120ms;
+  --duration-default: 200ms;
+  --duration-slow: 320ms;
 
-  /* Animations (kept; existing tw-animate-css helpers + accordion) */
-  --animate-accordion-down: accordion-down 0.2s var(--ease);
-  --animate-accordion-up: accordion-up 0.2s var(--ease);
-
-  @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
-  }
-  @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
-  }
+  /* Compatibility aliases for component-local CSS variables. */
+  --ease: var(--ease-standard);
+  --ease-out: var(--ease-enter);
+  --duration-1: var(--duration-fast);
+  --duration-2: var(--duration-default);
+  --duration-3: var(--duration-slow);
 
   @keyframes spotlight-pulse {
     0%,
@@ -172,6 +175,12 @@
     }
   }
   --animate-spotlight-pulse: spotlight-pulse 1800ms ease-in-out infinite;
+}
+
+@theme inline {
+  --shadow-flat: var(--elevation-flat);
+  --shadow-popover: var(--elevation-popover);
+  --shadow-modal: var(--elevation-modal);
 }
 
 /* Tailwind v4 border color compatibility */
@@ -196,6 +205,7 @@
     --ink-200: 0.93 0.008 75;
     --ink-300: 0.86 0.01 70;
     --ink-400: 0.68 0.012 65;
+    --ink-450: 0.64 0.013 63;
     --ink-500: 0.52 0.014 62;
     --ink-600: 0.38 0.016 60;
     --ink-700: 0.28 0.018 58;
@@ -204,6 +214,7 @@
     --ink-950: 0.09 0.01 55;
 
     /* Brand teal (#006152 ≈ 0.42 0.072 174) */
+    --brand-300: 0.68 0.075 175;
     --brand-400: 0.6 0.08 175;
     --brand-500: 0.42 0.072 174;
     --brand-700: 0.32 0.064 174;
@@ -211,11 +222,18 @@
     /* Spotlight orange (#ff4400 ≈ 0.66 0.221 37) */
     --spotlight-400: 0.74 0.18 40;
     --spotlight-500: 0.66 0.221 37;
+    --spotlight-700: 0.4 0.14 37;
 
     /* State scale */
+    --success-400: 0.72 0.1 155;
     --success-500: 0.58 0.12 155;
+    --success-700: 0.4 0.1 155;
+    --warning-400: 0.82 0.13 80;
     --warning-500: 0.78 0.15 80;
+    --warning-700: 0.4 0.1 80;
+    --danger-400: 0.7 0.14 25;
     --danger-500: 0.55 0.18 25;
+    --danger-700: 0.4 0.14 25;
 
     /* Module accents — low-chroma identity markers (§6.10) */
     --accent-stock-light: 0.5 0.06 50;
@@ -244,28 +262,40 @@
     --popover-foreground: var(--ink-700);
 
     --border: var(--ink-200);
-    --border-strong: var(--ink-300);
-    --input: var(--ink-200);
+    --border-strong: var(--ink-450);
+    --input: var(--ink-450);
     --ring: var(--brand-500);
 
     --primary: var(--brand-500);
     --primary-foreground: var(--ink-50);
+    --primary-hover: var(--brand-700);
+    --primary-active: var(--brand-700);
     --secondary: var(--ink-100);
     --secondary-foreground: var(--ink-700);
 
     --spotlight: var(--spotlight-500);
     --spotlight-foreground: var(--ink-900);
+    --spotlight-emphasis: var(--spotlight-700);
+    --spotlight-hover: var(--spotlight-400);
+    --spotlight-active: var(--spotlight-500);
     --info: var(--brand-500);
     --info-foreground: var(--ink-50);
+    --info-emphasis: var(--brand-500);
     --agent: var(--brand-500);
     --agent-foreground: var(--ink-50);
+    --agent-emphasis: var(--brand-500);
 
     --success: var(--success-500);
     --success-foreground: var(--ink-900);
+    --success-emphasis: var(--success-700);
     --warning: var(--warning-500);
     --warning-foreground: var(--ink-700);
+    --warning-emphasis: var(--warning-700);
     --destructive: var(--danger-500);
     --destructive-foreground: var(--ink-50);
+    --destructive-emphasis: var(--danger-700);
+    --destructive-hover: var(--danger-700);
+    --destructive-active: var(--danger-700);
 
     --overlay: 0 0 0 / 0.18;
 
@@ -291,11 +321,11 @@
     --sidebar-border: var(--border);
     --sidebar-ring: var(--ring);
 
-    /* Shadows (§3.5). Note: tokens not registered in @theme — used directly via CSS. */
-    --shadow-flat: none;
-    --shadow-popover:
+    /* Runtime elevation values; bridged to shadow-* utilities via @theme inline. */
+    --elevation-flat: none;
+    --elevation-popover:
       0 1px 2px oklch(0 0 0 / 0.04), 0 0 0 1px oklch(var(--border));
-    --shadow-modal:
+    --elevation-modal:
       0 10px 40px oklch(0 0 0 / 0.08), 0 0 0 1px oklch(var(--border));
   }
 
@@ -316,28 +346,40 @@
 
     /* raw triples + alpha — cannot use oklch(var(--ink-N) / a) because @theme bridge wraps as oklch(var(--border)) */
     --border: 0.2 0.02 56 / 0.6;
-    --border-strong: 0.28 0.018 58 / 0.7;
-    --input: 0.2 0.02 56 / 0.7;
+    --border-strong: var(--ink-500);
+    --input: var(--ink-500);
     --ring: var(--brand-400);
 
     --primary: var(--brand-400);
-    --primary-foreground: var(--ink-50);
+    --primary-foreground: var(--ink-900);
+    --primary-hover: var(--brand-300);
+    --primary-active: var(--brand-300);
     --secondary: var(--ink-800);
     --secondary-foreground: var(--ink-100);
 
     --spotlight: var(--spotlight-400);
     --spotlight-foreground: var(--ink-900);
+    --spotlight-emphasis: var(--spotlight-400);
+    --spotlight-hover: var(--spotlight-500);
+    --spotlight-active: var(--spotlight-500);
     --info: var(--brand-400);
-    --info-foreground: var(--ink-50);
+    --info-foreground: var(--ink-900);
+    --info-emphasis: var(--brand-400);
     --agent: var(--brand-400);
-    --agent-foreground: var(--ink-50);
+    --agent-foreground: var(--ink-900);
+    --agent-emphasis: var(--brand-400);
 
     --success: var(--success-500);
     --success-foreground: var(--ink-900);
+    --success-emphasis: var(--success-400);
     --warning: var(--warning-500);
     --warning-foreground: var(--ink-900);
+    --warning-emphasis: var(--warning-400);
     --destructive: var(--danger-500);
     --destructive-foreground: var(--ink-50);
+    --destructive-emphasis: var(--danger-400);
+    --destructive-hover: var(--danger-700);
+    --destructive-active: var(--danger-700);
 
     --overlay: 0 0 0 / 0.5;
 
@@ -360,10 +402,10 @@
     --sidebar-border: var(--border);
     --sidebar-ring: var(--ring);
 
-    --shadow-flat: none;
-    --shadow-popover:
+    --elevation-flat: none;
+    --elevation-popover:
       0 1px 2px oklch(0 0 0 / 0.4), 0 0 0 1px oklch(var(--ink-700));
-    --shadow-modal:
+    --elevation-modal:
       0 10px 40px oklch(0 0 0 / 0.6), 0 0 0 1px oklch(var(--ink-700));
   }
 }
@@ -389,6 +431,9 @@
   }
 
   /* Thai locale — taller line-height, no negative tracking on body */
+  :root[lang="th"] {
+    --font-sans: var(--font-sans-thai);
+  }
   :root[lang="th"] body {
     line-height: 1.7;
     letter-spacing: 0;
@@ -432,9 +477,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .animate-spotlight-pulse,
-    .animate-pulse,
-    .animate-accordion-down,
-    .animate-accordion-up {
+    .animate-pulse {
       animation: none !important;
     }
   }

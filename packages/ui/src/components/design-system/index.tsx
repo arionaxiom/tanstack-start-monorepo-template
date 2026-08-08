@@ -8,7 +8,7 @@ import { TypeSpecimen } from "./type-specimen.js";
 export function DesignSystemShowcase() {
   return (
     <div
-      className="mx-auto max-w-5xl space-y-16 px-6 py-10"
+      className="mx-auto w-full max-w-5xl min-w-0 space-y-16 px-6 py-10"
       data-testid="design-system-reference"
     >
       <header>

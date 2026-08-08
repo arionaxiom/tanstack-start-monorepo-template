@@ -6,7 +6,7 @@ import { cn } from "@__APP_NAME__/ui/utils/cn";
 const buttonVariants = cva(
   cn(
     "group/button inline-flex shrink-0 items-center justify-center gap-2 rounded-md border border-transparent text-sm font-medium whitespace-nowrap select-none",
-    "transition-colors duration-[var(--duration-1)] ease-[var(--ease)]",
+    "duration-fast transition-colors ease-standard",
     "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     "disabled:pointer-events-none disabled:opacity-60",
     "aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20",
@@ -16,16 +16,16 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground border border-primary hover:bg-[oklch(var(--brand-700))] active:brightness-95",
+          "border border-primary bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-active",
         secondary:
           "bg-transparent text-foreground border border-border hover:bg-muted active:bg-muted",
         outline:
           "bg-background text-foreground border border-border hover:bg-muted active:bg-muted",
         ghost: "bg-transparent text-foreground hover:bg-muted active:bg-muted",
         destructive:
-          "bg-destructive text-destructive-foreground border border-destructive hover:brightness-90 active:brightness-95",
+          "border border-destructive bg-destructive text-destructive-foreground hover:bg-destructive-hover active:bg-destructive-active",
         spotlight:
-          "bg-spotlight text-spotlight-foreground border border-spotlight hover:brightness-95 active:brightness-90",
+          "border border-spotlight bg-spotlight text-spotlight-foreground hover:bg-spotlight-hover active:bg-spotlight-active",
         link: "text-primary underline-offset-4 hover:underline border-0 px-0",
       },
       size: {

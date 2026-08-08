@@ -9,17 +9,19 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-muted text-fg border-border",
+        default: "border-border bg-muted text-foreground",
         primary: "bg-primary/10 text-primary border-primary/20",
-        spotlight: "bg-spotlight/10 text-spotlight border-spotlight/25",
-        success: "bg-success/10 text-success border-success/20",
-        warning: "bg-warning/10 text-warning border-warning/20",
-        destructive: "bg-destructive/10 text-destructive border-destructive/20",
-        agent: "bg-agent/10 text-agent border-agent/20",
-        info: "bg-info/10 text-info border-info/20",
-        outline: "bg-transparent text-fg border-border-strong",
+        spotlight:
+          "border-spotlight/25 bg-spotlight/10 text-spotlight-emphasis",
+        success: "border-success/20 bg-success/10 text-success-emphasis",
+        warning: "border-warning/20 bg-warning/10 text-warning-emphasis",
+        destructive:
+          "border-destructive/20 bg-destructive/10 text-destructive-emphasis",
+        agent: "border-agent/20 bg-agent/10 text-agent-emphasis",
+        info: "border-info/20 bg-info/10 text-info-emphasis",
+        outline: "border-border-strong bg-transparent text-foreground",
         // Legacy compat aliases
-        secondary: "bg-muted text-fg border-border",
+        secondary: "border-border bg-muted text-foreground",
         ghost: "bg-transparent text-foreground border-transparent",
       },
     },

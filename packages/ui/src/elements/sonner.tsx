@@ -45,10 +45,10 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }
       toastOptions={{
         classNames: {
-          // Base toast: matches spec — bg-card border border-border rounded-md shadow-(--shadow-popover)
+          // Base toast: matches spec — bg-card border border-border rounded-md shadow-popover
           // p-3 min-w-[320px] max-w-[420px] text-sm
           toast:
-            "cn-toast !bg-[var(--card)] !border !border-[var(--border)] !rounded-md !shadow-(--shadow-popover) !p-3 !min-w-[320px] !max-w-[420px] !text-sm",
+            "cn-toast !bg-[var(--card)] !border !border-[var(--border)] !rounded-md !shadow-popover !p-3 !min-w-[320px] !max-w-[420px] !text-sm",
           // Variant left-border rules per §6.8
           success: "!border-l-4 !border-l-[var(--success)]",
           warning: "!border-l-4 !border-l-[var(--warning)]",

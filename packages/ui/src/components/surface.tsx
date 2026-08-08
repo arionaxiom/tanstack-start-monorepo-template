@@ -13,7 +13,8 @@ const surfaceVariants = cva("", {
       page: "bg-background text-foreground",
       section: "bg-surface text-foreground",
       card: "bg-card text-card-foreground",
-      elevated: "bg-elevated text-card-foreground shadow-(--shadow-popover)",
+      elevated: "border border-border bg-elevated text-card-foreground",
+      floating: "bg-popover text-popover-foreground shadow-popover",
       inverse: "bg-foreground text-inverse-foreground",
     },
     bordered: {

@@ -186,7 +186,7 @@ function QuestionnaireError({
   return (
     <QuestionnairePrimitive.Error
       data-slot="questionnaire-error"
-      className={cn("text-sm text-destructive", className)}
+      className={cn("text-sm text-destructive-emphasis", className)}
       {...props}
     />
   );
