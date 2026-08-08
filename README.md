@@ -10,9 +10,7 @@ This template is designed to be worked on collaboratively with AI agents. Agent 
 - [`CLAUDE.md`](./CLAUDE.md) — Claude-specific additions
 - [`CODEX.md`](./CODEX.md) — Codex-specific additions
 - [`FRONTEND_RULES.md`](./FRONTEND_RULES.md) — frontend conventions
-- [`PINNED_PACKAGES.md`](./PINNED_PACKAGES.md) — version constraints
-
-Multi-agent orchestration uses [Agent of Empires (AoE)](.aoe/README.md). See `.aoe/README.md` for setup and conventions.
+- [`PINNED_PACKAGES.md`](./PINNED_PACKAGES.md) — toolchain compatibility notes
 
 ## Highlights
 
@@ -20,12 +18,12 @@ Multi-agent orchestration uses [Agent of Empires (AoE)](.aoe/README.md). See `.a
 - **React 19, Tailwind v4, Base UI primitives, shadcn-style library** shipped from `packages/ui`.
 - **i18n out of the box** via Lingui with English, Thai, and pseudo locales plus router-level locale awareness.
 - **Shared packages** for hooks, utils, constants, assets, ESLint, Tailwind, and TS configs to keep features isolated but consistent.
-- **Strict quality gates** (ESLint, Vitest, TS) enforced through pnpm scripts, lint-staged, and Husky.
+- **Strict quality gates** (Prettier, ESLint, Vitest, TypeScript, ESM verification, and production builds) enforced in CI.
 
 ## Requirements
 
-- Node.js **>= 22** (aligns with Cloudflare Workers runtime)
-- pnpm **10.32+** (workspaces + overrides rely on this version)
+- Node.js **>= 24**
+- pnpm **11.20+** (Corepack reads the exact version from `package.json`)
 - Wrangler CLI (optional until you deploy): `npm i -g wrangler`
 - Cloudflare account with Workers enabled for deployment
 
@@ -41,7 +39,7 @@ Multi-agent orchestration uses [Agent of Empires (AoE)](.aoe/README.md). See `.a
    ```
 
 3. **Rename the workspace scope**  
-   The repo ships with `.github/workflows/init.yml` (“Initialize from template”) that replaces every `__APP_NAME__` placeholder with your repo name on the first push to `main` (or whenever you manually run it via **Actions → Initialize from template → Run workflow**, optionally supplying `app_name`). If Actions are disabled, fall back to an editor/CLI multi-file replace to swap `__APP_NAME__` for your slug (e.g., `acme`).
+   The repo ships with `.github/workflows/init.yml` (“Initialize from template”) that replaces every `__APP_NAME__` placeholder with your repo name on the first push to `main` (or whenever you manually run it via **Actions → Initialize from template → Run workflow**, optionally supplying `app_name`). You can run the same tested initializer locally with `pnpm template:init -- --name acme`.
 
 4. **Start the dev server**
 
@@ -50,7 +48,7 @@ Multi-agent orchestration uses [Agent of Empires (AoE)](.aoe/README.md). See `.a
    pnpm dev --filter=web   # or just the TanStack Start app on :3000
    ```
 
-   > **Known quirk:** the TanStack Start dev server occasionally fails the first time because Lingui’s extraction race leaves missing catalog files. Simply stop and rerun `pnpm dev`—subsequent runs work consistently.
+   The web app's dev wrapper probes `/healthz` and automatically retries the rare TanStack Start + Cloudflare + Lingui cold-start race.
 
 5. **Commit hooks**  
    Husky’s pre-commit hook automatically formats staged files via Prettier. Linting, tests, and type checks are manual—see “Quality Checks”.
@@ -84,9 +82,11 @@ packages/
 | root            | `pnpm build`          | Build everything via Turborepo           |
 | root            | `pnpm lint`           | Run ESLint with `--max-warnings 0`       |
 | root            | `pnpm check-types`    | Type-check every package                 |
-| root            | `pnpm format`         | Format `ts/tsx/md` files with Prettier   |
+| root            | `pnpm format`         | Format the repository with Prettier      |
+| root            | `pnpm format:check`   | Verify formatting without writing        |
+| root            | `pnpm verify`         | Run every CI quality gate                |
+| root            | `pnpm template:init`  | Replace template scope placeholders      |
 | apps/web        | `pnpm dev`            | Start TanStack Start (Vite) on port 3000 |
-| apps/web        | `pnpm test`           | Run Vitest + RTL                         |
 | apps/web        | `pnpm build`          | Build SSR bundle for Workers             |
 | apps/web        | `pnpm deploy`         | Build + deploy via Wrangler              |
 | packages/locale | `pnpm lingui:extract` | Extract strings from app + UI packages   |
@@ -118,10 +118,7 @@ Run any script from the repo root with `pnpm --filter=<package>` when you need a
 ## Quality Checks
 
 ```bash
-pnpm lint         # ESLint (fails on warnings)
-pnpm check-types  # Typescript --noEmit across the monorepo
-pnpm --filter=web test   # Vitest suite
-pnpm format       # Prettier + Tailwind plugin formatting
+pnpm verify # format check, lint, TypeScript 7, tests, and production build
 ```
 
 These are the checks you should run before every push. Automation assumes they return clean results.
@@ -137,21 +134,19 @@ These are the checks you should run before every push. Automation assumes they r
    ```
    Use `pnpm cf-typegen` anytime you change bindings so TypeScript has up-to-date Worker environment types.
 
-## Pinned Packages
+## Toolchain Compatibility
 
-Some dependencies are intentionally held at specific versions due to known compatibility issues. See [`PINNED_PACKAGES.md`](./PINNED_PACKAGES.md) for the full list, reasons, and enforcement method. Always check that file before upgrading vitest, recharts, or any package listed there.
-
-React and React DOM versions are pinned via `pnpm.overrides` to ensure compatibility across all packages and potential Expo integration.
+All dependencies track their latest stable releases. React and Vitest families use exact central overrides only to keep one resolution across the workspace. TypeScript 7 is the project compiler; ESLint receives the TypeScript 6 compatibility API required by `typescript-eslint`. See [`PINNED_PACKAGES.md`](./PINNED_PACKAGES.md) for details.
 
 ## Troubleshooting
 
-- **Dev server fails on first run**: The Lingui extraction step competes with TanStack Start boot. Just re-run `pnpm dev`—subsequent runs succeed because catalogs already exist.
-- **Mismatched Node/pnpm versions**: Verify `node -v` ≥ 22 and `pnpm -v` ≥ 10.32. Project tooling relies on these versions (see `package.json` → `engines` & `packageManager`).
+- **Dev server fails repeatedly**: Run `pnpm --filter=web dev:raw` to bypass the warmup wrapper and inspect the first Vite failure directly.
+- **Mismatched Node/pnpm versions**: Verify `node -v` ≥ 24 and `pnpm -v` ≥ 11.20. Project tooling relies on `package.json` → `engines` and `packageManager`.
 - **Route type errors**: Delete `apps/web/src/routeTree.gen.ts` and rerun `pnpm dev` to regenerate if route definitions drift from generated types.
 
 ## Utility Scripts
 
-- `clear-node-modules.sh` removes every nested `node_modules` folder—handy if you switch Node versions or packages become corrupted.
+- `pnpm clean:node-modules` safely removes nested `node_modules` directories with a cross-platform ESM script.
 
 ---
 

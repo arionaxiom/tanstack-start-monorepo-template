@@ -1,6 +1,0 @@
-[hooks]
-on_create = [".aoe/scripts/setup-worktree.sh"]
-
-[worktree.cleanup]
-auto_cleanup = true
-delete_branch_on_cleanup = false

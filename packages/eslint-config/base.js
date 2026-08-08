@@ -1,8 +1,16 @@
-import { defineConfig } from "eslint/config";
 import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
+import noBarrelFiles from "eslint-plugin-no-barrel-files";
 import turboPlugin from "eslint-plugin-turbo";
+import { defineConfig } from "eslint/config";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import tseslint from "typescript-eslint";
+
+const repositoryRoot = resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  "../.."
+);
 
 // ── Banned imports ──────────────────────────────────────────────────────────
 
@@ -41,6 +49,22 @@ const bannedPackages = [
     name: "motion",
     message:
       "Use Tailwind transitions + tw-animate-css (FRONTEND_RULES.md animation)",
+  },
+  {
+    name: "formik",
+    message: "Use the shared TanStack Form useAppForm factory.",
+  },
+  {
+    name: "react-hook-form",
+    message: "Use the shared TanStack Form useAppForm factory.",
+  },
+  {
+    name: "final-form",
+    message: "Use the shared TanStack Form useAppForm factory.",
+  },
+  {
+    name: "react-final-form",
+    message: "Use the shared TanStack Form useAppForm factory.",
   },
 ];
 
@@ -118,10 +142,12 @@ export const config = defineConfig([
   {
     name: "base/turbo-and-rules",
     plugins: {
+      "no-barrel-files": noBarrelFiles,
       turbo: turboPlugin,
     },
     rules: {
-      "turbo/no-undeclared-env-vars": "warn",
+      "turbo/no-undeclared-env-vars": "error",
+      "no-barrel-files/no-barrel-files": "error",
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
@@ -156,7 +182,40 @@ export const config = defineConfig([
           message:
             "Use cn() from @__APP_NAME__/ui/utils to compose className — not string concatenation (FRONTEND_RULES.md theme tokens).",
         },
+        {
+          selector:
+            "CallExpression[callee.type='MemberExpression'][callee.object.name='z'][callee.property.name='enum'] > ArrayExpression.arguments",
+          message:
+            "Define enum values in @__APP_NAME__/types as a *_VALUES tuple and pass that tuple to z.enum(...).",
+        },
       ],
+    },
+  },
+  {
+    name: "base/type-aware-rules",
+    files: ["src/**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: repositoryRoot,
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-deprecated": "error",
+    },
+  },
+  {
+    // These files intentionally expose a narrow adapter surface rather than
+    // acting as general package barrels.
+    name: "base/allow-adapter-reexports",
+    files: [
+      "src/elements/sonner.tsx",
+      "src/index.ts",
+      "src/react.tsx",
+      "src/test-utils.tsx",
+    ],
+    rules: {
+      "no-barrel-files/no-barrel-files": "off",
     },
   },
   {

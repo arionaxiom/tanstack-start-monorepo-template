@@ -1,41 +1,26 @@
-# Pinned Packages
+# Toolchain Compatibility
 
-Packages intentionally held at a specific version due to known issues with newer releases. **Check this file before upgrading any package listed here.**
+No dependency is intentionally held below its latest stable release.
 
-| Package             | Pinned | Latest | Reason                                                                         | Enforcement    |
-| ------------------- | ------ | ------ | ------------------------------------------------------------------------------ | -------------- |
-| vitest              | 4.0.18 | 4.1.0  | 4.1.0 changes import.meta.glob behavior, breaks convex-test                    | pnpm.overrides |
-| @vitest/coverage-v8 | 4.0.18 | 4.1.0  | Must match vitest                                                              | pnpm.overrides |
-| @vitest/runner      | 4.0.18 | 4.1.0  | Must match vitest                                                              | pnpm.overrides |
-| @vitest/spy         | 4.0.18 | 4.1.0  | Must match vitest                                                              | pnpm.overrides |
-| react               | 19.2.0 | 19.2.4 | Pinned for future Expo / React Native compatibility                            | pnpm.overrides |
-| react-dom           | 19.2.0 | 19.2.4 | Must match react                                                               | pnpm.overrides |
-| typescript          | ~5.9.2 | 5.9.3  | Dedupe @lingui/react — split resolution created dual React context (see below) | pnpm.overrides |
+React, React DOM, their type packages, and Vitest's coupled packages use exact
+`pnpm-workspace.yaml` overrides so the monorepo resolves one version of each.
+Those overrides track the latest stable releases; they are consistency locks,
+not downgrade pins.
 
-### typescript — dedupe rationale
+## TypeScript 7 and ESLint
 
-`packages/test-utils` peer-depends on `typescript: "^5"` while
-the rest of the workspace declares `typescript: "~5.9.2"`. Without
-the override, pnpm resolves two distinct versions (5.9.2 and 5.9.3),
-which splits the `@lingui/react` instantiation: the shared
-`TestProviders` wrapper imports the 5.9.3 `I18nProvider` while a
-test's `i18n.loadAndActivate` hits the 5.9.2 `I18nProvider`. React
-renders `<I18nProvider>` but the children never mount as the same
-component identity, so `customRenderHook`'s `result.current` stays
-`null` and every react-hooks test silently bypasses the shared
-wrapper. Pinning `typescript: "~5.9.2"` in `pnpm.overrides` forces
-a single resolution across the whole workspace (including transitive
-peer-dep chains), which dedupes `@lingui/react` and fixes the wrapper.
+TypeScript 7 is installed as `@typescript/native` through the npm alias
+`npm:typescript@7.0.2`. Its `tsc` executable is the compiler used by every
+workspace type-check.
 
-## Resolved pins
+TypeScript 7.0 does not expose the compiler API required by
+`typescript-eslint`. Following the TypeScript team's supported side-by-side
+configuration, the `typescript` dependency name points to the latest
+`@typescript/typescript6` compatibility package. This supplies the TypeScript 6
+API to ESLint and the `tsc6` binary without replacing TypeScript 7's `tsc`.
 
-| Package                     | Was pinned       | Resolution                                                                                                                                                           |
-| --------------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| vite                        | 6.x              | Migrated to @vitejs/plugin-react-swc + @lingui/swc-plugin                                                                                                            |
-| @vitejs/plugin-react        | 4.x              | Replaced with @vitejs/plugin-react-swc                                                                                                                               |
-| recharts                    | ^2.15.3          | Upgraded to ^3.8.1 — shadcn chart component now supports Recharts v3 props                                                                                           |
-| @lingui/\* (full ecosystem) | ^5.9.4 / ^5.11.0 | Upgraded to v6.0.1 across entire ecosystem; `@lingui/macro` package removed (already using `@lingui/react/macro` and `@lingui/core/macro` entry points) — 2026-05-08 |
+When TypeScript 7.1 and `typescript-eslint` expose compatible APIs, remove the
+compatibility alias and let both compilation and linting use TypeScript 7
+directly.
 
----
-
-**Last reviewed**: 2026-05-08 (added typescript `~5.9.2`, removed recharts pin, upgraded @lingui ecosystem to v6 and removed pin)
+Last reviewed: 2026-08-08.

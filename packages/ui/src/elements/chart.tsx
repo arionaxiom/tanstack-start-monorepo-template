@@ -275,12 +275,13 @@ function ChartLegendContent({
   className,
   hideIcon = false,
   payload,
-  verticalAlign = "bottom",
+  position = "bottom",
   nameKey,
 }: React.ComponentProps<"div"> & {
   hideIcon?: boolean;
   nameKey?: string;
-} & RechartsPrimitive.DefaultLegendContentProps) {
+  position?: React.ComponentProps<typeof RechartsPrimitive.Legend>["position"];
+} & Omit<RechartsPrimitive.DefaultLegendContentProps, "verticalAlign">) {
   const { config } = useChart();
 
   if (!payload?.length) {
@@ -291,7 +292,7 @@ function ChartLegendContent({
     <div
       className={cn(
         "flex items-center justify-center gap-4",
-        verticalAlign === "top" ? "pb-3" : "pt-3",
+        position === "top" ? "pb-3" : "pt-3",
         className
       )}
     >

@@ -12,16 +12,12 @@
   },
   "dependencies": {
     "@__APP_NAME__/types": "workspace:*",
-    "@tanstack/form-core": "^1.32.0",
+    "@tanstack/form-core": "^1.33.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",
     "@__APP_NAME__/typescript-config": "workspace:*",
-    "eslint": "^10.4.0",
-    "typescript": "~6.0.3"
-  },
-  "peerDependencies": {
-    "typescript": "^6"
+    "eslint": "^10.8.1"
   }
 }

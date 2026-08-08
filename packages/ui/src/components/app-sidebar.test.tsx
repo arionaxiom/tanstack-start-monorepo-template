@@ -6,6 +6,11 @@ import { render, screen } from "@__APP_NAME__/ui/test-utils";
 
 import { AppSidebar } from "./app-sidebar.js";
 
+const TestLink = ({
+  to,
+  ...props
+}: React.ComponentProps<"a"> & { to: string }) => <a href={to} {...props} />;
+
 describe("AppSidebar", () => {
   beforeEach(() => {
     Object.defineProperty(window, "matchMedia", {
@@ -25,6 +30,7 @@ describe("AppSidebar", () => {
     render(
       <SidebarProvider>
         <AppSidebar
+          LinkComponent={TestLink}
           menuItems={[
             { key: "dashboard", title: "Dashboard", url: "/", icon: House },
           ]}
@@ -44,6 +50,7 @@ describe("AppSidebar", () => {
     render(
       <SidebarProvider>
         <AppSidebar
+          LinkComponent={TestLink}
           menuItems={[
             { key: "dashboard", title: "Dashboard", url: "/", icon: House },
           ]}

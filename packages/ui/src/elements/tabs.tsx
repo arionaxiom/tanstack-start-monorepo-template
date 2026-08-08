@@ -39,7 +39,7 @@ const tabsListVariants = cva(
 
 const tabsTriggerClassName = cn(
   "relative -mb-px border-b-2 border-transparent px-3 py-2 text-sm text-muted-foreground hover:text-foreground",
-  "data-[state=active]:border-primary data-[state=active]:text-foreground",
+  "data-active:border-primary data-active:text-foreground data-[state=active]:border-primary data-[state=active]:text-foreground",
   "focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none",
   "disabled:pointer-events-none disabled:opacity-50",
   "whitespace-nowrap transition-colors"

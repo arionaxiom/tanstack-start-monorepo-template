@@ -1,14 +1,13 @@
 import { cn } from "@__APP_NAME__/ui/utils/cn";
 
-function Kbd({ className, style, ...props }: React.ComponentProps<"kbd">) {
+function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {
   return (
     <kbd
       data-slot="kbd"
       className={cn(
-        "pointer-events-none inline-flex h-5 items-center justify-center rounded-sm border border-border-strong bg-muted px-1.5 text-xs text-muted-foreground select-none",
+        "pointer-events-none inline-flex h-5 w-fit min-w-5 items-center justify-center gap-1 rounded-sm border border-border-strong bg-muted px-1.5 font-mono text-xs text-muted-foreground select-none in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background [&_svg:not([class*='size-'])]:size-3",
         className
       )}
-      style={{ fontFamily: "var(--font-mono)", ...style }}
       {...props}
     />
   );

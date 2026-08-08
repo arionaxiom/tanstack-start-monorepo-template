@@ -14,15 +14,12 @@
     "./locales/en": "./locales/en/messages.ts",
     "./locales/th": "./locales/th/messages.ts"
   },
-  "peerDependencies": {
-    "typescript": "^6"
-  },
   "devDependencies": {
-    "@lingui/cli": "^6.1.0",
-    "@lingui/loader": "^6.1.0"
+    "@lingui/cli": "^6.6.0",
+    "@lingui/loader": "^6.6.0"
   },
   "dependencies": {
-    "@lingui/core": "^6.1.0"
+    "@lingui/core": "^6.6.0"
   },
   "type": "module"
 }

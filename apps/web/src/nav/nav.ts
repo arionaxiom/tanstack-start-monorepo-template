@@ -1,6 +1,6 @@
 import { Home } from "lucide-react";
 
-import { MenuItem } from "@__APP_NAME__/ui/components/app-sidebar";
+import type { MenuItem } from "@__APP_NAME__/ui/components/app-sidebar";
 
 export const navigationItems = [
   { title: "Home", href: "/" },

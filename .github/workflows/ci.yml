@@ -1,65 +1,64 @@
-# .github/workflows/ci.yml
-
-# Name of the workflow, which will be displayed on the GitHub Actions tab.
 name: CI
 
-# This workflow runs on every 'push' event to any branch.
-on: [push, pull_request]
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
 
-# Defines the jobs that will run as part of this workflow.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  # A single job named 'ci' (for Continuous Integration).
   ci:
-    # The type of virtual machine to run the job on. 'ubuntu-latest' is a good default.
     runs-on: ubuntu-latest
-
-    # A sequence of tasks that will be executed as part of the 'ci' job.
+    env:
+      CI: true
     steps:
-      # Step 1: Check out the repository's code
-      # This action allows the workflow to access your code.
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      # Step 2: Set up pnpm
-      # This action installs and configures the pnpm package manager.
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
-      # Step 3: Set up Node.js
-      # This action sets up a Node.js environment. pnpm needs this.
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          # Specify the version of Node.js to use.
-          node-version: "22"
-          # Use pnpm's lockfile for caching, which speeds up subsequent runs.
+          node-version: "24"
           cache: "pnpm"
 
-      # Step 4: Install project dependencies
-      # Runs 'pnpm install' to download all the necessary packages.
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      # GitHub Actions built-in caching
       - name: Cache Turbo
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          key: ${{ runner.os }}-turbo-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-turbo-
+            ${{ runner.os }}-turbo-${{ hashFiles('pnpm-lock.yaml') }}-
 
-      # Step 5: Run the linter
-      # Executes your project's linting script.
-      - name: Run Linter
-        run: pnpm run lint
+      - name: Verify formatting
+        run: pnpm format:check
 
-      # Step 6: Run the type checker
-      # Executes your project's type-checking script.
-      - name: Run Type Check
-        run: pnpm run check-types
+      - name: Verify locale catalogs
+        run: |
+          pnpm --filter @__APP_NAME__/locale lingui:extract
+          pnpm --filter @__APP_NAME__/locale compile
+          git diff --exit-code -- packages/locale/locales
 
-      # Step 7: Run the tests
-      # Executes your project's test script.
-      - name: Run Tests
-        run: pnpm run test
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm check-types
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build

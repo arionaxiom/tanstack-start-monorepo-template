@@ -18,7 +18,6 @@ architecture rules, and quality expectations live in `AGENTS.md`.
   - `superpowers:verification-before-completion`
   - `superpowers:writing-plans`
 - Native MCP discovery from `.mcp.json` is supported. Use `mcp__*` tool prefixes when relevant.
-- AoE launch examples for Claude use `-c claude`.
 
 ## Legacy Note
 

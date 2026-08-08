@@ -16,7 +16,7 @@ import { seo } from "@__APP_NAME__/utils/seo/seo";
 import { LocaleSwitcher } from "@/components/locale-switcher";
 import { DevelopmentTanStackDevtools } from "@/devtools/development-tanstack-devtools";
 import { useMenuItems, useNavigationItems } from "@/nav/use-nav";
-import { AppContext } from "@/router";
+import type { AppContext } from "@/router";
 
 export const Route = createRootRouteWithContext<AppContext>()({
   loader({ context }) {

@@ -146,17 +146,30 @@
   --animate-accordion-up: accordion-up 0.2s var(--ease);
 
   @keyframes accordion-down {
-    from { height: 0; }
-    to { height: var(--radix-accordion-content-height); }
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
   }
   @keyframes accordion-up {
-    from { height: var(--radix-accordion-content-height); }
-    to { height: 0; }
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
   }
 
   @keyframes spotlight-pulse {
-    0%, 100% { opacity: 0.6; }
-    50%      { opacity: 1.0; }
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
   }
   --animate-spotlight-pulse: spotlight-pulse 1800ms ease-in-out infinite;
 }
@@ -178,176 +191,180 @@
 @layer base {
   :root {
     /* Ink scale — warm hue 55–85 across the lightness range */
-    --ink-50:  0.99 0.004 85;
+    --ink-50: 0.99 0.004 85;
     --ink-100: 0.97 0.006 80;
     --ink-200: 0.93 0.008 75;
-    --ink-300: 0.86 0.010 70;
+    --ink-300: 0.86 0.01 70;
     --ink-400: 0.68 0.012 65;
     --ink-500: 0.52 0.014 62;
     --ink-600: 0.38 0.016 60;
     --ink-700: 0.28 0.018 58;
-    --ink-800: 0.20 0.020 56;
+    --ink-800: 0.2 0.02 56;
     --ink-900: 0.14 0.014 55;
-    --ink-950: 0.09 0.010 55;
+    --ink-950: 0.09 0.01 55;
 
     /* Brand teal (#006152 ≈ 0.42 0.072 174) */
-    --brand-400: 0.60 0.080 175;
+    --brand-400: 0.6 0.08 175;
     --brand-500: 0.42 0.072 174;
     --brand-700: 0.32 0.064 174;
 
     /* Spotlight orange (#ff4400 ≈ 0.66 0.221 37) */
-    --spotlight-400: 0.74 0.180 40;
+    --spotlight-400: 0.74 0.18 40;
     --spotlight-500: 0.66 0.221 37;
 
     /* State scale */
-    --success-500: 0.58 0.120 155;
-    --warning-500: 0.78 0.150 80;
-    --danger-500:  0.55 0.180 25;
+    --success-500: 0.58 0.12 155;
+    --warning-500: 0.78 0.15 80;
+    --danger-500: 0.55 0.18 25;
 
     /* Module accents — low-chroma identity markers (§6.10) */
-    --accent-stock-light:   0.50 0.06 50;
-    --accent-stock-dark:    0.62 0.06 50;
-    --accent-leadgen-light: 0.50 0.06 220;
-    --accent-leadgen-dark:  0.62 0.06 220;
-    --accent-jobs-light:    0.50 0.06 290;
-    --accent-jobs-dark:     0.62 0.06 290;
+    --accent-stock-light: 0.5 0.06 50;
+    --accent-stock-dark: 0.62 0.06 50;
+    --accent-leadgen-light: 0.5 0.06 220;
+    --accent-leadgen-dark: 0.62 0.06 220;
+    --accent-jobs-light: 0.5 0.06 290;
+    --accent-jobs-dark: 0.62 0.06 290;
 
     /* App radius alias kept for shadcn primitives that read --radius directly */
     --radius: 0.5rem;
 
     /* ----------- LIGHT MODE semantic tokens ----------- */
-    --background:           var(--ink-50);
-    --surface:              var(--ink-100);
-    --foreground:           var(--ink-700);
-    --muted:                var(--ink-100);
-    --muted-foreground:     var(--ink-500);
-    --subtle-foreground:    var(--ink-400);
-    --inverse-foreground:   var(--ink-50);
+    --background: var(--ink-50);
+    --surface: var(--ink-100);
+    --foreground: var(--ink-700);
+    --muted: var(--ink-100);
+    --muted-foreground: var(--ink-500);
+    --subtle-foreground: var(--ink-400);
+    --inverse-foreground: var(--ink-50);
 
-    --card:                 var(--ink-50);
-    --card-foreground:      var(--ink-700);
-    --elevated:             var(--ink-50);
-    --popover:              var(--ink-50);
-    --popover-foreground:   var(--ink-700);
+    --card: var(--ink-50);
+    --card-foreground: var(--ink-700);
+    --elevated: var(--ink-50);
+    --popover: var(--ink-50);
+    --popover-foreground: var(--ink-700);
 
-    --border:               var(--ink-200);
-    --border-strong:        var(--ink-300);
-    --input:                var(--ink-200);
-    --ring:                 var(--brand-500);
+    --border: var(--ink-200);
+    --border-strong: var(--ink-300);
+    --input: var(--ink-200);
+    --ring: var(--brand-500);
 
-    --primary:              var(--brand-500);
-    --primary-foreground:   var(--ink-50);
-    --secondary:            var(--ink-100);
+    --primary: var(--brand-500);
+    --primary-foreground: var(--ink-50);
+    --secondary: var(--ink-100);
     --secondary-foreground: var(--ink-700);
 
-    --spotlight:            var(--spotlight-500);
+    --spotlight: var(--spotlight-500);
     --spotlight-foreground: var(--ink-900);
-    --info:                 var(--brand-500);
-    --info-foreground:      var(--ink-50);
-    --agent:                var(--brand-500);
-    --agent-foreground:     var(--ink-50);
+    --info: var(--brand-500);
+    --info-foreground: var(--ink-50);
+    --agent: var(--brand-500);
+    --agent-foreground: var(--ink-50);
 
-    --success:              var(--success-500);
-    --success-foreground:   var(--ink-900);
-    --warning:              var(--warning-500);
-    --warning-foreground:   var(--ink-700);
-    --destructive:          var(--danger-500);
+    --success: var(--success-500);
+    --success-foreground: var(--ink-900);
+    --warning: var(--warning-500);
+    --warning-foreground: var(--ink-700);
+    --destructive: var(--danger-500);
     --destructive-foreground: var(--ink-50);
 
-    --overlay:              0 0 0 / 0.18;
+    --overlay: 0 0 0 / 0.18;
 
     /* Charts */
     --chart-1: var(--brand-500);
-    --chart-2: 0.62 0.060 200;
-    --chart-3: 0.55 0.090 145;
+    --chart-2: 0.62 0.06 200;
+    --chart-3: 0.55 0.09 145;
     --chart-4: var(--spotlight-500);
-    --chart-5: 0.45 0.030 60;
+    --chart-5: 0.45 0.03 60;
 
     /* Module accents (light) */
-    --accent-stock:   var(--accent-stock-light);
+    --accent-stock: var(--accent-stock-light);
     --accent-leadgen: var(--accent-leadgen-light);
-    --accent-jobs:    var(--accent-jobs-light);
+    --accent-jobs: var(--accent-jobs-light);
 
     /* Sidebar — points at platform tokens; sidebar is "the same paper" as main */
-    --sidebar:                       var(--background);
-    --sidebar-foreground:            var(--foreground);
-    --sidebar-primary:               var(--primary);
-    --sidebar-primary-foreground:    var(--primary-foreground);
-    --sidebar-accent:                var(--muted);
-    --sidebar-accent-foreground:     var(--foreground);
-    --sidebar-border:                var(--border);
-    --sidebar-ring:                  var(--ring);
+    --sidebar: var(--background);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--muted);
+    --sidebar-accent-foreground: var(--foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
 
     /* Shadows (§3.5). Note: tokens not registered in @theme — used directly via CSS. */
-    --shadow-flat:    none;
-    --shadow-popover: 0 1px 2px oklch(0 0 0 / 0.04), 0 0 0 1px oklch(var(--border));
-    --shadow-modal:   0 10px 40px oklch(0 0 0 / 0.08), 0 0 0 1px oklch(var(--border));
+    --shadow-flat: none;
+    --shadow-popover:
+      0 1px 2px oklch(0 0 0 / 0.04), 0 0 0 1px oklch(var(--border));
+    --shadow-modal:
+      0 10px 40px oklch(0 0 0 / 0.08), 0 0 0 1px oklch(var(--border));
   }
 
   .dark {
-    --background:           var(--ink-900);
-    --surface:              var(--ink-800);
-    --foreground:           var(--ink-100);
-    --muted:                var(--ink-800);
-    --muted-foreground:     var(--ink-400);
-    --subtle-foreground:    var(--ink-500);
-    --inverse-foreground:   var(--ink-900);
+    --background: var(--ink-900);
+    --surface: var(--ink-800);
+    --foreground: var(--ink-100);
+    --muted: var(--ink-800);
+    --muted-foreground: var(--ink-400);
+    --subtle-foreground: var(--ink-500);
+    --inverse-foreground: var(--ink-900);
 
-    --card:                 var(--ink-800);
-    --card-foreground:      var(--ink-100);
-    --elevated:             var(--ink-700);
-    --popover:              var(--ink-800);
-    --popover-foreground:   var(--ink-100);
+    --card: var(--ink-800);
+    --card-foreground: var(--ink-100);
+    --elevated: var(--ink-700);
+    --popover: var(--ink-800);
+    --popover-foreground: var(--ink-100);
 
     /* raw triples + alpha — cannot use oklch(var(--ink-N) / a) because @theme bridge wraps as oklch(var(--border)) */
-    --border:               0.20 0.020 56 / 0.6;
-    --border-strong:        0.28 0.018 58 / 0.7;
-    --input:                0.20 0.020 56 / 0.7;
-    --ring:                 var(--brand-400);
+    --border: 0.2 0.02 56 / 0.6;
+    --border-strong: 0.28 0.018 58 / 0.7;
+    --input: 0.2 0.02 56 / 0.7;
+    --ring: var(--brand-400);
 
-    --primary:              var(--brand-400);
-    --primary-foreground:   var(--ink-50);
-    --secondary:            var(--ink-800);
+    --primary: var(--brand-400);
+    --primary-foreground: var(--ink-50);
+    --secondary: var(--ink-800);
     --secondary-foreground: var(--ink-100);
 
-    --spotlight:            var(--spotlight-400);
+    --spotlight: var(--spotlight-400);
     --spotlight-foreground: var(--ink-900);
-    --info:                 var(--brand-400);
-    --info-foreground:      var(--ink-50);
-    --agent:                var(--brand-400);
-    --agent-foreground:     var(--ink-50);
+    --info: var(--brand-400);
+    --info-foreground: var(--ink-50);
+    --agent: var(--brand-400);
+    --agent-foreground: var(--ink-50);
 
-    --success:              var(--success-500);
-    --success-foreground:   var(--ink-900);
-    --warning:              var(--warning-500);
-    --warning-foreground:   var(--ink-900);
-    --destructive:          var(--danger-500);
+    --success: var(--success-500);
+    --success-foreground: var(--ink-900);
+    --warning: var(--warning-500);
+    --warning-foreground: var(--ink-900);
+    --destructive: var(--danger-500);
     --destructive-foreground: var(--ink-50);
 
-    --overlay:              0 0 0 / 0.5;
+    --overlay: 0 0 0 / 0.5;
 
     --chart-1: var(--brand-400);
-    --chart-2: 0.70 0.060 200;
-    --chart-3: 0.65 0.090 145;
+    --chart-2: 0.7 0.06 200;
+    --chart-3: 0.65 0.09 145;
     --chart-4: var(--spotlight-400);
-    --chart-5: 0.65 0.020 60;
+    --chart-5: 0.65 0.02 60;
 
-    --accent-stock:   var(--accent-stock-dark);
+    --accent-stock: var(--accent-stock-dark);
     --accent-leadgen: var(--accent-leadgen-dark);
-    --accent-jobs:    var(--accent-jobs-dark);
+    --accent-jobs: var(--accent-jobs-dark);
 
-    --sidebar:                    var(--background);
-    --sidebar-foreground:         var(--foreground);
-    --sidebar-primary:            var(--primary);
+    --sidebar: var(--background);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
     --sidebar-primary-foreground: var(--primary-foreground);
-    --sidebar-accent:             var(--muted);
-    --sidebar-accent-foreground:  var(--foreground);
-    --sidebar-border:             var(--border);
-    --sidebar-ring:               var(--ring);
+    --sidebar-accent: var(--muted);
+    --sidebar-accent-foreground: var(--foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
 
-    --shadow-flat:    none;
-    --shadow-popover: 0 1px 2px oklch(0 0 0 / 0.4),  0 0 0 1px oklch(var(--ink-700));
-    --shadow-modal:   0 10px 40px oklch(0 0 0 / 0.6), 0 0 0 1px oklch(var(--ink-700));
+    --shadow-flat: none;
+    --shadow-popover:
+      0 1px 2px oklch(0 0 0 / 0.4), 0 0 0 1px oklch(var(--ink-700));
+    --shadow-modal:
+      0 10px 40px oklch(0 0 0 / 0.6), 0 0 0 1px oklch(var(--ink-700));
   }
 }
 
@@ -361,22 +378,38 @@
     font-feature-settings: "ss01", "cv11", "tnum";
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-weight: var(--font-weight-bold);
     letter-spacing: -0.018em;
   }
 
   /* Thai locale — taller line-height, no negative tracking on body */
-  :root[lang="th"] body { line-height: 1.7; letter-spacing: 0; }
-  :root[lang="th"] .text-body { line-height: 1.7; letter-spacing: 0; }
+  :root[lang="th"] body {
+    line-height: 1.7;
+    letter-spacing: 0;
+  }
+  :root[lang="th"] .text-body {
+    line-height: 1.7;
+    letter-spacing: 0;
+  }
 
   /* Numerics */
-  .numeric { font-feature-settings: "tnum", "lnum"; font-variant-numeric: tabular-nums lining-nums; }
+  .numeric {
+    font-feature-settings: "tnum", "lnum";
+    font-variant-numeric: tabular-nums lining-nums;
+  }
 }
 
 /* Utility: border + outline default */
 @layer base {
-  * { @apply border-border; }
+  * {
+    @apply border-border;
+  }
   *:focus-visible {
     outline: 2px solid oklch(var(--ring));
     outline-offset: 2px;
@@ -386,7 +419,9 @@
 @utility scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @layer utilities {
@@ -399,7 +434,9 @@
     .animate-spotlight-pulse,
     .animate-pulse,
     .animate-accordion-down,
-    .animate-accordion-up { animation: none !important; }
+    .animate-accordion-up {
+      animation: none !important;
+    }
   }
 
   /*
@@ -421,9 +458,15 @@
 
 /* Module accent wiring (§6.10) — sets --accent-current for descendants */
 @layer utilities {
-  [data-module-accent="stock"]   { --accent-current: oklch(var(--accent-stock));   }
-  [data-module-accent="leadgen"] { --accent-current: oklch(var(--accent-leadgen)); }
-  [data-module-accent="jobs"]    { --accent-current: oklch(var(--accent-jobs));   }
+  [data-module-accent="stock"] {
+    --accent-current: oklch(var(--accent-stock));
+  }
+  [data-module-accent="leadgen"] {
+    --accent-current: oklch(var(--accent-leadgen));
+  }
+  [data-module-accent="jobs"] {
+    --accent-current: oklch(var(--accent-jobs));
+  }
 
   /* Utility consumed by module-switcher pill — 2px left border */
   .module-accent-border-l {

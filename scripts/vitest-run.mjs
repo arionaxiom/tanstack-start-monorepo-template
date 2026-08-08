@@ -5,21 +5,39 @@ import { pathToFileURL } from "node:url";
 export function normalizeVitestArgs(args) {
   const separatorIndex = args.indexOf("--");
   if (separatorIndex === -1) return args;
+  return [...args.slice(0, separatorIndex), ...args.slice(separatorIndex + 1)];
+}
+
+const hasOption = (args, names) =>
+  args.some((argument) =>
+    names.some((name) => argument === name || argument.startsWith(`${name}=`))
+  );
+
+export function withStableVitestDefaults(args) {
+  const normalized = normalizeVitestArgs(args);
   return [
-    ...args.slice(0, separatorIndex),
-    ...args.slice(separatorIndex + 1),
+    ...(hasOption(normalized, ["--testTimeout", "--test-timeout"])
+      ? []
+      : ["--testTimeout=15000"]),
+    ...(hasOption(normalized, ["--maxWorkers", "--max-workers"])
+      ? []
+      : ["--maxWorkers=2"]),
+    ...normalized,
   ];
 }
 
 function isMain() {
-  return import.meta.url === pathToFileURL(process.argv[1]).href;
+  return (
+    process.argv[1] !== undefined &&
+    import.meta.url === pathToFileURL(process.argv[1]).href
+  );
 }
 
 if (isMain()) {
   const command = process.platform === "win32" ? "vitest.cmd" : "vitest";
   const child = spawn(
     command,
-    ["run", ...normalizeVitestArgs(process.argv.slice(2))],
+    ["run", ...withStableVitestDefaults(process.argv.slice(2))],
     {
       stdio: "inherit",
     }

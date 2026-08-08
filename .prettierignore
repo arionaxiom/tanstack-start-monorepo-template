@@ -1,4 +1,6 @@
 _generated/
+.playwright-mcp/
+**/.wrangler/
 *.gen.ts
 worker-configuration.d.ts
 packages/locale/locales/*/messages.ts

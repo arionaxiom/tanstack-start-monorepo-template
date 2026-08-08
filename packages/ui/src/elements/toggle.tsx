@@ -13,7 +13,7 @@ const toggleVariants = cva(
     "hover:bg-muted active:bg-muted",
     "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     "disabled:pointer-events-none disabled:opacity-60",
-    "data-[state=on]:bg-muted data-[state=on]:text-foreground",
+    "aria-pressed:bg-muted aria-pressed:text-foreground data-pressed:bg-muted data-pressed:text-foreground",
     "aria-invalid:border-destructive aria-invalid:ring-destructive/20",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
   ),

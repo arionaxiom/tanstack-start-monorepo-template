@@ -21,7 +21,11 @@ import {
   SidebarTrigger,
 } from "@__APP_NAME__/ui/elements/sidebar";
 
-import { APP_NAV_SIDEBAR_PANEL_ID, AppSidebar, MenuItem } from "./app-sidebar";
+import {
+  APP_NAV_SIDEBAR_PANEL_ID,
+  AppSidebar,
+  type MenuItem,
+} from "./app-sidebar";
 
 export const APP_RIGHT_SIDEBAR_PANEL_ID = "app-right";
 
@@ -50,9 +54,9 @@ interface AppLayoutProps {
    * `<Link activeProps>`) is the consumer's responsibility — wire
    * it via the link component you pass here.
    */
-  LinkComponent?: ComponentType<{
+  LinkComponent: ComponentType<{
     to: string;
-    children: React.ReactNode;
+    children?: React.ReactNode;
     onClick?: React.MouseEventHandler<HTMLAnchorElement>;
     className?: string;
     [key: string]: unknown;
@@ -139,15 +143,9 @@ export function AppLayout({
               panelId={APP_NAV_SIDEBAR_PANEL_ID}
               className="-ml-1"
             />
-            {LinkComponent ? (
-              <LinkComponent to="/" data-testid="brand-logo-link">
-                {brand}
-              </LinkComponent>
-            ) : (
-              <a href="/" data-testid="brand-logo-link">
-                {brand}
-              </a>
-            )}
+            <LinkComponent to="/" data-testid="brand-logo-link">
+              {brand}
+            </LinkComponent>
 
             {navigationItems.length > 0 && (
               <NavigationMenu className="z-0 hidden lg:flex">
@@ -155,7 +153,7 @@ export function AppLayout({
                   {navigationItems.map((item) => (
                     <NavigationMenuItem key={item.href}>
                       <NavigationMenuLink
-                        href={item.href}
+                        render={<LinkComponent to={item.href} />}
                         className={navigationMenuTriggerStyle()}
                       >
                         {item.title}
@@ -170,7 +168,7 @@ export function AppLayout({
               <Breadcrumb>
                 <BreadcrumbList>
                   {breadcrumbs.map((crumb, index) => (
-                    <Fragment key={crumb.href ?? `${index}-${crumb.title}`}>
+                    <Fragment key={crumb.href ?? crumb.title}>
                       {index > 0 && (
                         <BreadcrumbSeparator className="hidden md:block" />
                       )}
@@ -180,7 +178,9 @@ export function AppLayout({
                         {index === breadcrumbs.length - 1 ? (
                           <BreadcrumbPage>{crumb.title}</BreadcrumbPage>
                         ) : (
-                          <BreadcrumbLink href={crumb.href}>
+                          <BreadcrumbLink
+                            render={<LinkComponent to={crumb.href ?? "/"} />}
+                          >
                             {crumb.title}
                           </BreadcrumbLink>
                         )}

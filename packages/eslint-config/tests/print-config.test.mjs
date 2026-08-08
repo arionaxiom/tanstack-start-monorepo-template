@@ -30,6 +30,7 @@ const FIXTURES = [
     pkg: "packages/test-utils",
     file: "src/index.ts",
     skipRTLBan: true,
+    skipBarrelBan: true,
   },
   { pkg: "packages/ui", file: "src/utils/cn.ts" },
   { pkg: "apps/web", file: "src/routes/index.tsx" },
@@ -51,9 +52,26 @@ function printConfig(pkg, file) {
 describe("eslint config inheritance — critical rules survive per package", () => {
   it.each(FIXTURES)(
     "$pkg keeps bannedPackages, ../* ban, and (where applicable) testing-library ban",
-    ({ pkg, file, skipRTLBan }) => {
+    ({ pkg, file, skipRTLBan, skipBarrelBan }) => {
       const cfg = printConfig(pkg, file);
       const restricted = cfg.rules?.["no-restricted-imports"];
+
+      expect(
+        cfg.rules?.["@typescript-eslint/no-deprecated"]?.[0],
+        `${pkg}: deprecated API usage must be an error`
+      ).toBe(2);
+
+      expect(cfg.rules?.["turbo/no-undeclared-env-vars"]?.[0]).toBe(2);
+      expect(cfg.rules?.["no-barrel-files/no-barrel-files"]?.[0]).toBe(
+        skipBarrelBan ? 0 : 2
+      );
+
+      if (pkg === "apps/web") {
+        expect(
+          cfg.rules?.["@tanstack/router/create-route-property-order"]?.[0]
+        ).toBe(2);
+        expect(cfg.rules?.["template/no-raw-internal-navigation"]?.[0]).toBe(2);
+      }
 
       expect(
         restricted,
@@ -63,10 +81,9 @@ describe("eslint config inheritance — critical rules survive per package", () 
       // Flat config: rule value is [severity, ...options]
       // After normalisation ESLint encodes the severity as a number (2 = error).
       const severity = Array.isArray(restricted) ? restricted[0] : restricted;
-      expect(
-        severity,
-        `${pkg}: no-restricted-imports should be an error`
-      ).toBe(2);
+      expect(severity, `${pkg}: no-restricted-imports should be an error`).toBe(
+        2
+      );
 
       const options = Array.isArray(restricted) ? restricted[1] : undefined;
       const paths = options?.paths ?? [];
@@ -91,6 +108,11 @@ describe("eslint config inheritance — critical rules survive per package", () 
       expect(
         paths.some((p) => p.name === "motion"),
         `${pkg}: missing banned package "motion"`
+      ).toBe(true);
+
+      expect(
+        paths.some((p) => p.name === "react-hook-form"),
+        `${pkg}: missing alternative form-library ban`
       ).toBe(true);
 
       if (!skipRTLBan) {
@@ -154,6 +176,26 @@ describe("eslint config inheritance — critical rules survive per package", () 
         hasBinaryExpressionBan,
         `${pkg}: missing className binary-expression ban in no-restricted-syntax`
       ).toBe(true);
+
+      const hasInlineZodEnumBan = entries.some(
+        (entry) =>
+          typeof entry === "object" &&
+          typeof entry.selector === "string" &&
+          entry.selector.includes("z'][callee.property.name='enum")
+      );
+      expect(
+        hasInlineZodEnumBan,
+        `${pkg}: missing inline z.enum array ban in no-restricted-syntax`
+      ).toBe(true);
     }
   );
+
+  it("lints UI elements with targeted generated-wrapper exceptions", () => {
+    const cfg = printConfig("packages/ui", "src/elements/chart.tsx");
+
+    expect(cfg.rules?.["no-barrel-files/no-barrel-files"]?.[0]).toBe(2);
+    expect(cfg.rules?.["@typescript-eslint/no-deprecated"]?.[0]).toBe(2);
+    expect(cfg.rules?.["@eslint-react/no-array-index-key"]?.[0]).toBe(0);
+    expect(cfg.rules?.["react-hooks/set-state-in-effect"]?.[0]).toBe(0);
+  });
 });

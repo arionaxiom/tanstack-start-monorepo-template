@@ -10,6 +10,11 @@ import { render, screen, userEvent } from "@__APP_NAME__/ui/test-utils";
 
 import { APP_RIGHT_SIDEBAR_PANEL_ID, AppLayout } from "./app-layout.js";
 
+const TestLink = ({
+  to,
+  ...props
+}: React.ComponentProps<"a"> & { to: string }) => <a href={to} {...props} />;
+
 describe("AppLayout", () => {
   beforeEach(() => {
     Object.defineProperty(window, "matchMedia", {
@@ -28,6 +33,7 @@ describe("AppLayout", () => {
   it("defaults the desktop sidebar to expanded", () => {
     const { container } = render(
       <AppLayout
+        LinkComponent={TestLink}
         menuItems={[
           { key: "dashboard", title: "Dashboard", url: "/", icon: House },
         ]}
@@ -46,6 +52,7 @@ describe("AppLayout", () => {
     const user = userEvent.setup();
     const { container } = render(
       <AppLayout
+        LinkComponent={TestLink}
         menuItems={[
           { key: "dashboard", title: "Dashboard", url: "/", icon: House },
         ]}
@@ -76,6 +83,7 @@ describe("AppLayout", () => {
     const user = userEvent.setup();
     const { container } = render(
       <AppLayout
+        LinkComponent={TestLink}
         headerActions={
           <SidebarTrigger
             panelId={APP_RIGHT_SIDEBAR_PANEL_ID}

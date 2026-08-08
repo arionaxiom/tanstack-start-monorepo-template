@@ -15,10 +15,8 @@
  *      the child run normally — wrapper exits with the child's exit code.
  *   5. Forward SIGINT/SIGTERM so Ctrl+C cleans up the child.
  *
- * Hochpos-AI's qa-start.sh implements the same probe-and-restart loop
- * around an AoE session; this script does it inside the dev process so
- * the template doesn't need QA infrastructure to get a working dev
- * server on the first try.
+ * This keeps the recovery behavior local to the dev process, so the template
+ * does not need external orchestration infrastructure for a reliable startup.
  */
 import { spawn } from "node:child_process";
 
@@ -108,7 +106,9 @@ async function attempt(attemptNo, args) {
 
   while (!stopping) {
     if (child.exitCode !== null) {
-      log(`vite child exited with code ${child.exitCode} before becoming ready`);
+      log(
+        `vite child exited with code ${child.exitCode} before becoming ready`
+      );
       return "exited";
     }
 
@@ -180,7 +180,9 @@ async function main() {
   }
 
   if (lastResult === "retry") {
-    log(`still failing after ${MAX_ATTEMPTS} attempts — letting the last child run anyway`);
+    log(
+      `still failing after ${MAX_ATTEMPTS} attempts — letting the last child run anyway`
+    );
   }
 
   // Wait for child to exit and propagate code

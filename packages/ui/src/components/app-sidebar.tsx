@@ -28,9 +28,9 @@ interface AppSidebarProps {
    * `__APP_NAME__`. Override to customise without forking the component.
    */
   groupLabel?: ReactNode;
-  LinkComponent?: ComponentType<{
+  LinkComponent: ComponentType<{
     to: string;
-    children: React.ReactNode;
+    children?: React.ReactNode;
     onClick?: React.MouseEventHandler<HTMLAnchorElement>;
     className?: string;
     [key: string]: unknown;
@@ -72,35 +72,25 @@ export function AppSidebar({
                   <SidebarMenuButton
                     panelId={panelId}
                     tooltip={item.title}
-                    render={
-                      LinkComponent ? (
-                        ({
-                          children,
-                          className,
-                          onClick: baseOnClick,
-                          ...rest
-                        }: React.HTMLAttributes<HTMLAnchorElement>) => (
-                          <LinkComponent
-                            to={item.url}
-                            className={className}
-                            data-testid={`sidebar-link-${item.key}`}
-                            onClick={(e) => {
-                              baseOnClick?.(e);
-                              handleNavigate();
-                            }}
-                            {...(rest as Record<string, unknown>)}
-                          >
-                            {children}
-                          </LinkComponent>
-                        )
-                      ) : (
-                        <a
-                          href={item.url}
-                          onClick={handleNavigate}
-                          data-testid={`sidebar-link-${item.key}`}
-                        />
-                      )
-                    }
+                    render={({
+                      children,
+                      className,
+                      onClick: baseOnClick,
+                      ...rest
+                    }: React.HTMLAttributes<HTMLAnchorElement>) => (
+                      <LinkComponent
+                        to={item.url}
+                        className={className}
+                        data-testid={`sidebar-link-${item.key}`}
+                        onClick={(event) => {
+                          baseOnClick?.(event);
+                          handleNavigate();
+                        }}
+                        {...(rest as Record<string, unknown>)}
+                      >
+                        {children}
+                      </LinkComponent>
+                    )}
                   >
                     <item.icon />
                     <span>{item.title}</span>

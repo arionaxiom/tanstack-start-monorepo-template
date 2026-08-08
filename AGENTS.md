@@ -66,7 +66,7 @@ Useful examples:
 - **Forms**: TanStack Form (type-safe, Zod validation)
 - **Testing**: Vitest 4 + React Testing Library
 - **Monorepo**: Turborepo with pnpm workspaces
-- **Package Manager**: pnpm (v10.32.1+)
+- **Package Manager**: pnpm (v11.20.0+)
 - **Node Version**: >=22
 
 ## Core Repo Rules
@@ -148,7 +148,9 @@ What this means in practice:
 
 - Every package that imports a module **must declare it** in its own `package.json`.
 - If TypeScript reports `Cannot find module 'X'` or a non-portable type inference error (`TS2742`), the fix is to **add the missing dependency**, not to switch to hoisted mode.
-- After adding new imports, do a clean install (`rm -rf node_modules && pnpm install`) to verify all dependencies are properly declared.
+- After adding new imports, run `pnpm clean:node-modules` followed by
+  `pnpm install --frozen-lockfile` to verify strict dependency isolation from a
+  clean install.
 
 ## Testing Conventions
 
@@ -173,26 +175,17 @@ The shared `TestProviders` wrapper provides Lingui `I18nProvider` so translation
 Before claiming work is done, run:
 
 ```bash
-pnpm lint
-pnpm check-types
-pnpm test
+pnpm verify
 ```
 
-All must pass with **zero warnings** and **zero type errors**.
+Formatting, lint, TypeScript, tests, and the production build must pass with
+**zero warnings** and **zero type errors**.
 
-## Multi-Agent Workflow (AoE)
+## Toolchain Compatibility
 
-Multi-agent orchestration uses Agent of Empires (AoE). See [`.aoe/README.md`](.aoe/README.md) for setup.
-
-Core conventions:
-
-- All long-running services (`pnpm dev`, watchers) run in the AoE session so the orchestrator and worker share output.
-- Worktree sessions get an automatic port assignment via `.aoe/scripts/setup-worktree.sh`.
-- The orchestrator and workers communicate through `.aoe/scripts/send-message.sh`.
-
-## Pinned Packages
-
-Some packages are intentionally held at specific versions due to known issues. See [`PINNED_PACKAGES.md`](./PINNED_PACKAGES.md). **Always check this file before upgrading vitest, react/react-dom, typescript, or related test packages.** Pinned versions are enforced via `pnpm.overrides` in the root `package.json`.
+No dependency is intentionally held below its latest stable release. See
+[`PINNED_PACKAGES.md`](./PINNED_PACKAGES.md) for exact-version consistency
+overrides and the TypeScript 7 / ESLint side-by-side setup.
 
 ## Important Notes
 

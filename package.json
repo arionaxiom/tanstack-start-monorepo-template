@@ -2,32 +2,36 @@
   "name": "__APP_NAME__",
   "private": true,
   "scripts": {
-    "aoe:cleanup": ".aoe/scripts/cleanup-worktree.sh",
-    "aoe:dispatch": ".aoe/scripts/create-dispatch.sh",
-    "aoe:send": ".aoe/scripts/send-message.sh",
     "build": "turbo run build",
     "check-types": "turbo run check-types",
+    "clean:node-modules": "node scripts/clean-node-modules.mjs",
     "dev": "turbo run dev",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "esm:check": "node scripts/verify-esm.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "format:staged": "lint-staged",
     "lint": "turbo run lint",
     "prepare": "husky",
-    "test": "turbo run test"
+    "template:init": "node scripts/init-template.mjs",
+    "template:init:test": "node scripts/init-template.test.mjs",
+    "test": "node scripts/verify-esm.mjs && node scripts/init-template.test.mjs && turbo run test --concurrency=50%",
+    "verify": "pnpm format:check && pnpm lint && pnpm check-types && pnpm test && pnpm build"
   },
   "lint-staged": {
-    "*.{ts,tsx,md}": "prettier --write"
+    "*.{js,mjs,ts,mts,tsx,json,jsonc,md,css,yaml,yml}": "prettier --write"
   },
   "devDependencies": {
-    "@lingui/cli": "^6.1.0",
+    "@lingui/cli": "^6.6.0",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@typescript/native": "npm:typescript@7.0.2",
     "husky": "^9.1.7",
-    "lint-staged": "^17.0.5",
-    "prettier": "^3.8.3",
-    "prettier-plugin-tailwindcss": "^0.8.0",
-    "turbo": "^2.9.14",
-    "typescript": "~6.0.3"
+    "lint-staged": "^17.3.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "turbo": "^2.10.9",
+    "typescript": "npm:@typescript/typescript6@6.0.2"
   },
-  "packageManager": "pnpm@11.3.0",
+  "packageManager": "pnpm@11.20.0",
   "engines": {
     "node": ">=24"
   },
