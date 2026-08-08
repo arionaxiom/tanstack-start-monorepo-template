@@ -30,6 +30,10 @@ try {
     '{"name":"tanstack-start-template"}\n'
   );
   await writeFile(
+    join(fixtureRoot, "site.webmanifest"),
+    '{"name":"__APP_DISPLAY_NAME__","short_name":"__APP_DISPLAY_NAME__"}\n'
+  );
+  await writeFile(
     join(fixtureRoot, "packages", "example", "src", "example.ts"),
     'import type { Example } from "@__APP_NAME__/types/example";\n'
   );
@@ -67,6 +71,10 @@ try {
   assert.equal(
     await readFile(join(fixtureRoot, "wrangler.jsonc"), "utf8"),
     '{"name":"acme-operations"}\n'
+  );
+  assert.equal(
+    await readFile(join(fixtureRoot, "site.webmanifest"), "utf8"),
+    '{"name":"Acme Operations","short_name":"Acme Operations"}\n'
   );
 
   await writeFile(

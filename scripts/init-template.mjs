@@ -35,6 +35,7 @@ const TEXT_EXTENSIONS = new Set([
   ".ts",
   ".tsx",
   ".txt",
+  ".webmanifest",
   ".yaml",
   ".yml",
 ]);
