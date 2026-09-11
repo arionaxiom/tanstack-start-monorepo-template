@@ -1,16 +1,18 @@
+---
+name: template-setup
+description: Use when initializing this template, setting up a checkout, running development and verification commands, deploying to Cloudflare or troubleshooting the workspace.
+---
+
 # TanStack Start + Cloudflare Template
 
 Opinionated GitHub template for building modern logistics or operations dashboards with TanStack Start, Cloudflare Workers, React 19, Tailwind CSS v4, and Lingui-powered internationalization. The workspace is a pnpm + Turborepo monorepo with private, strictly isolated packages under your own scope (`@__APP_NAME__/*`).
 
-## AI Agent Guidance
+## Project skills
 
-This template is designed to be worked on collaboratively with AI agents. Agent guidance is split into:
-
-- [`AGENTS.md`](./AGENTS.md) — shared baseline for every agent
-- [`CLAUDE.md`](./CLAUDE.md) — Claude-specific additions
-- [`CODEX.md`](./CODEX.md) — Codex-specific additions
-- [`FRONTEND_RULES.md`](./FRONTEND_RULES.md) — frontend conventions
-- [`PINNED_PACKAGES.md`](./PINNED_PACKAGES.md) — toolchain compatibility notes
+Start with [template-baseline](../template-baseline/SKILL.md) for repository
+rules and links to frontend, backend and toolchain skills. This setup skill
+replaces the root and app READMEs. Canonical guides live in `skills/`; provider
+discovery paths link to them without duplicate content.
 
 ## Highlights
 
@@ -22,8 +24,8 @@ This template is designed to be worked on collaboratively with AI agents. Agent 
 
 ## Requirements
 
-- Node.js **>= 24**
-- pnpm **11.20+** (Corepack reads the exact version from `package.json`)
+- Node.js **>= 26.8.2**
+- pnpm **12.3.4** (Corepack reads the exact version from `package.json`)
 - Wrangler CLI (optional until you deploy): `npm i -g wrangler`
 - Cloudflare account with Workers enabled for deployment
 
@@ -51,7 +53,7 @@ This template is designed to be worked on collaboratively with AI agents. Agent 
    pnpm dev --filter=web   # or just the TanStack Start app on :3000
    ```
 
-   The web app's dev wrapper probes `/healthz` and automatically retries the rare TanStack Start + Cloudflare + Lingui cold-start race.
+   The web app pre-bundles Lingui in Vite to keep SSR module initialization consistent. Its dev wrapper also probes `/healthz` and retries failed cold starts.
 
 5. **Commit hooks**
 
@@ -72,7 +74,7 @@ packages/
   node-fn/              # Worker-side helpers / server-only code
   react-hooks/          # Cross-app React hooks
   tailwind-config/      # Tailwind v4 shared config + shared CSS
-  test-utils/           # Shared TestProviders wrapper + testing-library re-exports
+  test-utils/           # Shared Lingui wrapper + Browser Mode renderer
   types/                # Shared TypeScript types
   typescript-config/    # Reusable tsconfig presets
   ui/                   # Design system components/elements/hooks/utils (Base UI)
@@ -143,12 +145,12 @@ These are the checks you should run before every push. Automation assumes they r
 
 ## Toolchain Compatibility
 
-All dependencies track their latest stable releases. React and Vitest families use exact central overrides only to keep one resolution across the workspace. TypeScript 7 is the project compiler; ESLint receives the TypeScript 6 compatibility API required by `typescript-eslint`. See [`PINNED_PACKAGES.md`](./PINNED_PACKAGES.md) for details.
+All dependencies track their latest stable releases. React and Vitest families use exact central overrides only to keep one resolution across the workspace. TypeScript 7 is the project compiler; ESLint receives the TypeScript 6 compatibility API required by `typescript-eslint`. See [template-toolchain](../template-toolchain/SKILL.md) for details.
 
 ## Troubleshooting
 
 - **Dev server fails repeatedly**: Run `pnpm --filter=web dev:raw` to bypass the warmup wrapper and inspect the first Vite failure directly.
-- **Mismatched Node/pnpm versions**: Verify `node -v` ≥ 24 and `pnpm -v` ≥ 11.20. Project tooling relies on `package.json` → `engines` and `packageManager`.
+- **Mismatched Node/pnpm versions**: Verify `node -v` ≥ 26.8.2 and `pnpm -v` = 12.3.4. Project tooling relies on `package.json` → `engines` and `packageManager`.
 - **Route type errors**: Delete `apps/web/src/routeTree.gen.ts` and rerun `pnpm dev` to regenerate if route definitions drift from generated types.
 
 ## Utility Scripts

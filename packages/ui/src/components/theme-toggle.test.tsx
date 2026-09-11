@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { page } from "vitest/browser";
 
-import { render, screen, userEvent } from "@__APP_NAME__/ui/test-utils";
+import { render } from "@__APP_NAME__/ui/test-utils";
 
 import { ThemeToggle } from "./theme-toggle.js";
 
@@ -18,24 +19,18 @@ describe("ThemeToggle", () => {
   });
 
   it("switches from the resolved light theme to dark", async () => {
-    const user = userEvent.setup();
-    render(<ThemeToggle />);
+    await render(<ThemeToggle />);
 
-    await user.click(
-      await screen.findByRole("button", { name: "Switch to dark theme" })
-    );
+    await page.getByRole("button", { name: "Switch to dark theme" }).click();
 
     expect(setTheme).toHaveBeenCalledWith("dark");
   });
 
   it("switches from the resolved dark theme to light", async () => {
     resolvedTheme = "dark";
-    const user = userEvent.setup();
-    render(<ThemeToggle />);
+    await render(<ThemeToggle />);
 
-    await user.click(
-      await screen.findByRole("button", { name: "Switch to light theme" })
-    );
+    await page.getByRole("button", { name: "Switch to light theme" }).click();
 
     expect(setTheme).toHaveBeenCalledWith("light");
   });

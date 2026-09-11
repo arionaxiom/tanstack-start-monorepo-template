@@ -1,6 +1,11 @@
+---
+name: template-frontend
+description: Use when building or changing web UI, routes, themes, forms, accessibility, localization or browser tests in this template.
+---
+
 # Frontend Rules
 
-This document defines how frontend code must be structured in this template. **Read this before doing any frontend work.**
+Use this skill before changing web routes, components, hooks, styling or browser behavior. Apply [template-baseline](../template-baseline/SKILL.md) as well.
 
 ---
 
@@ -188,3 +193,11 @@ These rules encode the Quiet Editorial design direction — deep teal primary, v
 **R37 — Theme toggle in the header.** The root app shell ships with an SSR-safe system/light/dark theme provider and a persistent theme toggle in the header. Keep that control available when extending the platform shell. Routes that deliberately omit the platform header (auth, onboarding) must include an alternative theme switcher.
 
 **R38 — Design-system route is dev-only.** The route at `apps/web/src/routes/[__design-system].tsx` (URL `/__design-system`) renders only when `process.env.NODE_ENV !== "production"`. In production builds it returns the standard not-found component. Not gated by auth, not gated by feature flag — just dev-only. The bracket-escape filename is required so TanStack Router treats `__design-system` as a path segment, not a pathless layout.
+
+## Web workspace
+
+From the repository root, use `pnpm --filter=web dev`, `build`, `check-types`
+and `lint` for the corresponding workspace commands. The app is TanStack Start
+on Cloudflare Workers. Routes live in `apps/web/src/routes`; generate
+`routeTree.gen.ts` through the router. Shared UI lives in `packages/ui`, and
+Worker-served assets live in `packages/assets/src`.

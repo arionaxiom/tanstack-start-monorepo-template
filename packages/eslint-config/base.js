@@ -15,40 +15,50 @@ const repositoryRoot = resolve(
 // ── Banned imports ──────────────────────────────────────────────────────────
 
 const bannedPackages = [
+  ...[
+    "@testing-library/react",
+    "@testing-library/user-event",
+    "@testing-library/jest-dom",
+    "jsdom",
+  ].map((name) => ({
+    name,
+    message:
+      "Use Vitest Browser Mode, the package test-utils renderer and vitest/browser locators.",
+  })),
   {
     name: "redux",
     message:
-      "Use TanStack Query + React Context + Zustand (FRONTEND_RULES.md client state)",
+      "Use TanStack Query + React Context + Zustand (skills/template-frontend/SKILL.md client state)",
   },
   {
     name: "@reduxjs/toolkit",
     message:
-      "Use TanStack Query + React Context + Zustand (FRONTEND_RULES.md client state)",
+      "Use TanStack Query + React Context + Zustand (skills/template-frontend/SKILL.md client state)",
   },
   {
     name: "mobx",
     message:
-      "Use TanStack Query + React Context + Zustand (FRONTEND_RULES.md client state)",
+      "Use TanStack Query + React Context + Zustand (skills/template-frontend/SKILL.md client state)",
   },
   {
     name: "mobx-react",
     message:
-      "Use TanStack Query + React Context + Zustand (FRONTEND_RULES.md client state)",
+      "Use TanStack Query + React Context + Zustand (skills/template-frontend/SKILL.md client state)",
   },
   {
     name: "mobx-react-lite",
     message:
-      "Use TanStack Query + React Context + Zustand (FRONTEND_RULES.md client state)",
+      "Use TanStack Query + React Context + Zustand (skills/template-frontend/SKILL.md client state)",
   },
   {
     name: "framer-motion",
     message:
-      "Use Tailwind transitions + tw-animate-css (FRONTEND_RULES.md animation)",
+      "Use Tailwind transitions + tw-animate-css (skills/template-frontend/SKILL.md animation)",
   },
   {
     name: "motion",
     message:
-      "Use Tailwind transitions + tw-animate-css (FRONTEND_RULES.md animation)",
+      "Use Tailwind transitions + tw-animate-css (skills/template-frontend/SKILL.md animation)",
   },
   {
     name: "formik",
@@ -68,10 +78,10 @@ const bannedPackages = [
   },
 ];
 
-const bannedTestingLibrary = {
-  name: "@testing-library/react",
+const bannedTestRenderer = {
+  name: "vitest-browser-react",
   message:
-    "Import from the package's own test-utils instead (see AGENTS.md testing conventions)",
+    "Import from the package's own test-utils instead (see skills/template-baseline/SKILL.md testing conventions)",
 };
 
 const bannedRelativeParent = {
@@ -82,11 +92,11 @@ const bannedRelativeParent = {
 
 // ── Cross-layer import restrictions ─────────────────────────────────────────
 // Each package's eslint.config.mjs uses these to ban imports from higher layers.
-// See AGENTS.md "Package Dependency Direction" for the full layer diagram.
+// See skills/template-baseline/SKILL.md "Package Dependency Direction" for the full layer diagram.
 
 const pkg = (name) => ({
   name: `@__APP_NAME__/${name}`,
-  message: `Cross-layer import: @__APP_NAME__/${name} is above this package's layer (see AGENTS.md "Package Dependency Direction").`,
+  message: `Cross-layer import: @__APP_NAME__/${name} is above this package's layer (see skills/template-baseline/SKILL.md "Package Dependency Direction").`,
 });
 
 /** All @__APP_NAME__/* packages — used by L0 packages that can't import anything. */
@@ -122,7 +132,7 @@ export {
   aboveL3,
   bannedRelativeParent,
   bannedPackages,
-  bannedTestingLibrary,
+  bannedTestRenderer,
 };
 
 /**
@@ -164,7 +174,7 @@ export const config = defineConfig([
       "no-restricted-imports": [
         "error",
         {
-          paths: [...bannedPackages, bannedTestingLibrary],
+          paths: [...bannedPackages, bannedTestRenderer],
           patterns: [bannedRelativeParent],
         },
       ],
@@ -174,13 +184,13 @@ export const config = defineConfig([
           selector:
             "JSXAttribute[name.name='className'][value.expression.type='TemplateLiteral']",
           message:
-            "Use cn() from @__APP_NAME__/ui/utils to compose className — not template literals (FRONTEND_RULES.md theme tokens).",
+            "Use cn() from @__APP_NAME__/ui/utils to compose className — not template literals (skills/template-frontend/SKILL.md theme tokens).",
         },
         {
           selector:
             "JSXAttribute[name.name='className'][value.expression.type='BinaryExpression']",
           message:
-            "Use cn() from @__APP_NAME__/ui/utils to compose className — not string concatenation (FRONTEND_RULES.md theme tokens).",
+            "Use cn() from @__APP_NAME__/ui/utils to compose className — not string concatenation (skills/template-frontend/SKILL.md theme tokens).",
         },
         {
           selector:
@@ -208,33 +218,24 @@ export const config = defineConfig([
     // These files intentionally expose a narrow adapter surface rather than
     // acting as general package barrels.
     name: "base/allow-adapter-reexports",
-    files: [
-      "src/elements/sonner.tsx",
-      "src/index.ts",
-      "src/react.tsx",
-      "src/test-utils.tsx",
-    ],
+    files: ["src/elements/sonner.tsx", "src/index.ts", "src/test-utils.tsx"],
     rules: {
       "no-barrel-files/no-barrel-files": "off",
     },
   },
   {
-    // Test-utils wrapper files and vitest setup files are the ONLY places
-    // allowed to import from @testing-library/react directly.
-    name: "base/test-utils-allow-rtl",
+    // The shared test-utils renderer is the only module
+    // allowed to import from vitest-browser-react directly.
+    name: "base/test-utils-allow-browser-renderer",
     files: [
-      "src/test-utils.tsx",
-      "src/test-utils.ts",
       "src/react.tsx", // packages/test-utils/src/react.tsx
-      "src/index.ts", // packages/test-utils/src/index.ts
-      "test-setup.ts", // vitest setup files
     ],
     rules: {
       "no-restricted-imports": [
         "error",
         {
           paths: [...bannedPackages],
-          // @testing-library/react intentionally NOT banned here.
+          // vitest-browser-react is allowed only in the shared renderer wrapper.
           patterns: [bannedRelativeParent],
         },
       ],
@@ -250,7 +251,7 @@ export const config = defineConfig([
       "no-restricted-imports": [
         "error",
         {
-          paths: [...bannedPackages, bannedTestingLibrary],
+          paths: [...bannedPackages, bannedTestRenderer],
           // ../* pattern intentionally NOT included here.
         },
       ],

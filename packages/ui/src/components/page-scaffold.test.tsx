@@ -1,17 +1,18 @@
 import { describe, expect, it } from "vitest";
+import { page } from "vitest/browser";
 
-import { render, screen } from "@__APP_NAME__/ui/test-utils";
+import { render } from "@__APP_NAME__/ui/test-utils";
 
 import { PageScaffold } from "./page-scaffold.js";
 
 describe("PageScaffold", () => {
-  it("renders header + content", () => {
-    render(
+  it("renders header + content", async () => {
+    await render(
       <PageScaffold title="Dashboard" description="Overview">
         <div data-testid="content">x</div>
       </PageScaffold>
     );
-    expect(screen.getByText("Dashboard")).toBeVisible();
-    expect(screen.getByTestId("content")).toBeVisible();
+    await expect.element(page.getByText("Dashboard")).toBeVisible();
+    await expect.element(page.getByTestId("content")).toBeVisible();
   });
 });

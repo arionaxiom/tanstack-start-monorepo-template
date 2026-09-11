@@ -1,6 +1,11 @@
+---
+name: template-backend
+description: Use when implementing server functions, backend domains, database ownership or cross-service contracts in this template.
+---
+
 # Backend Rules
 
-This document defines how backend logic must be structured in this project. **Read this before doing any backend work.**
+Use this skill for server functions or backend domain work. Apply [template-baseline](../template-baseline/SKILL.md) as well. The template currently has `packages/node-fn`; add a backend package only when the product needs it.
 
 ## Core Principle: Domain-Owned Services
 
@@ -39,19 +44,13 @@ For performance-critical read paths, the owning service may expose optimized rea
 
 Each service exports a clear set of functions that other services can call. Internal helpers, schema details, and implementation logic stay private.
 
-```typescript
-// auth/index.ts — public API
-export {
-  createUser,
-  getUserById,
-  getUserRole,
-  validateSession,
-} from "./actions";
-
-// auth/actions.ts — implementation (calls auth's own DB layer)
-// auth/db.ts — direct database access (NEVER imported outside auth/)
-// auth/types.ts — can be shared if other services need the types
+```text
+auth/actions.ts — exported domain operations; import directly from this module
+auth/db.ts      — private data access; never import outside auth/
+auth/types.ts   — contracts shared with callers where needed
 ```
+
+Do not create barrel re-exports. Import the owning public operation directly.
 
 ### 5. One service, one responsibility
 

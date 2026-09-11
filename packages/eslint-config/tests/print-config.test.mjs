@@ -13,10 +13,10 @@ const ROOT = path.resolve(
  * config for.  The file must exist — ESLint uses the path to locate the
  * config, but does not need to read the contents.
  *
- * skipRTLBan: true  — packages/test-utils is the wrapper that deliberately
- * lifts the @testing-library/react ban for its own source files.  The base
- * config's "test-utils-allow-rtl" override applies to src/index.ts, so that
- * package correctly skips the RTL assertion.
+ * skipRendererBan: true  — packages/test-utils is the wrapper that deliberately
+ * lifts the vitest-browser-react ban for its own source files.  The base
+ * config's "test-utils-allow-browser-renderer" override applies to src/react.tsx, so that
+ * package correctly skips the renderer assertion.
  */
 const FIXTURES = [
   { pkg: "packages/utils", file: "src/contrast.ts" },
@@ -25,12 +25,11 @@ const FIXTURES = [
   { pkg: "packages/form-options", file: "src/sign-in.ts" },
   { pkg: "packages/node-fn", file: "src/node-fn.ts" },
   { pkg: "packages/react-hooks", file: "src/react-hooks.ts" },
-  // test-utils/src/index.ts is in the allowlist override — RTL ban intentionally lifted
+  // test-utils/src/react.tsx is in the allowlist override — renderer ban intentionally lifted
   {
     pkg: "packages/test-utils",
-    file: "src/index.ts",
-    skipRTLBan: true,
-    skipBarrelBan: true,
+    file: "src/react.tsx",
+    skipRendererBan: true,
   },
   { pkg: "packages/ui", file: "src/utils/cn.ts" },
   { pkg: "apps/web", file: "src/routes/index.tsx" },
@@ -51,8 +50,8 @@ function printConfig(pkg, file) {
 
 describe("eslint config inheritance — critical rules survive per package", () => {
   it.each(FIXTURES)(
-    "$pkg keeps bannedPackages, ../* ban, and (where applicable) testing-library ban",
-    ({ pkg, file, skipRTLBan, skipBarrelBan }) => {
+    "$pkg keeps bannedPackages, ../* ban, and (where applicable) browser-renderer ban",
+    ({ pkg, file, skipRendererBan, skipBarrelBan }) => {
       const cfg = printConfig(pkg, file);
       const restricted = cfg.rules?.["no-restricted-imports"];
 
@@ -115,18 +114,18 @@ describe("eslint config inheritance — critical rules survive per package", () 
         `${pkg}: missing alternative form-library ban`
       ).toBe(true);
 
-      if (!skipRTLBan) {
-        // bannedTestingLibrary must survive for normal files
+      if (!skipRendererBan) {
+        // bannedTestRenderer must survive for normal files
         expect(
-          paths.some((p) => p.name === "@testing-library/react"),
-          `${pkg}: missing @testing-library/react ban`
+          paths.some((p) => p.name === "vitest-browser-react"),
+          `${pkg}: missing vitest-browser-react ban`
         ).toBe(true);
       } else {
-        // For test-utils wrapper files the RTL ban is intentionally lifted —
+        // For test-utils wrapper files the renderer ban is intentionally lifted —
         // verify that the ban is absent (confirming the override works)
         expect(
-          paths.some((p) => p.name === "@testing-library/react"),
-          `${pkg}: @testing-library/react should NOT be banned for test-utils source (allowlist override not working)`
+          paths.some((p) => p.name === "vitest-browser-react"),
+          `${pkg}: vitest-browser-react should NOT be banned for test-utils source (allowlist override not working)`
         ).toBe(false);
       }
 

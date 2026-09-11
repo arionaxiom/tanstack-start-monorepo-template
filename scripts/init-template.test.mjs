@@ -40,6 +40,7 @@ try {
 
   const dryRun = await execFileAsync(process.execPath, [
     scriptPath,
+    "--",
     "--root",
     fixtureRoot,
     "--name",

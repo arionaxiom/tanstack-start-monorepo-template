@@ -112,7 +112,7 @@ function isTextFile(filePath) {
 
 function parseTemplateArguments(args) {
   const parsed = parseArgs({
-    args,
+    args: args[0] === "--" ? args.slice(1) : args,
     allowPositionals: false,
     options: {
       "dry-run": { type: "boolean", default: false },

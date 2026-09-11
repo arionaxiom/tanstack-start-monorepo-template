@@ -1,0 +1,2 @@
+# Patch context lines preserve upstream indentation after the diff's space prefix.
+patches/*.patch -whitespace

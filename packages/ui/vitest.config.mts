@@ -1,4 +1,6 @@
+import tailwindcss from "@tailwindcss/vite";
 import viteReact from "@vitejs/plugin-react-swc";
+import { playwright } from "@vitest/browser-playwright";
 import { fileURLToPath } from "node:url";
 import path from "path";
 import { defineConfig } from "vitest/config";
@@ -9,6 +11,7 @@ const linguiSwcPlugin = fileURLToPath(
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     viteReact({
       plugins: [[linguiSwcPlugin, {}]],
     }),
@@ -45,10 +48,31 @@ export default defineConfig({
     },
   },
   test: {
-    environment: "jsdom",
-    setupFiles: ["./test-setup.ts"],
-    globals: true,
-    include: ["src/**/*.test.{ts,tsx}"],
     passWithNoTests: true,
+    projects: [
+      {
+        test: {
+          name: "node",
+          environment: "node",
+          include: ["src/**/*.test.ts", "src/**/*.ssr.test.tsx"],
+        },
+      },
+      {
+        test: {
+          name: "browser",
+          include: ["src/**/*.test.tsx"],
+          exclude: ["src/**/*.ssr.test.tsx"],
+          setupFiles: ["./test-setup.ts"],
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright(),
+            instances: [
+              { browser: "chromium", viewport: { width: 1440, height: 1000 } },
+            ],
+          },
+        },
+      },
+    ],
   },
 });

@@ -1,18 +1,23 @@
-import { renderToString } from "react-dom/server";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
+import { page } from "vitest/browser";
 
-import { useIsMobile } from "./use-mobile.js";
+import { renderHook } from "@__APP_NAME__/ui/test-utils";
 
-function MobileSnapshot() {
-  return <span>{useIsMobile() ? "mobile" : "desktop"}</span>;
-}
+import { useIsMobile } from "./use-mobile";
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(async () => {
+  await page.viewport(1440, 1000);
+});
 
-describe("useIsMobile", () => {
-  it("uses a stable desktop snapshot during server rendering", () => {
-    vi.stubGlobal("matchMedia", vi.fn().mockReturnValue({ matches: true }));
+describe("useIsMobile in the browser", () => {
+  it("responds to real viewport changes", async () => {
+    const { result } = await renderHook(useIsMobile);
+    expect(result.current).toBe(false);
 
-    expect(renderToString(<MobileSnapshot />)).toContain("desktop");
+    await page.viewport(390, 844);
+    await expect.poll(() => result.current).toBe(true);
+
+    await page.viewport(1440, 1000);
+    await expect.poll(() => result.current).toBe(false);
   });
 });

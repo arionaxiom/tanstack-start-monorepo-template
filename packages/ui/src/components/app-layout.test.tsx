@@ -1,12 +1,13 @@
 import { House } from "lucide-react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
+import { page } from "vitest/browser";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarTrigger,
 } from "@__APP_NAME__/ui/elements/sidebar";
-import { render, screen, userEvent } from "@__APP_NAME__/ui/test-utils";
+import { render } from "@__APP_NAME__/ui/test-utils";
 
 import { APP_RIGHT_SIDEBAR_PANEL_ID, AppLayout } from "./app-layout.js";
 
@@ -16,22 +17,8 @@ const TestLink = ({
 }: React.ComponentProps<"a"> & { to: string }) => <a href={to} {...props} />;
 
 describe("AppLayout", () => {
-  beforeEach(() => {
-    Object.defineProperty(window, "matchMedia", {
-      writable: true,
-      value: vi.fn().mockImplementation((query: string) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        dispatchEvent: vi.fn(),
-      })),
-    });
-  });
-
-  it("defaults the desktop sidebar to expanded", () => {
-    const { container } = render(
+  it("defaults the desktop sidebar to expanded", async () => {
+    const { container } = await render(
       <AppLayout
         LinkComponent={TestLink}
         menuItems={[
@@ -42,15 +29,20 @@ describe("AppLayout", () => {
       </AppLayout>
     );
 
-    expect(
-      container.querySelector('[data-slot="sidebar"][data-state="expanded"]')
-    ).toBeInTheDocument();
-    expect(screen.getByTestId("sidebar-link-dashboard")).toBeInTheDocument();
+    await expect
+      .element(
+        container.querySelector<HTMLElement>(
+          '[data-slot="sidebar"][data-state="expanded"]'
+        )
+      )
+      .toBeInTheDocument();
+    await expect
+      .element(page.getByTestId("sidebar-link-dashboard"))
+      .toBeInTheDocument();
   });
 
   it("uses an independent app-nav sidebar panel", async () => {
-    const user = userEvent.setup();
-    const { container } = render(
+    const { container } = await render(
       <AppLayout
         LinkComponent={TestLink}
         menuItems={[
@@ -61,27 +53,30 @@ describe("AppLayout", () => {
       </AppLayout>
     );
 
-    expect(
-      container.querySelector(
-        '[data-slot="sidebar"][data-side="left"][data-state="expanded"]'
+    await expect
+      .element(
+        container.querySelector<HTMLElement>(
+          '[data-slot="sidebar"][data-side="left"][data-state="expanded"]'
+        )
       )
-    ).toBeInTheDocument();
+      .toBeInTheDocument();
 
-    const sidebarTriggers = screen.getAllByRole("button", {
+    const sidebarTriggers = page.getByRole("button", {
       name: /toggle sidebar/i,
     });
-    await user.click(sidebarTriggers.at(-1)!);
+    await sidebarTriggers.last().click();
 
-    expect(
-      container.querySelector(
-        '[data-slot="sidebar"][data-side="left"][data-state="collapsed"]'
+    await expect
+      .element(
+        container.querySelector<HTMLElement>(
+          '[data-slot="sidebar"][data-side="left"][data-state="collapsed"]'
+        )
       )
-    ).toBeInTheDocument();
+      .toBeInTheDocument();
   });
 
   it("can host a right sidebar that reserves desktop layout space", async () => {
-    const user = userEvent.setup();
-    const { container } = render(
+    const { container } = await render(
       <AppLayout
         LinkComponent={TestLink}
         headerActions={
@@ -100,21 +95,23 @@ describe("AppLayout", () => {
       </AppLayout>
     );
 
-    expect(
-      container.querySelector(
-        '[data-slot="sidebar"][data-side="right"][data-state="collapsed"]'
+    await expect
+      .element(
+        container.querySelector<HTMLElement>(
+          '[data-slot="sidebar"][data-side="right"][data-state="collapsed"]'
+        )
       )
-    ).toBeInTheDocument();
+      .toBeInTheDocument();
 
-    await user.click(
-      screen.getByRole("button", { name: "Toggle details panel" })
-    );
+    await page.getByRole("button", { name: "Toggle details panel" }).click();
 
-    expect(
-      container.querySelector(
-        '[data-slot="sidebar"][data-side="right"][data-state="expanded"]'
+    await expect
+      .element(
+        container.querySelector<HTMLElement>(
+          '[data-slot="sidebar"][data-side="right"][data-state="expanded"]'
+        )
       )
-    ).toBeInTheDocument();
-    expect(screen.getByText("Details content")).toBeInTheDocument();
+      .toBeInTheDocument();
+    await expect.element(page.getByText("Details content")).toBeInTheDocument();
   });
 });

@@ -1,8 +1,9 @@
 import { House } from "lucide-react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
+import { page } from "vitest/browser";
 
 import { SidebarProvider } from "@__APP_NAME__/ui/elements/sidebar";
-import { render, screen } from "@__APP_NAME__/ui/test-utils";
+import { render } from "@__APP_NAME__/ui/test-utils";
 
 import { AppSidebar } from "./app-sidebar.js";
 
@@ -12,22 +13,8 @@ const TestLink = ({
 }: React.ComponentProps<"a"> & { to: string }) => <a href={to} {...props} />;
 
 describe("AppSidebar", () => {
-  beforeEach(() => {
-    Object.defineProperty(window, "matchMedia", {
-      writable: true,
-      value: vi.fn().mockImplementation((query: string) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        dispatchEvent: vi.fn(),
-      })),
-    });
-  });
-
-  it("renders app-provided sidebar content after navigation", () => {
-    render(
+  it("renders app-provided sidebar content after navigation", async () => {
+    await render(
       <SidebarProvider>
         <AppSidebar
           LinkComponent={TestLink}
@@ -40,14 +27,16 @@ describe("AppSidebar", () => {
       </SidebarProvider>
     );
 
-    expect(screen.getByTestId("sidebar-link-dashboard")).toBeInTheDocument();
-    expect(screen.getByLabelText("Secondary navigation")).toHaveTextContent(
-      "Secondary content"
-    );
+    await expect
+      .element(page.getByTestId("sidebar-link-dashboard"))
+      .toBeInTheDocument();
+    await expect
+      .element(page.getByLabelText("Secondary navigation"))
+      .toHaveTextContent("Secondary content");
   });
 
-  it("renders a sidebar-local toggle control", () => {
-    render(
+  it("renders a sidebar-local toggle control", async () => {
+    await render(
       <SidebarProvider>
         <AppSidebar
           LinkComponent={TestLink}
@@ -58,8 +47,8 @@ describe("AppSidebar", () => {
       </SidebarProvider>
     );
 
-    expect(
-      screen.getByRole("button", { name: "Toggle Sidebar" })
-    ).toBeInTheDocument();
+    await expect
+      .element(page.getByRole("button", { name: "Toggle Sidebar" }))
+      .toBeInTheDocument();
   });
 });

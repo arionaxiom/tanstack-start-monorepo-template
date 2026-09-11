@@ -1,4 +1,5 @@
 _generated/
+.vitest/
 .playwright-mcp/
 **/.wrangler/
 *.gen.ts

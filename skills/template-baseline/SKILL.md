@@ -1,13 +1,34 @@
-# AGENTS.md
+---
+name: template-baseline
+description: Use for every coding task in this TanStack Start monorepo to apply package boundaries, import conventions, test requirements and completion gates.
+---
 
-Shared instructions for every AI agent working in this repository.
+# Template Baseline
 
-Read this file first. Then read the agent-specific overlay if one exists:
+Use this skill for every repository coding task. Read manifests and checked-in
+configuration for current versions and commands. Load only the relevant scoped
+skill as work reaches that area:
 
-- Claude agents: [`CLAUDE.md`](./CLAUDE.md)
-- Codex agents: [`CODEX.md`](./CODEX.md)
+- [template-setup](../template-setup/SKILL.md): initialization, development, deployment and troubleshooting.
+- [template-frontend](../template-frontend/SKILL.md): UI, routes, styling and browser verification.
+- [template-backend](../template-backend/SKILL.md): server functions and domain ownership.
+- [template-toolchain](../template-toolchain/SKILL.md): dependency upgrades, TypeScript and lint configuration.
 
-Agent-specific overlays must stay thin. Shared project rules live here.
+Canonical project guidance lives under `skills/*/SKILL.md`. Codex discovers
+the same files through `.agents/skills`; Claude discovers them through
+`.claude/skills`. Both are relative directory symlinks to `skills/`; edit the
+canonical files once. Do not recreate standalone Markdown guides or duplicate
+provider-specific instructions. New sessions discover new skills; an existing
+session can read their files explicitly.
+
+Use available workflow skills when relevant, and follow their intent manually
+when unavailable. Discover the actual available tools; do not infer MCP tools
+from a configuration filename. Use shell and browser tools as appropriate.
+
+Use Context7 for current external-library APIs, configuration and migrations:
+resolve the library ID, then query documentation for the concrete task.
+Refactoring, business-logic debugging and general programming do not require
+a documentation lookup.
 
 ## Project Overview
 
@@ -52,22 +73,6 @@ Useful examples:
 - `pnpm --filter=@__APP_NAME__/locale lingui:extract`
 - `pnpm --filter=@__APP_NAME__/locale compile`
 - `pnpm --filter=@__APP_NAME__/ui test`
-
-## Tech Stack
-
-- **Framework**: TanStack Start (SSR React framework)
-- **Routing**: TanStack Router (file-based, type-safe)
-- **Runtime**: Cloudflare Workers (via Wrangler)
-- **Build Tool**: Vite 8 + SWC (`@vitejs/plugin-react-swc` + `@lingui/swc-plugin`)
-- **Styling**: Tailwind CSS v4 with OKLCH 3-tier token system (`packages/tailwind-config/shared-styles.css`)
-- **UI Components**: Base UI primitives via shadcn (`base-vega` style)
-- **i18n**: Lingui (macro-based, compile-time)
-- **State**: TanStack Query for server state
-- **Forms**: TanStack Form (type-safe, Zod validation)
-- **Testing**: Vitest 4 + React Testing Library
-- **Monorepo**: Turborepo with pnpm workspaces
-- **Package Manager**: pnpm (v11.20.0+)
-- **Node Version**: >=22
 
 ## Core Repo Rules
 
@@ -139,7 +144,7 @@ If a lower-layer package needs something from a higher layer, the design is wron
 - **No inline styles**: All styling through Tailwind classes.
 - **Shared design tokens** live in `packages/tailwind-config/shared-styles.css`. Never hardcode colors or spacing — use the token system.
 
-See [`FRONTEND_RULES.md`](./FRONTEND_RULES.md) for detailed frontend conventions.
+Load [template-frontend](../template-frontend/SKILL.md) for detailed frontend conventions.
 
 ### pnpm Strict Dependency Isolation
 
@@ -156,17 +161,20 @@ What this means in practice:
 ## Testing Conventions
 
 - Tests are **colocated** with source files (`*.test.ts` next to source).
-- Use **Vitest 4** as the test runner, `@testing-library/react` for component tests.
-- React tests must use the package's own `test-utils` — which re-exports from `@__APP_NAME__/test-utils`.
-- Do NOT import directly from `@testing-library/react` (enforced by ESLint).
-- Test packages with a `test` script require `vitest.config.mts` with the appropriate environment (`jsdom` for React, default for pure logic).
+- Use **Vitest** as the test runner, Vitest Browser Mode for component tests.
+- React tests use the package's own `test-utils`, backed by the shared `vitest-browser-react` renderer and Lingui provider.
+- Await `render()` and `renderHook()`. Import `page` and `userEvent` from `vitest/browser`, interact with locators and await `expect.element(...)` assertions.
+- Do not add Jest DOM matcher registration, global Jest type declarations, React Testing Library or JSDOM. The lint rules enforce the Browser Mode pattern.
+- Test packages with a `test` script require `vitest.config.mts` with the appropriate environment (headless Chromium for React, Node for pure logic and SSR).
 
 ```typescript
-// CORRECT
-import { render, screen } from "@__APP_NAME__/ui/test-utils";
+import { expect, test } from "vitest";
+import { page } from "vitest/browser";
 
-// WRONG
-import { render } from "@testing-library/react";
+import { render } from "@__APP_NAME__/ui/test-utils";
+
+// Inside an async test, await render(<Component />), then assert on locators:
+await expect.element(page.getByRole("button", { name: "Save" })).toBeVisible();
 ```
 
 The shared `TestProviders` wrapper provides Lingui `I18nProvider` so translations work in tests. The custom render is mandatory.
@@ -183,12 +191,6 @@ Formatting, lint, TypeScript, unit tests, the production build, and Playwright
 must pass with **zero warnings**, **zero type errors**, and **zero browser
 console errors**.
 
-## Toolchain Compatibility
-
-No dependency is intentionally held below its latest stable release. See
-[`PINNED_PACKAGES.md`](./PINNED_PACKAGES.md) for exact-version consistency
-overrides and the TypeScript 7 / ESLint side-by-side setup.
-
 ## Important Notes
 
 - **No `next` app**: This uses TanStack Start, not Next.js.
@@ -197,3 +199,8 @@ overrides and the TypeScript 7 / ESLint side-by-side setup.
 - **Prettier + Husky**: Code is auto-formatted on commit via lint-staged.
 - **Strict ESLint**: Max warnings set to 0; build fails on warnings.
 - **Template identity placeholders**: `__APP_NAME__` is the package/Worker slug and `__APP_DISPLAY_NAME__` is the human-readable product name. Use the tested initializer rather than manual replacement.
+
+Component tests use colocated `*.test.tsx` files. Keep server-rendering tests in
+`*.ssr.test.tsx`; the UI Vitest config routes those and `*.test.ts` source checks
+to Node. Chromium is installed with `pnpm e2e:install` before `pnpm verify:all`.
+Use actual browser APIs and viewports instead of global DOM mocks.

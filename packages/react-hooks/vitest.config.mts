@@ -1,4 +1,5 @@
 import viteReact from "@vitejs/plugin-react-swc";
+import { playwright } from "@vitest/browser-playwright";
 import { fileURLToPath } from "node:url";
 import path from "path";
 import { defineConfig } from "vitest/config";
@@ -22,8 +23,14 @@ export default defineConfig({
     },
   },
   test: {
-    environment: "jsdom",
     setupFiles: ["./test-setup.ts"],
-    globals: true,
+    browser: {
+      enabled: true,
+      headless: true,
+      provider: playwright(),
+      instances: [
+        { browser: "chromium", viewport: { width: 1440, height: 1000 } },
+      ],
+    },
   },
 });

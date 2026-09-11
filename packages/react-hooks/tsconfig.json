@@ -6,7 +6,8 @@
     "moduleResolution": "Bundler",
     "tsBuildInfoFile": "tsconfig.tsbuildinfo",
     "noEmit": true,
-    "incremental": true
+    "incremental": true,
+    "types": ["vitest/browser", "@vitest/browser-playwright"]
   },
   "exclude": ["node_modules", "dist"]
 }

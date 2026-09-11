@@ -1,34 +1,29 @@
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
+import type { ReactNode } from "react";
 import {
+  type ComponentRenderOptions,
+  type RenderHookOptions,
   type RenderHookResult,
-  type RenderOptions,
   type RenderResult,
-  render,
-  renderHook,
-} from "@testing-library/react";
-import type { ReactElement, ReactNode } from "react";
+  renderHook as renderBrowserHook,
+  render as renderComponent,
+} from "vitest-browser-react";
 
 function TestProviders({ children }: { children: ReactNode }) {
   return <I18nProvider i18n={i18n}>{children}</I18nProvider>;
 }
 
-function customRender(
-  ui: ReactElement,
-  options?: Omit<RenderOptions, "wrapper">
-): RenderResult {
-  return render(ui, { wrapper: TestProviders, ...options });
+export function render(
+  ui: ReactNode,
+  options?: Omit<ComponentRenderOptions, "wrapper">
+): Promise<RenderResult> {
+  return renderComponent(ui, { ...options, wrapper: TestProviders });
 }
 
-function customRenderHook<TResult, TProps>(
-  hook: (props: TProps) => TResult,
-  options?: Omit<Parameters<typeof renderHook>[1], "wrapper"> & {
-    initialProps?: TProps;
-  }
-): RenderHookResult<TResult, TProps> {
-  return renderHook(hook, { wrapper: TestProviders, ...options });
+export function renderHook<Props, Result>(
+  hook: (props?: Props) => Result,
+  options?: Omit<RenderHookOptions<Props>, "wrapper">
+): Promise<RenderHookResult<Result, Props>> {
+  return renderBrowserHook(hook, { ...options, wrapper: TestProviders });
 }
-
-export { customRender as render, customRenderHook as renderHook };
-export { fireEvent, screen, act } from "@testing-library/react";
-export { default as userEvent } from "@testing-library/user-event";
