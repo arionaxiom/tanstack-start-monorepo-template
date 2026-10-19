@@ -25,10 +25,19 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
           node-version: "26.12.0"
+          cache: "pnpm"
+
+      # The initializer formats what it rewrites with the repository's
+      # Prettier setup, so the plugins in .prettierrc must be installed.
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Initialize template
         env:

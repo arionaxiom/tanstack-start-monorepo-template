@@ -44,7 +44,7 @@ discovery paths link to them without duplicate content.
 
 3. **Initialize the workspace identity**
 
-   The repo ships with `.github/workflows/init.yml` (“Initialize from template”) that replaces the package scope and product-name placeholders on the first push to `main` (or whenever you manually run it via **Actions → Initialize from template → Run workflow**). You can run the same tested initializer locally with `pnpm template:init -- --name acme-operations`; it derives “Acme Operations” as the display name, or accepts `--display-name "Acme Control Center"`.
+   The repo ships with `.github/workflows/init.yml` (“Initialize from template”) that replaces the package scope and product-name placeholders on the first push to `main` (or whenever you manually run it via **Actions → Initialize from template → Run workflow**). You can run the same tested initializer locally with `pnpm template:init -- --name acme-operations`; it derives “Acme Operations” as the display name, or accepts `--display-name "Acme Control Center"`. It formats every file it rewrites with the repository's Prettier setup, so run it after `pnpm install`, and it leaves its own script and test untouched.
 
 4. **Start the dev server**
 

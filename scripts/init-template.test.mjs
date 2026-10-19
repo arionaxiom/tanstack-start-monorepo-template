@@ -37,6 +37,17 @@ try {
     join(fixtureRoot, "packages", "example", "src", "example.ts"),
     'import type { Example } from "@__APP_NAME__/types/example";\n'
   );
+  // 79 characters with the placeholder, 82 once it becomes acme-operations.
+  await writeFile(
+    join(fixtureRoot, "packages", "example", "src", "long-import.ts"),
+    'import { alphaExportedName, betaNameAbcde } from "@__APP_NAME__/types/example";\n'
+  );
+  // The initializer names the placeholders itself and must not rewrite them.
+  await mkdir(join(fixtureRoot, "scripts"));
+  await writeFile(
+    join(fixtureRoot, "scripts", "init-template.mjs"),
+    'const APP_NAME_PLACEHOLDER = "__APP_NAME__";\n'
+  );
 
   const dryRun = await execFileAsync(process.execPath, [
     scriptPath,
@@ -61,9 +72,22 @@ try {
     "acme-operations",
   ]);
   assert.match(result.stdout, /updated pnpm-lock\.yaml/);
+  assert.doesNotMatch(result.stdout, /scripts\/init-template/);
+  assert.equal(
+    await readFile(join(fixtureRoot, "scripts", "init-template.mjs"), "utf8"),
+    'const APP_NAME_PLACEHOLDER = "__APP_NAME__";\n'
+  );
+  // Output is formatted the way format:check expects.
   assert.equal(
     await readFile(join(fixtureRoot, "package.json"), "utf8"),
-    '{"name":"acme-operations","product":"Acme Operations"}\n'
+    '{\n  "name": "acme-operations",\n  "product": "Acme Operations"\n}\n'
+  );
+  assert.equal(
+    await readFile(
+      join(fixtureRoot, "packages", "example", "src", "long-import.ts"),
+      "utf8"
+    ),
+    'import {\n  alphaExportedName,\n  betaNameAbcde,\n} from "@acme-operations/types/example";\n'
   );
   assert.doesNotMatch(
     await readFile(join(fixtureRoot, "pnpm-lock.yaml"), "utf8"),
@@ -71,11 +95,11 @@ try {
   );
   assert.equal(
     await readFile(join(fixtureRoot, "wrangler.jsonc"), "utf8"),
-    '{"name":"acme-operations"}\n'
+    '{ "name": "acme-operations" }\n'
   );
   assert.equal(
     await readFile(join(fixtureRoot, "site.webmanifest"), "utf8"),
-    '{"name":"Acme Operations","short_name":"Acme Operations"}\n'
+    '{ "name": "Acme Operations", "short_name": "Acme Operations" }\n'
   );
 
   await writeFile(

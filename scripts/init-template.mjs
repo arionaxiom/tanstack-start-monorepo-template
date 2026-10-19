@@ -17,6 +17,12 @@ const SKIPPED_DIRECTORIES = new Set([
   "node_modules",
   "out",
 ]);
+// The initializer and its test name the placeholders on purpose. Rewriting
+// them would leave a script that hunts for the new app name instead.
+const INITIALIZER_FILES = new Set([
+  join("scripts", "init-template.mjs"),
+  join("scripts", "init-template.test.mjs"),
+]);
 const TEXT_EXTENSIONS = new Set([
   "",
   ".css",
@@ -54,7 +60,12 @@ const replacements = new Map([
 const changedPaths = [];
 
 for await (const filePath of walk(repositoryRoot)) {
-  if (!isTextFile(filePath)) continue;
+  if (
+    !isTextFile(filePath) ||
+    INITIALIZER_FILES.has(relative(repositoryRoot, filePath))
+  ) {
+    continue;
+  }
 
   const before = await readFile(filePath, "utf8").catch(() => undefined);
   if (
@@ -76,6 +87,13 @@ for await (const filePath of walk(repositoryRoot)) {
   changedPaths.push(relative(repositoryRoot, filePath));
 }
 
+// A name longer than the placeholder can push a line past the print width,
+// so the result is formatted with the repository's own Prettier setup. This
+// runs after every file is rewritten because .prettierrc names the scope too.
+if (!options.dryRun && changedPaths.length > 0) {
+  await formatChangedFiles(changedPaths);
+}
+
 for (const changedPath of changedPaths.sort((left, right) =>
   left.localeCompare(right)
 )) {
@@ -84,6 +102,38 @@ for (const changedPath of changedPaths.sort((left, right) =>
 
 if (changedPaths.length === 0) {
   console.log("No template placeholders found.");
+}
+
+async function formatChangedFiles(paths) {
+  let prettier;
+  try {
+    prettier = await import("prettier");
+  } catch {
+    throw new Error(
+      "Prettier is not installed. Run `pnpm install` before initializing."
+    );
+  }
+  const ignorePath = join(repositoryRoot, ".prettierignore");
+
+  for (const changedPath of paths) {
+    const filePath = join(repositoryRoot, changedPath);
+    const { ignored, inferredParser } = await prettier.getFileInfo(filePath, {
+      ignorePath,
+      resolveConfig: true,
+    });
+    if (ignored || !inferredParser) continue;
+
+    const config = await prettier.resolveConfig(filePath, {
+      editorconfig: true,
+      useCache: false,
+    });
+    const source = await readFile(filePath, "utf8");
+    const formatted = await prettier.format(source, {
+      ...config,
+      filepath: filePath,
+    });
+    if (formatted !== source) await writeFile(filePath, formatted);
+  }
 }
 
 async function* walk(directory) {
