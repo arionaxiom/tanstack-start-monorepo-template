@@ -17,11 +17,11 @@
     "./locales/th": "./locales/th/messages.ts"
   },
   "devDependencies": {
-    "@lingui/cli": "^6.6.0",
-    "@lingui/loader": "^6.6.0"
+    "@lingui/cli": "^6.10.0",
+    "@lingui/loader": "^6.10.0"
   },
   "dependencies": {
-    "@lingui/core": "^6.6.0"
+    "@lingui/core": "^6.10.0"
   },
   "type": "module"
 }

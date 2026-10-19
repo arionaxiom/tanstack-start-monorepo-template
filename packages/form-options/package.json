@@ -13,11 +13,11 @@
   "dependencies": {
     "@__APP_NAME__/types": "workspace:*",
     "@tanstack/form-core": "^1.33.5",
-    "zod": "^4.6.2"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",
     "@__APP_NAME__/typescript-config": "workspace:*",
-    "eslint": "^10.10.0"
+    "eslint": "^10.13.0"
   }
 }

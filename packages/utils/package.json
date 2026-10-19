@@ -17,9 +17,9 @@
   "devDependencies": {
     "@__APP_NAME__/eslint-config": "workspace:*",
     "@__APP_NAME__/typescript-config": "workspace:*",
-    "@vitest/coverage-v8": "5.0.0",
-    "eslint": "^10.10.0",
-    "vitest": "5.0.0",
-    "vite": "^8.3.0"
+    "@vitest/coverage-v8": "5.0.5",
+    "eslint": "^10.13.0",
+    "vite": "^8.3.4",
+    "vitest": "5.0.5"
   }
 }

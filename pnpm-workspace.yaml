@@ -10,28 +10,16 @@ allowBuilds:
   workerd: true
 
 minimumReleaseAgeExclude:
-  - "@cloudflare/vite-plugin@1.54.7"
-  - "@tanstack/react-router@1.170.35"
-  - "@tanstack/react-start-client@1.168.33"
-  - "@tanstack/react-start-rsc@0.1.51"
-  - "@tanstack/react-start-server@1.167.40"
-  - "@tanstack/react-start@1.168.52"
-  - "@tanstack/start-plugin-core@1.171.42"
-  - "@tanstack/start-server-core@1.169.34"
-  - lint-staged@17.5.1
-  - miniflare@5.20260910.0-alpha
-  - vite@8.3.0
-  - wrangler@4.131.0
-  - zod@4.6.2
+  - seroval@1.6.11
 
 overrides:
   "@types/react": "19.3.0"
   "@types/react-dom": "19.3.0"
-  "@vitest/coverage-v8": "5.0.0"
-  react: "19.3.0"
-  react-dom: "19.3.0"
-  seroval: "1.6.7"
-  vitest: "5.0.0"
+  "@vitest/coverage-v8": "5.0.5"
+  react: "19.3.1"
+  react-dom: "19.3.1"
+  seroval: "1.6.11"
+  vitest: "5.0.5"
 
 patchedDependencies:
-  "@vitest/mocker@5.0.0": patches/@vitest__mocker@5.0.0.patch
+  vite@8.3.4: patches/vite@8.3.4.patch

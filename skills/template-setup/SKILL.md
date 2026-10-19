@@ -24,8 +24,8 @@ discovery paths link to them without duplicate content.
 
 ## Requirements
 
-- Node.js **>= 26.8.2**
-- pnpm **12.3.4** (Corepack reads the exact version from `package.json`)
+- Node.js **>= 26.12.0**
+- pnpm **12.14.0** (Corepack reads the exact version from `package.json`)
 - Wrangler CLI (optional until you deploy): `npm i -g wrangler`
 - Cloudflare account with Workers enabled for deployment
 
@@ -150,7 +150,7 @@ All dependencies track their latest stable releases. React and Vitest families u
 ## Troubleshooting
 
 - **Dev server fails repeatedly**: Run `pnpm --filter=web dev:raw` to bypass the warmup wrapper and inspect the first Vite failure directly.
-- **Mismatched Node/pnpm versions**: Verify `node -v` ≥ 26.8.2 and `pnpm -v` = 12.3.4. Project tooling relies on `package.json` → `engines` and `packageManager`.
+- **Mismatched Node/pnpm versions**: Verify `node -v` ≥ 26.12.0 and `pnpm -v` = 12.14.0. Project tooling relies on `package.json` → `engines` and `packageManager`.
 - **Route type errors**: Delete `apps/web/src/routeTree.gen.ts` and rerun `pnpm dev` to regenerate if route definitions drift from generated types.
 
 ## Utility Scripts

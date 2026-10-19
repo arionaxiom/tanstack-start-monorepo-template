@@ -28,7 +28,7 @@ When TypeScript 7.1 and `typescript-eslint` expose compatible APIs, remove the
 compatibility alias and let both compilation and linting use TypeScript 7
 directly.
 
-Last reviewed: 2026-09-11.
+Last reviewed: 2026-10-19.
 
 ## Upgrade workflow
 
@@ -60,15 +60,35 @@ packages aligned with Vitest and install Chromium before verification.
 
 ## Vitest 5 browser interceptor
 
-`@vitest/mocker@5.0.0` has an exact-version pnpm patch that omits
-`configureServer` when `registerWebSocketEvents` is false. Browser Mode supplies
-that option because it registers its own RPC handlers. The upstream hook
-already returns immediately in that case, but Vite 8.3 warns about declaring
-server hooks on environment plugins even when they do no work.
+`@vitest/mocker` 5.0.5 attaches `configureServer` only when
+`registerWebSocketEvents` is enabled, so Vite 8.3 no longer warns about a
+server hook on Browser Mode's environment plugin. The exact-version pnpm patch
+that did the same for 5.0.0 was removed in that upgrade. If the warning
+returns, fix it upstream or with a new exact-version patch; do not suppress
+Vite diagnostics or downgrade Vite.
 
-The patch preserves module mocking and the enabled WebSocket path. Remove it
-when an upstream release omits the disabled hook, then verify the Browser Mode
-suite with no warnings. Do not suppress Vite diagnostics or downgrade Vite.
+## Vite 8.3.4 server sourcemap
+
+`vite@8.3.4` has an exact-version pnpm patch for `vite:css-post`. When its
+`renderChunk` hook strips CSS imports it decides whether to return a sourcemap
+from the top-level `config.build.sourcemap`, while every other hook reads the
+current environment's setting. `@cloudflare/vite-plugin` enables sourcemaps on
+the Worker environment only, so the server chunk came back without a map and
+Rolldown warned `SOURCEMAP_BROKEN`. The patch reads
+`this.environment.config.build.sourcemap` instead.
+
+The open upstream report, vitejs/vite#23809, blames the `transform` hook's
+dev-server branch; that branch does not run in a build. Remove the patch when a
+Vite release reads the environment's setting there, then confirm `pnpm build`
+prints no `SOURCEMAP_BROKEN` and the server `router-*.js.map` has mappings. Do
+not silence the check with `rolldownOptions.checks.sourcemapBroken`.
+
+## Playwright web server
+
+The e2e web server runs Vite directly from `apps/web`, not through
+`pnpm --filter=web exec`. Graceful shutdown signals the server, and pnpm 12.14
+reports a child ended by a signal as `ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL`;
+earlier pnpm exited 143 without saying so.
 
 The internal `packages/eslint-config` package owns lint configuration and custom
 rules. Update rule documentation and messages here or in the relevant skill when

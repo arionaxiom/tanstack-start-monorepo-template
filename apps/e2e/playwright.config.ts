@@ -1,7 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
+import { fileURLToPath } from "node:url";
 
 const port = Number(process.env.E2E_PORT ?? 3137);
 const baseURL = process.env.E2E_BASE_URL ?? `http://127.0.0.1:${port}`;
+const webDirectory = fileURLToPath(new URL("../web/", import.meta.url));
 
 export default defineConfig({
   testDir: "./tests",
@@ -39,7 +41,11 @@ export default defineConfig({
   webServer: process.env.E2E_BASE_URL
     ? undefined
     : {
-        command: `pnpm --filter=web exec vite dev --host 127.0.0.1 --port ${port}`,
+        // Vite runs directly rather than under `pnpm exec`: graceful shutdown
+        // signals the server, and pnpm reports a child ended by a signal as a
+        // failed run even though stopping it is the intended outcome.
+        command: `node node_modules/vite/bin/vite.js dev --host 127.0.0.1 --port ${port}`,
+        cwd: webDirectory,
         url: `${baseURL}/healthz`,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,
